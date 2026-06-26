@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>⚙️ C++ Grimoire | Systems & OOP Scroll</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a1a2a, #020c18);
+            font-family: 'Inter', sans-serif;
+            color: #e0f0ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #cpp-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .app {
+            display: flex;
+            flex-direction: row;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            gap: 1.2rem;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        .cpp-sidebar {
+            width: 350px;
+            background: rgba(10, 20, 35, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            border: 1px solid #3a86ff;
+            padding: 1.2rem 0.6rem;
+            overflow-y: auto;
+            max-height: 90vh;
+            position: sticky;
+            top: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .cpp-sidebar::-webkit-scrollbar { width: 5px; }
+        .cpp-sidebar::-webkit-scrollbar-track { background: #1e2a3a; border-radius: 10px; }
+        .cpp-sidebar::-webkit-scrollbar-thumb { background: #5a9eff; border-radius: 10px; }
+
+        .cpp-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+        .cpp-tree, .cpp-tree ul {
+            list-style: none;
+            padding-left: 1.2rem;
+        }
+        .cpp-tree li {
+            margin: 0.3rem 0;
+        }
+        .tree-btn {
+            background: #1e3a5f;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.45rem 0.85rem;
+            border-radius: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #cce6ff;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            border-left: 3px solid #3a86ff;
+        }
+        .tree-btn:hover {
+            background: #2c5a8c;
+            transform: translateX(5px);
+            box-shadow: 0 0 10px #5a9eff;
+            border-left-color: #ffd966;
+        }
+        .active-cpp {
+            background: linear-gradient(95deg, #2c5a8c, #1e3a5f);
+            box-shadow: 0 0 12px #7ab3ff;
+            border-left-color: #ffdf80;
+        }
+        .cpp-panel {
+            flex: 1;
+            background: rgba(8, 18, 28, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid #3a86ff;
+            padding: 1.8rem 2rem;
+        }
+        .topic-header {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b8e1ff, #5a9eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px dashed #3a86ff;
+            padding-bottom: 0.5rem;
+        }
+        .cpp-desc {
+            background: #0a1420;
+            padding: 1rem 1.3rem;
+            border-radius: 1.3rem;
+            border-left: 5px solid #3a86ff;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .code-block {
+            background: #0a0c18;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid #3a86ff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #cce6ff;
+        }
+        .run-cpp {
+            background: #2c5a8c;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            transition: 0.2s;
+        }
+        .run-cpp:hover {
+            background: #3a86ff;
+            transform: scale(1.02);
+            box-shadow: 0 0 12px #7ab3ff;
+        }
+        .output-area {
+            background: #050a12;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            border: 1px solid #3a86ff;
+            font-size: 0.85rem;
+        }
+        .output-label {
+            font-size: 0.7rem;
+            color: #9dc8ff;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            padding: 1rem;
+        }
+        @media (max-width: 780px) {
+            .app { flex-direction: column; }
+            .cpp-sidebar { width: 100%; max-height: 380px; position: relative; top: 0; }
+            .topic-header { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="cpp-mist"></canvas>
+<div class="app">
+    <aside class="cpp-sidebar">
+        <div style="padding-left: 0.7rem; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem;">⚙️ C++ Grimoire</div>
+        <div id="cpp-tree-nav"></div>
+    </aside>
+    <main class="cpp-panel" id="main-panel">
+        <div class="topic-header"><span>🔷</span> <span id="topicTitle">C++ Programming</span></div>
+        <div id="descriptionBox" class="cpp-desc">
+            ✨ Select any C++ incantation from the tree. Each node reveals explanation and runnable C++ code (simulated output).
+        </div>
+        <div id="cppCodeArea" style="display: none;">
+            <div class="code-block"><pre id="cppCodePreview"></pre></div>
+            <button class="run-cpp" id="executeCpp">⚙️ Compile & Run (Simulate)</button>
+            <div class="output-area">
+                <div class="output-label">💻 Program Output</div>
+                <div id="cppOutput"># output will appear here...</div>
+            </div>
+        </div>
+        <div id="endNodeMsg" style="display: none;"></div>
+    </main>
+</div>
+<footer>💾 each example is simulated — compile with g++ or clang++ on your system</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // FULL C++ TREE (exact structure from prompt)
+    // --------------------------------------------------------------
+    const cppTree = [
+        { name: "Variables", children: [
+            { name: "Declaration" }, { name: "Initialization" }, { name: "Constants (const, constexpr)" }
+        ]},
+        { name: "Data Types", children: [
+            { name: "Fundamental", children: [
+                { name: "int" }, { name: "float" }, { name: "double" }, { name: "char" }, { name: "bool" }, { name: "void" }
+            ]},
+            { name: "Derived", children: [
+                { name: "Pointers" }, { name: "Arrays" }, { name: "References" }
+            ]},
+            { name: "User-defined", children: [
+                { name: "struct" }, { name: "class" }, { name: "enum" }
+            ]}
+        ]},
+        { name: "Operators", children: [
+            { name: "Arithmetic" }, { name: "Assignment" }, { name: "Comparison" },
+            { name: "Logical" }, { name: "Bitwise" }, { name: "Unary" }, { name: "Ternary (?:)" }
+        ]},
+        { name: "Control Flow", children: [
+            { name: "if statement" }, { name: "else statement" }, { name: "else if statement" },
+            { name: "switch statement" }, { name: "for loop" }, { name: "while loop" }, { name: "do-while loop" }
+        ]},
+        { name: "Functions", children: [
+            { name: "Function declaration" }, { name: "Function definition" }, { name: "Function overloading" },
+            { name: "Inline functions" }, { name: "Lambda expressions (C++11+)" }, { name: "Recursion" }
+        ]},
+        { name: "Scope", children: [
+            { name: "Global scope" }, { name: "Local scope" }, { name: "Block scope" }, { name: "Namespace scope" }
+        ]},
+        { name: "Arrays", children: [
+            { name: "Static arrays" }, { name: "Dynamic arrays (new / delete)" },
+            { name: "std::array (C++11+)" }, { name: "Iteration (for, range-based for)" }
+        ]},
+        { name: "Strings", children: [
+            { name: "C-strings (char[])" }, { name: "std::string methods" }
+        ]},
+        { name: "Pointers and References", children: [
+            { name: "Pointers", children: [
+                { name: "Pointer arithmetic" }, { name: "Null pointer (nullptr)" }, { name: "Smart pointers (unique_ptr, shared_ptr)" }
+            ]},
+            { name: "References" }
+        ]},
+        { name: "Classes and Objects", children: [
+            { name: "Class definition" }, { name: "Constructors and destructors" }, { name: "Member functions" },
+            { name: "Access specifiers (public, private, protected)" }, { name: "Inheritance" },
+            { name: "Polymorphism" }, { name: "Encapsulation" }, { name: "Abstraction" }
+        ]},
+        { name: "Templates", children: [
+            { name: "Function templates" }, { name: "Class templates" }
+        ]},
+        { name: "STL (Standard Template Library)", children: [
+            { name: "Containers", children: [
+                { name: "Vector" }, { name: "List" }, { name: "Map" }, { name: "Set" }
+            ]},
+            { name: "Iterators" }, { name: "Algorithms" }, { name: "Utility (pair, tuple, etc.)" }
+        ]},
+        { name: "Memory Management", children: [
+            { name: "Stack vs Heap" }, { name: "new and delete" }, { name: "Smart pointers" }, { name: "RAII (Resource Acquisition Is Initialization)" }
+        ]},
+        { name: "File Handling", children: [
+            { name: "ifstream" }, { name: "ofstream" }, { name: "fstream" }
+        ]},
+        { name: "Exception Handling", children: [
+            { name: "try...catch block" }, { name: "throw statement" }
+        ]},
+        { name: "Namespaces", children: [
+            { name: "Declaring namespaces" }, { name: "using namespace" }, { name: "Nested namespaces" }
+        ]},
+        { name: "C++11 and Beyond", children: [
+            { name: "auto keyword" }, { name: "nullptr" }, { name: "Range-based for loop" },
+            { name: "Lambda expressions" }, { name: "Move semantics" }, { name: "Smart pointers" }, { name: "constexpr" }
+        ]},
+        { name: "Preprocessor Directives", children: [
+            { name: "#include" }, { name: "#define" }, { name: "#ifdef / #ifndef" }, { name: "Macros" }
+        ]},
+        { name: "Multithreading (C++11+)", children: [
+            { name: "std::thread" }, { name: "Mutex" }, { name: "Lock guard" }, { name: "Condition variables" }
+        ]},
+        { name: "Debugging", children: [
+            { name: "std::cout" }, { name: "Assertions (assert)" }, { name: "Breakpoints" }
+        ]},
+        { name: "Others", children: [
+            { name: "Type casting (static_cast, dynamic_cast, etc.)" }, { name: "Operator overloading" },
+            { name: "Friend functions" }, { name: "Inline namespaces" }, { name: "Volatile keyword" }
+        ]},
+        { name: "END" }
+    ];
+
+    // --------------------------------------------------------------
+    // CONTENT MAP: descriptions, C++ code, simulated output
+    // --------------------------------------------------------------
+    const cppContent = new Map();
+
+    function addLeaf(path, nodeName, description, code, output) {
+        cppContent.set(path, { desc: description, code: code, output: output, isLeaf: true });
+    }
+    function setCategory(path, description) {
+        cppContent.set(path, { desc: description, isLeaf: false });
+    }
+
+    // Generic fallback for any leaf not explicitly added
+    function genericCppNode(nodeName) {
+        return {
+            desc: `📘 ${nodeName} — essential C++ concept. Compile and run to observe behavior.`,
+            code: `#include <iostream>\n\nint main() {\n    std::cout << "Exploring ${nodeName} in C++" << std::endl;\n    return 0;\n}`,
+            output: `Exploring ${nodeName} in C++`
+        };
+    }
+
+    // Pre-populate important nodes (rich content)
+    function buildCppContent() {
+        // Variables
+        addLeaf("Variables/Declaration", "Variable Declaration", "Declare variables with type and name.",
+                "#include <iostream>\nint main() { int x; x = 10; std::cout << x; return 0; }", "10");
+        addLeaf("Variables/Constants (const, constexpr)", "Constants", "const: runtime constant, constexpr: compile-time constant.",
+                "#include <iostream>\nint main() { const int a = 5; constexpr int b = 10; std::cout << a+b; return 0; }", "15");
+        // Data Types
+        addLeaf("Data Types/Fundamental/int", "int", "Integer type (4 bytes typical).",
+                "#include <iostream>\nint main() { int num = 42; std::cout << num; return 0; }", "42");
+        addLeaf("Data Types/Derived/Pointers", "Pointers", "Store memory addresses.",
+                "#include <iostream>\nint main() { int val = 100; int* ptr = &val; std::cout << *ptr; return 0; }", "100");
+        // Operators
+        addLeaf("Operators/Ternary (?:)", "Ternary operator", "Conditional expression.",
+                "#include <iostream>\nint main() { int a=5,b=3; int max = (a>b)?a:b; std::cout << max; return 0; }", "5");
+        // Control Flow
+        addLeaf("Control Flow/switch statement", "switch", "Multi-way branch.",
+                "#include <iostream>\nint main() { int day=2; switch(day){case 1: std::cout<<\"Mon\";break; case 2: std::cout<<\"Tue\";break;} return 0; }", "Tue");
+        // Functions
+        addLeaf("Functions/Lambda expressions (C++11+)", "Lambda", "Anonymous function object.",
+                "#include <iostream>\nint main() { auto add = [](int a,int b){ return a+b; }; std::cout << add(3,4); return 0; }", "7");
+        addLeaf("Functions/Function overloading", "Overloading", "Multiple functions with same name, different params.",
+                "#include <iostream>\nvoid print(int i){ std::cout<<i; }\nvoid print(double d){ std::cout<<d; }\nint main(){ print(5); print(3.14); return 0; }", "53.14");
+        // Arrays
+        addLeaf("Arrays/std::array (C++11+)", "std::array", "Fixed-size array wrapper.",
+                "#include <iostream>\n#include <array>\nint main() { std::array<int,3> arr{1,2,3}; std::cout << arr[1]; return 0; }", "2");
+        // Strings
+        addLeaf("Strings/std::string methods", "std::string", "C++ string class with methods.",
+                "#include <iostream>\n#include <string>\nint main() { std::string s = \"C++\"; s += \" magic\"; std::cout << s.length() << ' ' << s; return 0; }", "10 C++ magic");
+        // Classes
+        addLeaf("Classes and Objects/Polymorphism", "Polymorphism", "Virtual functions enable runtime polymorphism.",
+                "#include <iostream>\nclass Base { public: virtual void show(){ std::cout<<\"Base\"; } };\nclass Derived: public Base { public: void show() override{ std::cout<<\"Derived\"; } };\nint main(){ Base* b = new Derived(); b->show(); delete b; return 0; }", "Derived");
+        // Templates
+        addLeaf("Templates/Function templates", "Function template", "Generic functions.",
+                "#include <iostream>\ntemplate<typename T>\nT max(T a, T b){ return (a>b)?a:b; }\nint main(){ std::cout << max(3,7) << ' ' << max(2.5,1.5); return 0; }", "7 2.5");
+        // STL
+        addLeaf("STL (Standard Template Library)/Containers/Vector", "std::vector", "Dynamic array.",
+                "#include <iostream>\n#include <vector>\nint main() { std::vector<int> v = {1,2,3}; v.push_back(4); std::cout << v.size(); return 0; }", "4");
+        addLeaf("STL (Standard Template Library)/Algorithms", "STL Algorithms", "Sort, find, etc.",
+                "#include <iostream>\n#include <vector>\n#include <algorithm>\nint main(){ std::vector<int> v{3,1,4}; std::sort(v.begin(),v.end()); for(int i:v) std::cout<<i; return 0; }", "134");
+        // Memory Management
+        addLeaf("Memory Management/Smart pointers", "Smart pointers", "unique_ptr, shared_ptr for automatic memory.",
+                "#include <iostream>\n#include <memory>\nint main() { auto p = std::make_unique<int>(42); std::cout << *p; return 0; }", "42");
+        // C++11 features
+        addLeaf("C++11 and Beyond/auto keyword", "auto", "Type deduction.",
+                "#include <iostream>\nint main() { auto x = 5.5; std::cout << x; return 0; }", "5.5");
+        addLeaf("C++11 and Beyond/Move semantics", "Move semantics", "Transfer ownership of resources.",
+                "#include <iostream>\n#include <utility>\nint main() { std::string a=\"hello\", b=std::move(a); std::cout << b; return 0; }", "hello");
+        // Multithreading
+        addLeaf("Multithreading (C++11+)/std::thread", "std::thread", "Create and manage threads.",
+                "#include <iostream>\n#include <thread>\nvoid hello(){ std::cout<<\"Hi\"; }\nint main() { std::thread t(hello); t.join(); return 0; }", "Hi");
+        // END
+        addLeaf("END", "END", "🏁 You have completed the C++ Grimoire. Master templates, STL, and OOP to become a C++ Archmage.",
+                "#include <iostream>\nint main() { std::cout << \"Congratulations, C++ Sage!\"; return 0; }", "Congratulations, C++ Sage!");
+    }
+
+    function fillMissingLeaves(tree, parentPath = "") {
+        for(let node of tree) {
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            if(node.children && node.children.length) {
+                if(!cppContent.has(path)) setCategory(path, `📂 Category: ${node.name} — expand to explore subtopics.`);
+                fillMissingLeaves(node.children, path);
+            } else {
+                if(!cppContent.has(path)) {
+                    const gen = genericCppNode(node.name);
+                    addLeaf(path, node.name, gen.desc, gen.code, gen.output);
+                }
+            }
+        }
+    }
+
+    buildCppContent();
+    fillMissingLeaves(cppTree);
+
+    // --------------------------------------------------------------
+    // RENDER SIDEBAR TREE (recursive)
+    // --------------------------------------------------------------
+    function renderTree(container, nodes, parentPath = "") {
+        const ul = document.createElement("ul");
+        ul.className = "cpp-tree";
+        for(let node of nodes) {
+            const li = document.createElement("li");
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            const btn = document.createElement("button");
+            btn.className = "tree-btn";
+            const icon = (node.children && node.children.length) ? "📁" : "⚙️";
+            btn.innerHTML = `<span>${icon}</span> <span>${node.name}</span>`;
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".tree-btn").forEach(b => b.classList.remove("active-cpp"));
+                btn.classList.add("active-cpp");
+                loadTopic(path, node.name);
+            });
+            li.appendChild(btn);
+            if(node.children && node.children.length) {
+                const childUl = renderTree(li, node.children, path);
+                li.appendChild(childUl);
+            }
+            ul.appendChild(li);
+        }
+        container.appendChild(ul);
+        return ul;
+    }
+
+    const navContainer = document.getElementById("cpp-tree-nav");
+    renderTree(navContainer, cppTree);
+
+    // --------------------------------------------------------------
+    // LOAD TOPIC AND SIMULATE C++ RUN
+    // --------------------------------------------------------------
+    let currentCode = "";
+    let currentOutput = "";
+
+    function loadTopic(path, displayName) {
+        const data = cppContent.get(path);
+        const descDiv = document.getElementById("descriptionBox");
+        const titleSpan = document.getElementById("topicTitle");
+        const codeArea = document.getElementById("cppCodeArea");
+        const endDiv = document.getElementById("endNodeMsg");
+        endDiv.style.display = "none";
+        codeArea.style.display = "none";
+
+        titleSpan.innerText = displayName;
+        if(data && data.isLeaf) {
+            descDiv.innerHTML = `<span style="font-size:1.1rem;">⚙️ Spell detail</span><br>${data.desc}`;
+            if(data.code) {
+                currentCode = data.code;
+                currentOutput = data.output || "(no output)";
+                document.getElementById("cppCodePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+                document.getElementById("cppOutput").innerHTML = "# output will appear after compilation";
+            } else {
+                codeArea.style.display = "none";
+            }
+        } else {
+            descDiv.innerHTML = data ? data.desc : `🌿 ${displayName} — choose a sub-topic to see runnable examples.`;
+            codeArea.style.display = "none";
+        }
+        if(displayName === "END") {
+            const endData = cppContent.get(path);
+            if(endData?.code) {
+                currentCode = endData.code;
+                currentOutput = endData.output;
+                document.getElementById("cppCodePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+            }
+        }
+        // Bind run button
+        const oldBtn = document.getElementById("executeCpp");
+        if(oldBtn) {
+            const newBtn = oldBtn.cloneNode(true);
+            oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+            newBtn.addEventListener("click", () => {
+                const outDiv = document.getElementById("cppOutput");
+                outDiv.innerHTML = "🔨 Compiling with g++ -std=c++17...\n$ ./a.out\n";
+                setTimeout(() => {
+                    outDiv.innerHTML += `\n> ${currentOutput}`;
+                }, 120);
+            });
+        }
+    }
+
+    // initial click on first node
+    setTimeout(() => {
+        const firstBtn = document.querySelector(".tree-btn");
+        if(firstBtn) firstBtn.click();
+    }, 200);
+
+    // --------------------------------------------------------------
+    // ENCHANTED PARTICLES (blue/cyan tech dust)
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("cpp-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.3 + 0.7;
+            this.vx = (Math.random() - 0.5) * 0.25;
+            this.vy = (Math.random() - 0.5) * 0.2 + 0.05;
+            this.alpha = Math.random() * 0.5 + 0.1;
+            this.color = `rgba(58, 134, 255, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width + 20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height + 20;
+            if(this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = "#3a86ff";
+            ctx.fill();
+        }
+    }
+    function initParticles(count = 130) {
+        particles = [];
+        for(let i = 0; i < count; i++) particles.push(new Particle());
+    }
+    function animateParticles() {
+        if(!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    window.addEventListener("resize", () => {
+        resizeCanvas();
+        initParticles(130);
+    });
+    resizeCanvas();
+    initParticles(140);
+    animateParticles();
+</script>
+</body>
+</html>

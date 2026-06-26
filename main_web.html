@@ -1,0 +1,1325 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9">
+    <title>Wave Community</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <script>
+        // Course syllabus detail toggling
+        window.viewSyllabus = (index) => {
+            document.getElementById('course-grid-container').classList.add('hidden');
+            document.getElementById('course-header').classList.add('hidden');
+            document.querySelectorAll('[id^="course-detail-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('course-detail-' + index).classList.remove('hidden');
+            document.getElementById('courses-view').scrollTop = 0;
+        };
+
+        window.backToCourses = () => {
+            document.querySelectorAll('[id^="course-detail-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('course-grid-container').classList.remove('hidden');
+            document.getElementById('course-header').classList.remove('hidden');
+        };
+
+       
+
+        // Navigation
+        window.showView = (viewName) => {
+            document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
+            document.getElementById(viewName + '-view').classList.remove('hidden');
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('text-primary-accent', 'border-primary-accent');
+                link.classList.add('text-gray-400', 'border-transparent');
+            });
+            const navItem = document.getElementById('nav-' + viewName);
+            if (navItem) {
+                navItem.classList.add('text-primary-accent', 'border-primary-accent');
+                navItem.classList.remove('text-gray-400', 'border-transparent');
+            }
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                document.getElementById('mobile-menu-button').setAttribute('aria-expanded', 'false');
+            }
+        };
+
+        // Enrollment modal
+        window.openEnrollmentModal = () => document.getElementById('enrollment-modal').classList.remove('hidden');
+        window.closeEnrollmentModal = () => document.getElementById('enrollment-modal').classList.add('hidden');
+
+        // Mobile menu and gallery init
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuButton.addEventListener('click', () => {
+                const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+                menuButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const track = document.getElementById('scrolling-track');
+            if (track) {
+                const items = track.querySelectorAll('.gallery-item');
+                const totalItems = items.length;
+                const itemWidth = 300;
+                const margin = 16;
+                const totalWidth = totalItems * (itemWidth + margin);
+                track.style.width = totalWidth + 'px';
+                track.classList.add('animate');
+            }
+        });
+    </script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-accent': '#22d3ee',
+                        'primary-dark': '#1f2937',
+                        'background': '#111827',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111827;
+            zoom: scale(0.9);      /* body zoom process */
+            
+            
+        }
+        .text-shadow-neon {
+            text-shadow: 0 0 5px rgba(140, 45, 255, 0.536), 0 0 10px rgba(126, 34, 238, 0.3);
+        }
+        .section-padding {
+            padding: 5rem 1rem;
+        }
+
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .scrolling-gallery-container { overflow: hidden; width: 100%; mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent); transition: opacity 0.5s; }
+        .scrolling-track { display: flex; width: fit-content; animation: none; justify-content: flex-start; }
+        .scrolling-track.animate { animation: scroll-left 40s linear infinite; width: 400%; }
+        .scrolling-track:hover { animation-play-state: paused; }
+        .gallery-item { flex-shrink: 0; width: 300px; height: 170px; margin: 0 0.5rem; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 15px rgba(34, 211, 238, 0.2); border: 2px solid transparent; transition: border-color 0.3s; }
+        .gallery-item:hover { border-color: #8522ee; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+        .pdf-reader-height {
+            height: calc(100vh - 180px);
+            min-height: 600px;
+        }
+
+
+        /* From Uiverse.io by KapeParaguay */ 
+.buttonpro {
+  --btn-default-bg: black;
+  --btn-padding: 15px 20px;
+  --btn-hover-bg: green;
+  --btn-transition: 0.3s;
+  --btn-letter-spacing: 0.1rem;
+  --btn-animation-duration: 1.2s;
+  --btn-shadow-color: green;
+  --btn-shadow: 0 2px 10px 0 var(--btn-shadow-color);
+  --hover-btn-color: #7241ff;
+  --default-btn-color: #fff;
+  --font-size: 16px;
+  --font-weight: 600;
+  --font-family: Menlo, Roboto Mono, monospace;
+  border-radius: 6em;
+}
+
+/* button settings 👆 */
+
+.buttonpro {
+  box-sizing: border-box;
+  padding: var(--btn-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--default-btn-color);
+  font: var(--font-weight) var(--font-size) var(--font-family);
+  background: var(--btn-default-bg);
+  cursor: pointer;
+  transition: var(--btn-transition);
+  overflow: hidden;
+  box-shadow: var(--btn-shadow);
+  border-radius: 6em;
+  border: 2px solid #2a2b3a;
+}
+
+.buttonpro span {
+  letter-spacing: var(--btn-letter-spacing);
+  transition: var(--btn-transition);
+  box-sizing: border-box;
+  position: relative;
+  background: inherit;
+}
+
+.buttonpro span::before {
+  box-sizing: border-box;
+  position: absolute;
+  content: "";
+  background: inherit;
+}
+.buttonpro:focus {
+  scale: 1.09;
+}
+.buttonpro:hover,
+.buttonpro:focus {
+  background: var(--btn-default-bg);
+  box-shadow: 0px 0px 10px 0px rgba(119, 68, 255, 0.7);
+  border: 2px solid rgb(9, 255, 0);
+}
+
+.buttonpro:hover span,
+.buttonpro:focus span {
+  color: rgb(9, 255, 0);
+}
+
+.buttonpro:hover span::before,
+.buttonpro:focus span::before {
+  animation: chitchat linear both var(--btn-animation-duration);
+}
+
+@keyframes chitchat {
+  0% {
+    content: "#";
+  }
+
+  5% {
+    content: ".";
+  }
+
+  10% {
+    content: "^{";
+  }
+
+  15% {
+    content: "-!";
+  }
+
+  20% {
+    content: "#$_";
+  }
+
+  25% {
+    content: "№:0";
+  }
+
+  30% {
+    content: "#{+.";}35%{content: "@}-?";
+  }
+
+  40% {
+    content: "?{4@%";
+  }
+
+  45% {
+    content: "=.,^!";
+  }
+
+  50% {
+    content: "?2@%";
+  }
+
+  55% {
+    content: "\;1}]";
+  }
+
+  60% {
+    content: "?{%:%";
+    right: 0;
+  }
+
+  65% {
+    content: "|{f[4";
+    right: 0;
+  }
+
+  70% {
+    content: "{4%0%";
+    right: 0;
+  }
+
+  75% {
+    content: "'1_0<";
+    right: 0;
+  }
+
+  80% {
+    content: "{0%";
+    right: 0;
+  }
+
+  85% {
+    content: "]>'";
+    right: 0;
+  }
+
+  90% {
+    content: "4";
+    right: 0;
+  }
+
+  95% {
+    content: "2";
+    right: 0;
+  }
+
+  100% {
+    content: "";
+    right: 0;
+  }
+}
+
+
+
+
+
+
+    </style>
+</head>
+<body class="font-sans text-gray-100 antialiased dark">
+
+    <canvas id="particle-trail-canvas"></canvas>
+
+    
+
+
+
+
+
+
+
+
+    <div id="page">
+        <header class="fixed top-0 left-0 w-full z-50 bg-background/95 backdrop-blur-sm border-b border-primary-accent/20" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 50;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex-shrink-0">
+                <span class="text-2xl font-extrabold text-primary-accent text-shadow-neon">Wave Community</span>
+            </div>
+            <nav class="hidden md:flex space-x-6 h-full items-center">
+                <a href="#" id="nav-home" onclick="showView('home')" class="py-2 border-b-2 font-medium transition duration-150 text-primary-accent border-primary-accent hover:text-primary-accent/75">Home</a>
+                <a href="#" id="nav-courses" onclick="showView('courses')" class="py-2 border-b-2 font-medium transition duration-150 text-gray-400 border-transparent hover:text-primary-accent hover:border-primary-accent/50">Courses</a>
+                <a href="#" id="nav-resources" onclick="showView('resources')" class="py-2 border-b-2 font-medium transition duration-150 text-gray-400 border-transparent hover:text-primary-accent hover:border-primary-accent/50">Resources</a>
+                <a href="#" id="nav-external" onclick="showView('external')" class="py-2 border-b-2 font-medium transition duration-150 text-gray-400 border-transparent hover:text-primary-accent hover:border-primary-accent/50">Learner Links</a>
+                <a href="#" id="nav-tools" onclick="showView('tools')" class="py-2 border-b-2 font-medium transition duration-150 text-gray-400 border-transparent hover:text-primary-accent hover:border-primary-accent/50">Tools</a>
+                <button onclick="openEnrollmentModal()" class="ml-6 px-4 py-2 text-sm font-semibold rounded-lg bg-primary-accent text-primary-dark hover:bg-primary-accent/80 transition duration-150 shadow-lg">Enroll Now</button>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-gray-300 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-background/95 border-b border-primary-accent/20">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="#" onclick="showView('home')" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-800">Home</a>
+            <a href="#" onclick="showView('courses')" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-800">Courses</a>
+            <a href="#" onclick="showView('resources')" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-800">Resources</a>
+            <a href="#" onclick="showView('external')" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-800">Learner Links</a>
+            <a href="#" onclick="showView('learn')" class="block px-3 py-2 rounded-lg text-base font-medium text-gray-300 hover:bg-gray-800">Learn</a>
+            <button onclick="openEnrollmentModal()" class="block w-full text-center px-4 py-2 mt-2 text-sm font-medium rounded-lg shadow-sm text-primary-dark bg-primary-accent hover:bg-primary-accent/80">Enroll Now</button>
+        </div>
+    </div>
+</header>
+
+        <main class="max-w-7xl mx-auto">
+            <section id="home-view" class="section-padding px-4">
+                <div class="text-center mb-10">
+                    <p class="text-sm uppercase tracking-widest text-primary-accent/70 mb-3"> Wellcome to My Website Learners ✨</p>
+                    <h3 class="text-6xl font-extrabold text-white mb-6 text-shadow-neon">
+                        Push yourself, because no one else will do it for you. </h3><br>
+                    "Level up your skills, crack your limits, & rule the market."
+                    "we create warriors in programming, cyber security, and trading."
+                    <br> so grow with us 
+                </div>
+                <div class="scrolling-gallery-container mt-8 relative">
+                    <div class="scrolling-track p-2" id="scrolling-track">
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/bitcoin.jpg" alt="AI Generated Bitcoin Art" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/trading.jpg" alt="Algorithmic Trading Graph" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/coding.jpg" alt="Software Engineer" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/redcyber.jpg" alt="Cybersecurity Analyst" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/business.jpg" alt="Financial Data Analysis" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/bitcoin.jpg" alt="AI Generated Bitcoin Art" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/trading.jpg" alt="Algorithmic Trading Graph" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/coding.jpg" alt="Software Engineer" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/redcyber.jpg" alt="Cybersecurity Analyst" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/business.jpg" alt="Financial Data Analysis" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/bitcoin.jpg" alt="AI Generated Bitcoin Art" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/trading.jpg" alt="Algorithmic Trading Graph" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/coding.jpg" alt="Software Engineer" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/redcyber.jpg" alt="Cybersecurity Analyst" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/business.jpg" alt="Financial Data Analysis" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/bitcoin.jpg" alt="AI Generated Bitcoin Art" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/trading.jpg" alt="Algorithmic Trading Graph" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/coding.jpg" alt="Software Engineer" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/redcyber.jpg" alt="Cybersecurity Analyst" loading="lazy" class="h-full w-full object-cover"/></div>
+                        <div class="gallery-item flex-shrink-0"><img src="img&gif/business.jpg" alt="Financial Data Analysis" loading="lazy" class="h-full w-full object-cover"/></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Courses Section -->
+            <section id="courses-view" class="section-padding px-4 hidden">
+                <div class="text-center mb-16" id="course-header">
+                    <h2 class="text-5xl font-extrabold text-primary-accent text-shadow-neon">Our Specialized Tracks</h2>
+                    <p class="mt-4 text-xl text-gray-400">Deep-dive into the skills the modern industry demands.</p>
+                </div>
+                <div id="course-grid-container">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10" id="courses-container">
+                        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border border-primary-accent/30 hover:shadow-primary-accent/30 transition duration-300 transform hover:-translate-y-1">
+                            <svg class="w-12 h-12 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            <h3 class="text-3xl font-bold text-gray-50 mt-4 mb-3">All Programming</h3>
+                            <p class="text-gray-400 mb-6">Master modern web development, Python, Bash Scripting, SQL and more</p>
+                            <div class="space-y-2">
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Python</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Bash Script</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">SQL</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">html</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">C</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">javascript</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">php</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">C++</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">java</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">C#</span>
+
+                            </div>
+                            <button onclick="viewSyllabus(0)" class="mt-6 inline-block text-primary-accent font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer">View Syllabus &rarr;</button>
+                        </div>
+                        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border border-primary-accent/30 hover:shadow-primary-accent/30 transition duration-300 transform hover:-translate-y-1">
+                            <svg class="w-12 h-12 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v3h8z"></path></svg>
+                            <h3 class="text-3xl font-bold text-gray-50 mt-4 mb-3">Cyber Security</h3>
+                            <p class="text-gray-400 mb-6">Learn ethical hacking, network defense, threat analysis, and penetration testing to secure systems and data.</p>
+                            <div class="space-y-2">
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Network Security</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Ethical Hacking Red Team</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Ethical Hacking Blue Team</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Cryptography</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Red vs Blue Team list</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Target Coverage</span>
+                            </div>
+                            <button onclick="viewSyllabus(1)" class="mt-6 inline-block text-primary-accent font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer">View Syllabus &rarr;</button>
+                        </div>
+                        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl border border-primary-accent/30 hover:shadow-primary-accent/30 transition duration-300 transform hover:-translate-y-1">
+                            <svg class="w-12 h-12 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            <h3 class="text-3xl font-bold text-gray-50 mt-4 mb-3">Stock Market & Finance (not complete)</h3>
+                            <p class="text-gray-400 mb-6">Learn Stock Market Analysis, financial modeling, Trading Strategies and more then Rule the market.</p>
+                            <div class="space-y-2">
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Crypto Market</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Forex Market</span>
+                                <span class="inline-block bg-primary-dark text-primary-accent text-xs font-medium px-3 py-1 rounded-full border border-primary-accent/50">Indian Market</span>
+                            </div>
+                            <button onclick="viewSyllabus(2)" class="mt-6 inline-block text-primary-accent font-semibold hover:underline bg-transparent border-none p-0 cursor-pointer">View Syllabus &rarr;</button>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="course-detail-0" class="hidden max-w-6xl mx-auto">
+                    <div class="text-left mb-10">
+                        <button onclick="backToCourses()" class="inline-flex items-center text-gray-400 hover:text-primary-accent transition duration-150 mb-6 cursor-pointer">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            Back to All Courses
+                        </button>
+                        <h2 class="text-6xl font-extrabold text-white mb-2 text-shadow-neon">Programming Syllabus</h2>
+                        <p class="text-xl text-gray-400 max-w-4xl">Master modern web development , Python, Bash Scripting, SQL and more.......</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Python</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Bash Scripting</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">SQL </span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Html</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">javascript</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">C</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">PHP</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">C++</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">java</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">C#</span>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mt-10 mb-6 border-b border-primary-accent/20 pb-2">Detailed Units</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 1: Python </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/python.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 2: Bash Scripting</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/bash.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 3: SQL </h4> 
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/SQL.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 4: Html </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/html_prac.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 5: javascript </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/javascript.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 6: C </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/c.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 7: php </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/php.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 8: C++ </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/cpp.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 9: java </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/java.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Unit 10: C# </h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/1.programming/C Sharp.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div id="course-detail-1" class="hidden max-w-6xl mx-auto">
+                    <div class="text-left mb-10">
+                        <button onclick="backToCourses()" class="inline-flex items-center text-gray-400 hover:text-primary-accent transition duration-150 mb-6 cursor-pointer">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            Back to All Courses
+                        </button>
+                        <h2 class="text-6xl font-extrabold text-white mb-2 text-shadow-neon">Cyber Security Syllabus</h2>
+                        <p class="text-xl text-gray-400 max-w-4xl">Learn ethical hacking, network defense, threat analysis, and penetration testing to secure systems and data.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Network Security</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Ethical Hacking Red Team</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Ethical Hacking Blue Team</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Cryptography</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Red vs Blue team list</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Target Coverage</span>
+
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mt-10 mb-6 border-b border-primary-accent/20 pb-2">Detailed Units</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Module 1: Network Security</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/2.cyber/networking.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Module 2: Ethical Hacking Red Team</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/2.cyber/cyber red.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Module 3: Ethical Hacking Blue Team</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/2.cyber/cyber blue.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Module 4: Cryptography</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/2.cyber/crypto.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Module 5: Red vs Blue team list</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/2.cyber/red vs blue.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Module 6: Target Coverage</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="3.courses/2.cyber/target coverage.html">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+
+                <div id="course-detail-2" class="hidden max-w-6xl mx-auto">
+                    <div class="text-left mb-10">
+                        <button onclick="backToCourses()" class="inline-flex items-center text-gray-400 hover:text-primary-accent transition duration-150 mb-6 cursor-pointer">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            Back to All Courses
+                        </button>
+                        <h2 class="text-6xl font-extrabold text-white mb-2 text-shadow-neon">Stock Market & Finance Syllabus</h2>
+                        <p class="text-xl text-gray-400 max-w-4xl">Learn Stock Market Analysis, financial modeling, Trading Strategies and more then Rule the market.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Crypto Market</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Forex Market</span>
+                            <span class="inline-block bg-primary-accent/20 text-primary-accent text-sm font-medium px-3 py-1 rounded-full">Indian Market</span>
+
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mt-10 mb-6 border-b border-primary-accent/20 pb-2">Detailed Units</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Section 1: Crypto Market</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="#">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Section 2: Forex Market</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="#">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-xl border-l-4 border-primary-accent transition duration-150 hover:bg-gray-700/50">
+                            <h4 class="text-xl font-bold text-primary-accent mb-1">Section 3: Indian Market</h4>
+                            <p class="text-gray-300">We improve our teaching methods and materials so students can learn more effectively.</p>
+                            <a href="#">
+                               <button class="buttonpro">
+                                  <span> click me </span>
+                                </button>
+                            </a>
+                        </div>
+                        
+
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Resources Section -->
+            <section id="resources-view" class="section-padding px-4 hidden">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-extrabold text-primary-accent text-shadow-neon">Course Documents & Downloads</h2>
+                    <p class="mt-4 text-xl text-gray-400">Access essential PDFs, cheat sheets, and course materials for your learning journey.</p>
+                </div>
+                <div id="documents-container" class="grid grid-cols-1 gap-6 max-w-4xl mx-auto">
+                    <div class="flex flex-col bg-gray-800 p-6 rounded-xl shadow-lg border border-primary-accent/20">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
+                            <div class="flex-grow mb-4 md:mb-0">
+                                <h4 class="text-xl font-semibold text-white mb-1">Programming: Python Foundations</h4>
+                                <p class="text-gray-400 text-sm mb-2">The complete guide to setting up your environment and mastering Python syntax.</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span class="inline-flex items-center"><svg class="w-4 h-4 mr-1 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> PDF</span>
+                                    <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-primary-accent bg-primary-accent/10">Programming</span>
+                                    <span class="text-xs text-gray-500">2.1 MB</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="pdf/70 Cybersecurity Tools.pdf" target="_blank" download class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-primary-accent text-primary-dark hover:bg-primary-accent/80 transition duration-150 whitespace-nowrap"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> Download PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col bg-gray-800 p-6 rounded-xl shadow-lg border border-primary-accent/20">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
+                            <div class="flex-grow mb-4 md:mb-0">
+                                <h4 class="text-xl font-semibold text-white mb-1">CyberSec: Network Defense Checklist</h4>
+                                <p class="text-gray-400 text-sm mb-2">A comprehensive checklist for hardening network infrastructure against common threats.</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span class="inline-flex items-center"><svg class="w-4 h-4 mr-1 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> PDF</span>
+                                    <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-primary-accent bg-primary-accent/10">Cyber Security</span>
+                                    <span class="text-xs text-gray-500">1.5 MB</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="https://example.com/network_defense.pdf" target="_blank" download class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-primary-accent text-primary-dark hover:bg-primary-accent/80 transition duration-150 whitespace-nowrap"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> Download PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col bg-gray-800 p-6 rounded-xl shadow-lg border border-primary-accent/20">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
+                            <div class="flex-grow mb-4 md:mb-0">
+                                <h4 class="text-xl font-semibold text-white mb-1">Trading: Intro to Market Algorithms</h4>
+                                <p class="text-gray-400 text-sm mb-2">An overview of quantitative trading models and common algorithm types.</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span class="inline-flex items-center"><svg class="w-4 h-4 mr-1 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> PDF</span>
+                                    <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-primary-accent bg-primary-accent/10">Trading</span>
+                                    <span class="text-xs text-gray-500">3.4 MB</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="https://example.com/trading_algorithms.pdf" target="_blank" download class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-primary-accent text-primary-dark hover:bg-primary-accent/80 transition duration-150 whitespace-nowrap"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> Download PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col bg-gray-800 p-6 rounded-xl shadow-lg border border-primary-accent/20">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
+                            <div class="flex-grow mb-4 md:mb-0">
+                                <h4 class="text-xl font-semibold text-white mb-1">General: Enrollment Handbook 2025</h4>
+                                <p class="text-gray-400 text-sm mb-2">Rules, policies, and frequently asked questions for all students.</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span class="inline-flex items-center"><svg class="w-4 h-4 mr-1 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> PDF</span>
+                                    <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-primary-accent bg-primary-accent/10">General</span>
+                                    <span class="text-xs text-gray-500">0.8 MB</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="https://example.com/handbook.pdf" target="_blank" download class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-primary-accent text-primary-dark hover:bg-primary-accent/80 transition duration-150 whitespace-nowrap"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> Download PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Duplicate Entry (same as original) -->
+                    <div class="flex flex-col bg-gray-800 p-6 rounded-xl shadow-lg border border-primary-accent/20">
+                        <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-4">
+                            <div class="flex-grow mb-4 md:mb-0">
+                                <h4 class="text-xl font-semibold text-white mb-1">General: Enrollment Handbook 2025</h4>
+                                <p class="text-gray-400 text-sm mb-2">Rules, policies, and frequently asked questions for all students.</p>
+                                <div class="flex items-center space-x-4 text-xs text-gray-500">
+                                    <span class="inline-flex items-center"><svg class="w-4 h-4 mr-1 text-primary-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> PDF</span>
+                                    <span class="inline-block px-2 py-0.5 rounded-full text-xs font-medium text-primary-accent bg-primary-accent/10">General</span>
+                                    <span class="text-xs text-gray-500">0.8 MB</span>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <a href="https://example.com/handbook.pdf" target="_blank" download class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-lg bg-primary-accent text-primary-dark hover:bg-primary-accent/80 transition duration-150 whitespace-nowrap"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg> Download PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center mt-12 text-gray-500 text-sm">*Note: The links currently use placeholder URLs. Replace the download link with the actual PDF files.</p>
+            </section>
+
+            <!-- Learner Links Section -->
+            <section id="external-view" class="section-padding px-4 hidden">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-extrabold text-primary-accent text-shadow-neon">Learner Links & Tools</h2>
+                    <p class="mt-4 text-xl text-gray-400">Curated external resources to supplement your course material and stay up-to-date.</p>
+                </div>
+                <div id="external-links-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <div class="bg-gray-800 rounded-xl shadow-2xl overflow-hidden transform transition duration-300 hover:scale-[1.02] border border-gray-700 hover:border-primary-accent/50">
+                        <img src="https://placehold.co/400x200/22d3ee/1f2937?text=Python+Blog" alt="The Python Byte image" class="w-full h-40 object-cover border-b border-primary-accent/20">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-white mb-2">The Python Byte</h4>
+                            <p class="text-gray-400 mb-4 text-sm">Daily Python tips, library reviews, and best practices for production code.</p>
+                            <a href="https://www.python.org/doc/" target="_blank" class="inline-flex items-center text-primary-accent font-semibold hover:text-primary-accent/80 transition duration-150">Visit Website <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl shadow-2xl overflow-hidden transform transition duration-300 hover:scale-[1.02] border border-gray-700 hover:border-primary-accent/50">
+                        <img src="https://placehold.co/400x200/22d3ee/1f2937?text=Security+News" alt="Hacker News Digest image" class="w-full h-40 object-cover border-b border-primary-accent/20">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-white mb-2">Hacker News Digest</h4>
+                            <p class="text-gray-400 mb-4 text-sm">Stay current with the latest vulnerabilities, exploits, and threat intelligence.</p>
+                            <a href="https://www.cisa.gov/" target="_blank" class="inline-flex items-center text-primary-accent font-semibold hover:text-primary-accent/80 transition duration-150">Visit Website <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl shadow-2xl overflow-hidden transform transition duration-300 hover:scale-[1.02] border border-gray-700 hover:border-primary-accent/50">
+                        <img src="https://placehold.co/400x200/22d3ee/1f2937?text=Trading+Data" alt="Quant Finance Tutorials image" class="w-full h-40 object-cover border-b border-primary-accent/20">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-white mb-2">Quant Finance Tutorials</h4>
+                            <p class="text-gray-400 mb-4 text-sm">In-depth video tutorials on creating, backtesting, and optimizing trading bots.</p>
+                            <a href="https://www.investopedia.com/trading-strategies-4689727" target="_blank" class="inline-flex items-center text-primary-accent font-semibold hover:text-primary-accent/80 transition duration-150">Visit Website <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl shadow-2xl overflow-hidden transform transition duration-300 hover:scale-[1.02] border border-gray-700 hover:border-primary-accent/50">
+                        <img src="https://placehold.co/400x200/22d3ee/1f2937?text=Trading+Data" alt="Quant Finance Tutorials image" class="w-full h-40 object-cover border-b border-primary-accent/20">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-white mb-2">Quant Finance Tutorials</h4>
+                            <p class="text-gray-400 mb-4 text-sm">In-depth video tutorials on creating, backtesting, and optimizing trading bots.</p>
+                            <a href="https://www.investopedia.com/trading-strategies-4689727" target="_blank" class="inline-flex items-center text-primary-accent font-semibold hover:text-primary-accent/80 transition duration-150">Visit Website <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>
+                        </div>
+                    </div>
+                    <div class="bg-gray-800 rounded-xl shadow-2xl overflow-hidden transform transition duration-300 hover:scale-[1.02] border border-gray-700 hover:border-primary-accent/50">
+                        <img src="https://placehold.co/400x200/22d3ee/1f2937?text=Trading+Data" alt="Quant Finance Tutorials image" class="w-full h-40 object-cover border-b border-primary-accent/20">
+                        <div class="p-6">
+                            <h4 class="text-2xl font-bold text-white mb-2">Quant Finance Tutorials</h4>
+                            <p class="text-gray-400 mb-4 text-sm">In-depth video tutorials on creating, backtesting, and optimizing trading bots.</p>
+                            <a href="https://www.investopedia.com/trading-strategies-4689727" target="_blank" class="inline-flex items-center text-primary-accent font-semibold hover:text-primary-accent/80 transition duration-150">Visit Website <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools Section -->
+            <section id="tools-view" class="section-padding px-4 hidden">
+
+                <div class="mb-10">
+
+                   <center> <h2 class="text-5xl font-extrabold text-primary-accent text-shadow-neon">Learner Tools</h2>
+                    <p class="mt-4 text-xl text-gray-400">Learners can access various tools and resources on the platform.</p>
+                    </center>
+                </div>
+               
+                <div class="personal">
+
+
+
+
+<!--tools------------------------------------------------------------------------------------------------------------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🛠️ Cyber Arsenal | Tools & Links Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0c1a, #02040c);
+            font-family: 'Inter', sans-serif;
+            color: #f0f3fa;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+        }
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        .main-wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        /* header */
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.8rem;
+            border: 1px solid #4c9aff;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #a5f3fc, #818cf8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero p {
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        .search-bar {
+            margin: 1.5rem auto 0;
+            max-width: 500px;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar input {
+            flex: 1;
+            background: #0a0e1a;
+            border: 1px solid #3b82f6;
+            border-radius: 2rem;
+            padding: 0.7rem 1.2rem;
+            color: white;
+            font-family: inherit;
+            outline: none;
+            transition: 0.2s;
+        }
+        .search-bar input:focus {
+            border-color: #a78bfa;
+            box-shadow: 0 0 8px #a78bfa;
+        }
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin: 1.5rem 0 1rem;
+        }
+        .cat-btn {
+            background: #1e1b4e90;
+            border: 1px solid #4c9aff;
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .cat-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: white;
+        }
+        .cat-btn:hover {
+            background: #5a67d8;
+        }
+        /* tools grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+        .tool-card {
+            background: rgba(12, 15, 30, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 1rem 1.2rem;
+            border-left: 4px solid;
+            transition: all 0.2s;
+        }
+        .tool-card:hover {
+            transform: translateY(-3px);
+            background: #181e3a;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+        .tool-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+        .tool-cat {
+            font-size: 0.65rem;
+            background: #2d2a55;
+            border-radius: 2rem;
+            padding: 0.2rem 0.6rem;
+        }
+        .tool-desc {
+            font-size: 0.8rem;
+            color: #cbd5e0;
+            margin: 0.5rem 0;
+        }
+        .tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.75rem;
+            color: #93c5fd;
+            text-decoration: none;
+            margin-top: 0.3rem;
+            font-family: monospace;
+        }
+        .tool-link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        .badge {
+            background: #32a1ce30;
+            border-radius: 2rem;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.7rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.7rem;
+            opacity: 0.6;
+        }
+        hr {
+            border-color: #3b82f640;
+            margin: 1rem 0;
+        }
+        @media (max-width: 760px) {
+            body { padding: 1rem; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+
+
+<canvas id="particle-canvas"></canvas>
+<div class="main-wrapper">
+    <div class="hero">
+        <h1>🛠️ Cyber Arsenal · Tools & Links Store</h1>
+        <p>curated collection of offensive, defensive, OSINT, cloud, and network tools · ethical hacking & defense</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="🔍 Search tools by name, description, category...">
+        </div>
+        <div class="category-filters" id="categoryFilters">
+            <button class="cat-btn active" data-cat="all">All</button>
+            <button class="cat-btn" data-cat="Red Team">🔴 Red Team</button>
+            <button class="cat-btn" data-cat="Blue Team">🔵 Blue Team</button>
+            <button class="cat-btn" data-cat="OSINT">🌐 OSINT & Recon</button>
+            <button class="cat-btn" data-cat="Cloud">☁️ Cloud Security</button>
+            <button class="cat-btn" data-cat="Network">🔌 Network & Utilities</button>
+            <button class="cat-btn" data-cat="Resources">📚 Learning & References</button>
+        </div>
+    </div>
+    <div id="toolsContainer" class="tools-grid"></div>
+   
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // TOOLS & LINKS DATABASE (categories, descriptions, URLs)
+    // --------------------------------------------------------------
+    const toolsDB = [
+        // Red Team Offensive
+        { name: "Metasploit Framework", category: "Red Team", desc: "Penetration testing framework with exploit development and payloads.", url: "https://www.metasploit.com/" },
+        { name: "Cobalt Strike", category: "Red Team", desc: "Commercial C2 (command & control) for adversary simulation.", url: "https://www.cobaltstrike.com/" },
+        { name: "BloodHound", category: "Red Team", desc: "Active Directory attack path mapping and privilege escalation.", url: "https://github.com/BloodHoundAD/BloodHound" },
+        { name: "Mimikatz", category: "Red Team", desc: "Credential extraction from Windows memory (pass-the-hash, tickets).", url: "https://github.com/gentilkiwi/mimikatz" },
+        { name: "Burp Suite", category: "Red Team", desc: "Web vulnerability scanner and proxy (community/professional).", url: "https://portswigger.net/burp" },
+        { name: "SQLmap", category: "Red Team", desc: "Automated SQL injection and database takeover tool.", url: "https://sqlmap.org/" },
+        { name: "Nmap", category: "Red Team", desc: "Network discovery and security scanning (port scanning, OS detection).", url: "https://nmap.org/" },
+        { name: "Evil-WinRM", category: "Red Team", desc: "Ultimate WinRM shell for remote Windows administration (post-exploit).", url: "https://github.com/Hackplayers/evil-winrm" },
+        { name: "Responder", category: "Red Team", desc: "LLMNR/NBT-NS/mDNS poisoner, captures NetNTLM hashes.", url: "https://github.com/lgandx/Responder" },
+        // Blue Team Defensive
+        { name: "Wireshark", category: "Blue Team", desc: "Packet analyzer, network troubleshooting and forensics.", url: "https://www.wireshark.org/" },
+        { name: "Elastic Security (SIEM)", category: "Blue Team", desc: "Open-source SIEM with endpoint security (EDR) and threat hunting.", url: "https://www.elastic.co/security" },
+        { name: "Velociraptor", category: "Blue Team", desc: "Endpoint visibility, hunting and DFIR tool.", url: "https://www.velocidex.com/velociraptor/" },
+        { name: "Sysmon (Sysinternals)", category: "Blue Team", desc: "Windows system monitoring, logs process creation and network connections.", url: "https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon" },
+        { name: "TheHive", category: "Blue Team", desc: "Scalable incident response platform and case management.", url: "https://thehive-project.org/" },
+        { name: "OpenVAS (Greenbone)", category: "Blue Team", desc: "Vulnerability scanner and management (open-source).", url: "https://www.greenbone.net/en/" },
+        { name: "Zeek (Bro)", category: "Blue Team", desc: "Network security monitor, generates rich metadata logs.", url: "https://zeek.org/" },
+        { name: "Snort", category: "Blue Team", desc: "Intrusion detection and prevention system (IDS/IPS).", url: "https://www.snort.org/" },
+        { name: "YARA", category: "Blue Team", desc: "Pattern matching tool for malware identification and classification.", url: "https://github.com/VirusTotal/yara" },
+        { name: "MISP (Malware Info Sharing)", category: "Blue Team", desc: "Threat intelligence platform for sharing IOCs.", url: "https://www.misp-project.org/" },
+        // OSINT & Recon
+        { name: "theHarvester", category: "OSINT", desc: "Email, subdomain, and employee name harvesting.", url: "https://github.com/laramies/theHarvester" },
+        { name: "Shodan", category: "OSINT", desc: "Search engine for internet-connected devices (banners, IoT).", url: "https://www.shodan.io/" },
+        { name: "Maltego", category: "OSINT", desc: "Graphical link analysis for open-source intelligence.", url: "https://www.maltego.com/" },
+        { name: "Recon-ng", category: "OSINT", desc: "Full-featured web reconnaissance framework.", url: "https://github.com/lanmaster53/recon-ng" },
+        { name: "OSINT Framework", category: "OSINT", desc: "Directory of various OSINT tools and resources.", url: "https://osintframework.com/" },
+        { name: "SpiderFoot", category: "OSINT", desc: "Automated OSINT reconnaissance with 200+ modules.", url: "https://www.spiderfoot.net/" },
+        { name: "Censys", category: "OSINT", desc: "Internet-wide scanning platform, asset discovery.", url: "https://search.censys.io/" },
+        // Cloud Security
+        { name: "Pacu (AWS)", category: "Cloud", desc: "AWS exploitation framework for cloud penetration testing.", url: "https://github.com/RhinoSecurityLabs/pacu" },
+        { name: "Scout Suite", category: "Cloud", desc: "Multi-cloud security auditing (AWS, Azure, GCP).", url: "https://github.com/nccgroup/ScoutSuite" },
+        { name: "CloudMapper", category: "Cloud", desc: "Visualization and analysis for AWS environments.", url: "https://github.com/duo-labs/cloudmapper" },
+        { name: "Stormspotter", category: "Cloud", desc: "Azure Red Team tool to visualize attack paths in Azure AD.", url: "https://github.com/Azure/Stormspotter" },
+        { name: "Kube Hunter", category: "Cloud", desc: "Pentest Kubernetes clusters for misconfigurations.", url: "https://github.com/aquasecurity/kube-hunter" },
+        // Network & Utilities
+        { name: "Gophish", category: "Network", desc: "Open-source phishing simulation platform.", url: "https://getgophish.com/" },
+        { name: "BetterCap", category: "Network", desc: "MITM (Man-in-the-middle) framework and network analysis.", url: "https://www.bettercap.org/" },
+        { name: "Hping3", category: "Network", desc: "Custom packet crafting and advanced traceroute.", url: "https://github.com/antirez/hping" },
+        { name: "Netcat (nc)", category: "Network", desc: "TCP/IP swiss army knife — port scanning, file transfer, shells.", url: "https://nmap.org/ncat/" },
+        // Learning & References
+        { name: "MITRE ATT&CK", category: "Resources", desc: "Global knowledge base of adversary tactics and techniques.", url: "https://attack.mitre.org/" },
+        { name: "OWASP Top 10", category: "Resources", desc: "Web application security risks and cheat sheets.", url: "https://owasp.org/www-project-top-ten/" },
+        { name: "Hack The Box", category: "Resources", desc: "Online platform to test and improve penetration testing skills.", url: "https://www.hackthebox.com/" },
+        { name: "TryHackMe", category: "Resources", desc: "Hands-on cybersecurity training rooms for all levels.", url: "https://tryhackme.com/" },
+        { name: "CrackStation", category: "Resources", desc: "Hash lookup database (password cracking help).", url: "https://crackstation.net/" },
+        { name: "GTFOBins", category: "Resources", desc: "Unix binaries that can be used to bypass security restrictions.", url: "https://gtfobins.github.io/" },
+        { name: "LOLBAS", category: "Resources", desc: "Living Off the Land Windows binaries.", url: "https://lolbas-project.github.io/" },
+        { name: "CyberChef", category: "Resources", desc: "Swiss army knife for encoding, decoding, encryption.", url: "https://gchq.github.io/CyberChef/" }
+    ];
+
+    // additional tools for abundance (some extra)
+    toolsDB.push(
+        { name: "Empire (C2)", category: "Red Team", desc: "Post-exploitation framework with PowerShell/Python agents.", url: "https://github.com/BC-SECURITY/Empire" },
+        { name: "BloodHound CE", category: "Red Team", desc: "Active Directory attack graph (community edition).", url: "https://github.com/BloodHoundAD/BloodHound" },
+        { name: "Kali Linux", category: "Resources", desc: "Penetration testing distribution with preinstalled tools.", url: "https://www.kali.org/" },
+        { name: "VirusTotal", category: "Blue Team", desc: "File/URL sandbox and antivirus scanner aggregation.", url: "https://www.virustotal.com/" }
+    );
+
+    // render function with search + category filter
+    let activeCategory = "all";
+    let searchQuery = "";
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderTools() {
+        const container = document.getElementById("toolsContainer");
+        if (!container) return;
+        let filtered = toolsDB.filter(tool => {
+            const matchesCat = activeCategory === "all" || tool.category === activeCategory;
+            const matchesSearch = searchQuery === "" || tool.name.toLowerCase().includes(searchQuery) || tool.desc.toLowerCase().includes(searchQuery) || tool.category.toLowerCase().includes(searchQuery);
+            return matchesCat && matchesSearch;
+        });
+        if (filtered.length === 0) {
+            container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2rem;">🔎 No tools match your criteria. Try a different keyword.</div>`;
+            return;
+        }
+        container.innerHTML = filtered.map(tool => {
+            let borderColor = "#4c9aff";
+            if (tool.category === "Red Team") borderColor = "#ff5e7e";
+            else if (tool.category === "Blue Team") borderColor = "#3b82f6";
+            else if (tool.category === "OSINT") borderColor = "#a78bfa";
+            else if (tool.category === "Cloud") borderColor = "#10b981";
+            else if (tool.category === "Network") borderColor = "#f97316";
+            else borderColor = "#818cf8";
+            return `
+                <div class="tool-card" style="border-left-color: ${borderColor};">
+                    <div class="tool-title">
+                        <span>${escapeHtml(tool.name)}</span>
+                        <span class="tool-cat">${escapeHtml(tool.category)}</span>
+                    </div>
+                    <div class="tool-desc">${escapeHtml(tool.desc)}</div>
+                    <a href="${escapeHtml(tool.url)}" target="_blank" rel="noopener noreferrer" class="tool-link">🔗 Visit official tool →</a>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // event listeners
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            searchQuery = e.target.value.toLowerCase();
+            renderTools();
+        });
+    }
+
+    // category filter buttons
+    const catButtons = document.querySelectorAll(".cat-btn");
+    catButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            catButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeCategory = btn.getAttribute("data-cat");
+            renderTools();
+        });
+    });
+
+    // initial render
+    renderTools();
+
+    // --------------------------------------------------------------
+    // Background particle effect (tech dust)
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("particle-canvas");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    class CyberParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2.2 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.15 + 0.05;
+            this.alpha = Math.random() * 0.4 + 0.1;
+            this.color = `rgba(59, 130, 246, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < -20) this.x = canvas.width + 20;
+            if (this.x > canvas.width + 20) this.x = -20;
+            if (this.y < -20) this.y = canvas.height + 20;
+            if (this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = "#5a9eff";
+            ctx.fill();
+        }
+    }
+
+    function initParticles(count = 130) {
+        particles = [];
+        for (let i = 0; i < count; i++) particles.push(new CyberParticle());
+    }
+
+    function animateParticles() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles(140);
+    });
+    resizeCanvas();
+    initParticles(140);
+    animateParticles();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- add here your personal content -->
+
+
+
+
+
+
+                </div>
+
+
+            </section>
+        </main>
+
+        <footer class="mt-16 py-8 border-t border-primary-accent/20">
+            <div class="max-w-7xl mx-auto px-4 text-center text-gray-500">
+                <p>Wave Communitys. All rights reserved. |</p>
+
+                <p class="mt-2 text-sm">Need help? <a href="#" class="text-primary-accent hover:underline">Contact Support</a></p>
+            </div>
+        </footer>
+
+        <!-- Enrollment Modal -->
+        <div id="enrollment-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity" onclick="if(event.target.id === 'enrollment-modal') closeEnrollmentModal()">
+            <div class="bg-primary-dark p-8 md:p-10 rounded-xl shadow-2xl w-full max-w-lg relative border border-primary-accent/50 transform scale-100 transition-transform">
+                <button onclick="closeEnrollmentModal()" class="absolute top-3 right-3 text-gray-400 hover:text-primary-accent transition duration-150">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <h3 class="text-3xl font-bold text-primary-accent mb-4 text-shadow-neon">Enrollment & Course Inquiry</h3>
+                <p class="text-gray-300 mb-4 text-lg">To proceed with enrollment, please contact the instructor directly via email.</p>
+                <div class="bg-gray-700 p-5 rounded-xl border border-primary-accent/30 mb-6">
+                    <p class="text-xl font-semibold text-white mb-2">Instructor Email:</p>
+                    <a href="mailto:halderabhijit34502@gmail.com" class="text-primary-accent text-2xl font-mono hover:underline transition duration-150 break-all">halderabhijit34502@gmail.com</a>
+                </div>
+                <p class="text-gray-400 text-base p-3 bg-gray-800 rounded-lg border-l-4 border-primary-accent">
+                    <span class="font-bold text-primary-accent">Important:</span> 
+                    In your email, please be sure to specify the exact subject or course you are interested in learning.
+                </p>
+                <button onclick="closeEnrollmentModal()" class="w-full mt-6 px-4 py-3 text-lg font-semibold rounded-lg bg-primary-accent text-primary-dark hover:bg-primary-accent/90 transition duration-150 shadow-lg shadow-primary-accent/30">Acknowledge & Close</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    
+
+
+
+
+
+
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+
+
+
+
+</html>

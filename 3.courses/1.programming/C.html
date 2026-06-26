@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>⚙️ C Grimoire | Systems Programming Scroll</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0e1a, #03060c);
+            font-family: 'Inter', sans-serif;
+            color: #e6e6fa;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #c-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .app {
+            display: flex;
+            flex-direction: row;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            gap: 1.2rem;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        /* sidebar */
+        .c-sidebar {
+            width: 340px;
+            background: rgba(10, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            border: 1px solid #b94bff;
+            padding: 1.2rem 0.6rem;
+            overflow-y: auto;
+            max-height: 90vh;
+            position: sticky;
+            top: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .c-sidebar::-webkit-scrollbar { width: 5px; }
+        .c-sidebar::-webkit-scrollbar-track { background: #1e1a2f; border-radius: 10px; }
+        .c-sidebar::-webkit-scrollbar-thumb { background: #b77eff; border-radius: 10px; }
+
+        .c-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+        .c-tree, .c-tree ul {
+            list-style: none;
+            padding-left: 1.2rem;
+        }
+        .c-tree li {
+            margin: 0.3rem 0;
+        }
+        .tree-btn {
+            background: #1e1a3a;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.45rem 0.85rem;
+            border-radius: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #e2d8ff;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            border-left: 3px solid #9b7bff;
+        }
+        .tree-btn:hover {
+            background: #3a2c6e;
+            transform: translateX(5px);
+            box-shadow: 0 0 10px #c084fc;
+            border-left-color: #ffd966;
+        }
+        .active-c {
+            background: linear-gradient(95deg, #6b4fbb, #3b2a6e);
+            box-shadow: 0 0 12px #c4a5ff;
+            border-left-color: #ffdf80;
+        }
+        /* main panel */
+        .code-panel {
+            flex: 1;
+            background: rgba(8, 12, 22, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid #b94bff;
+            padding: 1.8rem 2rem;
+        }
+        .topic-header {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #d9c8ff, #b98eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px dashed #b77eff;
+            padding-bottom: 0.5rem;
+        }
+        .c-desc {
+            background: #0a0a18;
+            padding: 1rem 1.3rem;
+            border-radius: 1.3rem;
+            border-left: 5px solid #b77eff;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .code-block {
+            background: #0c0c1c;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid #b77eff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #d6ffe0;
+        }
+        .run-c {
+            background: #6b4fbb;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            transition: 0.2s;
+        }
+        .run-c:hover {
+            background: #9b7bff;
+            transform: scale(1.02);
+            box-shadow: 0 0 10px #c5adff;
+        }
+        .output-area {
+            background: #03020c;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            border: 1px solid #b77eff;
+            font-size: 0.85rem;
+        }
+        .output-label {
+            font-size: 0.7rem;
+            color: #cfbcff;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            padding: 1rem;
+        }
+        @media (max-width: 780px) {
+            .app { flex-direction: column; }
+            .c-sidebar { width: 100%; max-height: 380px; position: relative; top: 0; }
+            .topic-header { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="c-mist"></canvas>
+<div class="app">
+    <aside class="c-sidebar">
+        <div style="padding-left: 0.7rem; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem;">⚙️ C Grimoire</div>
+        <div id="c-tree-nav"></div>
+    </aside>
+    <main class="code-panel" id="main-panel">
+        <div class="topic-header"><span>🔧</span> <span id="topicTitle">C Programming</span></div>
+        <div id="descriptionBox" class="c-desc">
+            ✨ Select any C incantation from the tree. Each node includes explanation and runnable C code (simulated output).
+        </div>
+        <div id="cCodeArea" style="display: none;">
+            <div class="code-block"><pre id="cCodePreview"></pre></div>
+            <button class="run-c" id="executeC">⚙️ Compile & Run (Simulate)</button>
+            <div class="output-area">
+                <div class="output-label">💻 Program Output</div>
+                <div id="cOutput"># output will appear here...</div>
+            </div>
+        </div>
+        <div id="endNodeMsg" style="display: none;"></div>
+    </main>
+</div>
+<footer>💾 each example is simulated — replicate in your own environment with gcc/clang</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // FULL C LANGUAGE TREE (exact structure from the prompt)
+    // --------------------------------------------------------------
+    const cTree = [
+        { name: "Basics", children: [
+            { name: "What is C?" }, { name: "History of C" }, { name: "Structure of a C program" },
+            { name: "Compiling and running (gcc, clang)" }, { name: "Header files (.h)" }
+        ]},
+        { name: "Data Types", children: [
+            { name: "Basic types (int, float, char, double)" },
+            { name: "Derived types (array, pointer, structure, union)" },
+            { name: "Enumeration (enum)" }, { name: "void type" }
+        ]},
+        { name: "Variables", children: [
+            { name: "Declaration and initialization" },
+            { name: "Constants (const, #define)" },
+            { name: "Storage classes (auto, extern, static, register)" }
+        ]},
+        { name: "Operators", children: [
+            { name: "Arithmetic operators" }, { name: "Relational operators" }, { name: "Logical operators" },
+            { name: "Bitwise operators" }, { name: "Assignment operators" }, { name: "Increment/Decrement" },
+            { name: "Ternary (?:)" }
+        ]},
+        { name: "Control Flow", children: [
+            { name: "if statement" }, { name: "else statement" }, { name: "switch statement" },
+            { name: "for loop" }, { name: "while loop" }, { name: "do-while loop" }
+        ]},
+        { name: "Functions", children: [
+            { name: "Function declaration and definition" }, { name: "Function arguments and return" },
+            { name: "Recursion" }, { name: "Call by value" }, { name: "Call by reference (with pointers)" }
+        ]},
+        { name: "Pointers", children: [
+            { name: "Pointer basics" }, { name: "Pointer arithmetic" }, { name: "Pointers and arrays" },
+            { name: "Pointers and functions" }, { name: "Pointers to pointers" }
+        ]},
+        { name: "Arrays", children: [
+            { name: "One-dimensional arrays" }, { name: "Multi-dimensional arrays" },
+            { name: "Strings (char arrays)" }, { name: "Array and pointer relation" }
+        ]},
+        { name: "Strings", children: [
+            { name: "Character arrays" }, { name: "String handling functions (strlen, strcpy, strcmp, etc.)" },
+            { name: "String literals" }
+        ]},
+        { name: "Structures and Unions", children: [
+            { name: "Declaring structures" }, { name: "Accessing members (dot, arrow operators)" },
+            { name: "Nested structures" }, { name: "Unions" }, { name: "typedef keyword" }
+        ]},
+        { name: "Input/Output", children: [
+            { name: "printf(), scanf()" }, { name: "getchar(), putchar()" }, { name: "gets(), puts()" },
+            { name: "File I/O", children: [
+                { name: "fopen(), fclose()" }, { name: "fprintf(), fscanf()" },
+                { name: "fgetc(), fputc()" }, { name: "feof(), ferror()" }
+            ]}
+        ]},
+        { name: "Memory Management", children: [
+            { name: "malloc()" }, { name: "calloc()" }, { name: "realloc()" }, { name: "free()" }
+        ]},
+        { name: "Preprocessor Directives", children: [
+            { name: "#include" }, { name: "#define" }, { name: "#ifdef, #ifndef" }, { name: "#undef" }
+        ]},
+        { name: "Error Handling", children: [
+            { name: "return codes" }, { name: "errno and perror()" }
+        ]},
+        { name: "Compilation Process", children: [
+            { name: "Preprocessing" }, { name: "Compilation" }, { name: "Assembly" },
+            { name: "Linking" }, { name: "Executable generation" }
+        ]},
+        { name: "Debugging", children: [
+            { name: "gdb" }, { name: "Valgrind" }, { name: "Print debugging (printf)" }
+        ]},
+        { name: "Advanced Topics", children: [
+            { name: "Command line arguments" }, { name: "Bit fields" },
+            { name: "Macros and inline functions" }, { name: "Function pointers" },
+            { name: "Static vs dynamic linking" }, { name: "volatile and restrict keywords" }
+        ]},
+        { name: "END" }
+    ];
+
+    // --------------------------------------------------------------
+    // CONTENT MAP: descriptions, code, simulated output
+    // --------------------------------------------------------------
+    const cContent = new Map();
+
+    function addLeaf(path, nodeName, description, code, output) {
+        cContent.set(path, { desc: description, code: code, output: output, isLeaf: true });
+    }
+    function setCategory(path, description) {
+        cContent.set(path, { desc: description, isLeaf: false });
+    }
+
+    // Generic fallback
+    function genericCNode(nodeName) {
+        return {
+            desc: `📘 ${nodeName} — essential C concept. Compile and run the sample to observe behavior.`,
+            code: `#include <stdio.h>\n\nint main() {\n    printf("Exploring %s\\n", "${nodeName}");\n    return 0;\n}`,
+            output: `Exploring ${nodeName}`
+        };
+    }
+
+    // populate rich content for many nodes manually
+    function buildContent() {
+        // Basics
+        addLeaf("Basics/What is C?", "What is C?", "C is a general-purpose, procedural language developed by Dennis Ritchie. It's the foundation of many modern systems.", 
+                "#include <stdio.h>\nint main() { printf(\"C is powerful!\\n\"); return 0; }", "C is powerful!");
+        addLeaf("Basics/Structure of a C program", "Structure", "Includes headers, main() function, statements.", 
+                "#include <stdio.h>\nint main() { // code\n return 0; }", "Program structure compiled.");
+        addLeaf("Basics/Compiling and running (gcc, clang)", "Compilation", "gcc program.c -o prog && ./prog", 
+                "// gcc hello.c -o hello\n// ./hello\nprintf(\"Compiled!\\n\");", "Compiled!");
+        // Data types
+        addLeaf("Data Types/Basic types (int, float, char, double)", "Basic Types", "int integer, float/double floating, char character.", 
+                "#include <stdio.h>\nint main() { int a=5; float b=2.5; char c='A'; printf(\"%d %f %c\",a,b,c); return 0; }", "5 2.500000 A");
+        // Operators
+        addLeaf("Operators/Bitwise operators", "Bitwise", "&, |, ^, ~, <<, >> operate on bits.", 
+                "#include <stdio.h>\nint main() { int x=6; //110\n int y=3; //011\n printf(\"%d\", x & y); return 0; }", "2");
+        addLeaf("Operators/Ternary (?:)", "Ternary operator", "condition ? expr1 : expr2", 
+                "#include <stdio.h>\nint main() { int age=20; printf(\"%s\", age>=18 ? \"adult\" : \"minor\"); return 0; }", "adult");
+        // Control Flow
+        addLeaf("Control Flow/if statement", "if", "Conditional execution.", 
+                "#include <stdio.h>\nint main() { int x=10; if(x>5) printf(\"greater\"); return 0; }", "greater");
+        addLeaf("Control Flow/for loop", "for loop", "Iteration with initialization, condition, increment.", 
+                "#include <stdio.h>\nint main() { for(int i=0;i<3;i++) printf(\"%d \",i); return 0; }", "0 1 2");
+        // Pointers
+        addLeaf("Pointers/Pointer basics", "Pointer basics", "Variable that stores memory address.", 
+                "#include <stdio.h>\nint main() { int var=42; int *ptr=&var; printf(\"%d\", *ptr); return 0; }", "42");
+        addLeaf("Pointers/Pointer arithmetic", "Pointer arithmetic", "Adding to pointer moves by size of type.", 
+                "#include <stdio.h>\nint main() { int arr[]={10,20}; int *p=arr; printf(\"%d %d\",*p,*(p+1)); return 0; }", "10 20");
+        // Arrays
+        addLeaf("Arrays/One-dimensional arrays", "1D array", "Contiguous block of elements.", 
+                "#include <stdio.h>\nint main() { int nums[3]={1,2,3}; printf(\"%d\",nums[1]); return 0; }", "2");
+        addLeaf("Arrays/Strings (char arrays)", "C Strings", "Null-terminated char arrays.", 
+                "#include <stdio.h>\nint main() { char msg[]=\"C\"; printf(\"%s\",msg); return 0; }", "C");
+        // Functions
+        addLeaf("Functions/Recursion", "Recursion", "Function calls itself.", 
+                "#include <stdio.h>\nint fact(int n) { return n<=1?1:n*fact(n-1); }\nint main() { printf(\"%d\",fact(5)); return 0; }", "120");
+        // Memory Management
+        addLeaf("Memory Management/malloc()", "malloc", "Allocates dynamic memory.", 
+                "#include <stdlib.h>\nint *p = (int*)malloc(sizeof(int)*5);\n// use memory\nfree(p);", "Memory allocated");
+        // Preprocessor
+        addLeaf("Preprocessor Directives/#define", "#define", "Macro definition.", 
+                "#include <stdio.h>\n#define PI 3.14\nint main() { printf(\"%f\",PI); return 0; }", "3.140000");
+        // Compilation process
+        addLeaf("Compilation Process/Linking", "Linking", "Combines object files and libraries into executable.", 
+                "// gcc -c main.c -o main.o\n// gcc main.o -o prog", "Executable created.");
+        // Advanced - command line args
+        addLeaf("Advanced Topics/Command line arguments", "Argc, argv", "Arguments passed to main.", 
+                "#include <stdio.h>\nint main(int argc, char *argv[]) { printf(\"Args: %d\",argc); return 0; }", "Args: 1");
+        // END
+        addLeaf("END", "END", "🏁 You have completed the C Grimoire. Master pointers, memory, and systems programming to become a true C wizard.", 
+                "#include <stdio.h>\nint main() { printf(\"You are a C Archmage!\"); return 0; }", "You are a C Archmage!");
+    }
+
+    function fillMissingLeaves(tree, parentPath = "") {
+        for(let node of tree) {
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            if(node.children && node.children.length) {
+                if(!cContent.has(path)) setCategory(path, `📂 Category: ${node.name} — expand for details.`);
+                fillMissingLeaves(node.children, path);
+            } else {
+                if(!cContent.has(path)) {
+                    const gen = genericCNode(node.name);
+                    addLeaf(path, node.name, gen.desc, gen.code, gen.output);
+                }
+            }
+        }
+    }
+
+    buildContent();
+    fillMissingLeaves(cTree);
+
+    // --------------------------------------------------------------
+    // RENDER TREE SIDEBAR
+    // --------------------------------------------------------------
+    function renderTree(container, nodes, parentPath = "") {
+        const ul = document.createElement("ul");
+        ul.className = "c-tree";
+        for(let node of nodes) {
+            const li = document.createElement("li");
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            const btn = document.createElement("button");
+            btn.className = "tree-btn";
+            const icon = (node.children && node.children.length) ? "📁" : "⚙️";
+            btn.innerHTML = `<span>${icon}</span> <span>${node.name}</span>`;
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".tree-btn").forEach(b => b.classList.remove("active-c"));
+                btn.classList.add("active-c");
+                loadTopic(path, node.name);
+            });
+            li.appendChild(btn);
+            if(node.children && node.children.length) {
+                const childUl = renderTree(li, node.children, path);
+                li.appendChild(childUl);
+            }
+            ul.appendChild(li);
+        }
+        container.appendChild(ul);
+        return ul;
+    }
+
+    const navContainer = document.getElementById("c-tree-nav");
+    renderTree(navContainer, cTree);
+
+    // --------------------------------------------------------------
+    // LOAD TOPIC AND SIMULATE C RUN
+    // --------------------------------------------------------------
+    let currentCode = "";
+    let currentOutput = "";
+
+    function loadTopic(path, displayName) {
+        const data = cContent.get(path);
+        const descDiv = document.getElementById("descriptionBox");
+        const titleSpan = document.getElementById("topicTitle");
+        const codeArea = document.getElementById("cCodeArea");
+        const endDiv = document.getElementById("endNodeMsg");
+        endDiv.style.display = "none";
+        codeArea.style.display = "none";
+
+        titleSpan.innerText = displayName;
+        if(data && data.isLeaf) {
+            descDiv.innerHTML = `<span style="font-size:1.1rem;">⚙️ Lore</span><br>${data.desc}`;
+            if(data.code) {
+                currentCode = data.code;
+                currentOutput = data.output || "(no output)";
+                document.getElementById("cCodePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+                document.getElementById("cOutput").innerHTML = "# output will appear after compilation";
+            } else {
+                codeArea.style.display = "none";
+            }
+        } else {
+            descDiv.innerHTML = data ? data.desc : `🌿 ${displayName} — choose a sub-topic to explore.`;
+            codeArea.style.display = "none";
+        }
+        if(displayName === "END") {
+            const endData = cContent.get(path);
+            if(endData?.code) {
+                currentCode = endData.code;
+                currentOutput = endData.output;
+                document.getElementById("cCodePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+            }
+        }
+        // rebind run button
+        const oldBtn = document.getElementById("executeC");
+        if(oldBtn) {
+            const newBtn = oldBtn.cloneNode(true);
+            oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+            newBtn.addEventListener("click", () => {
+                const outDiv = document.getElementById("cOutput");
+                outDiv.innerHTML = "🔨 Compiling...\n$ gcc program.c -o prog\n$ ./prog\n";
+                setTimeout(() => {
+                    outDiv.innerHTML += `\n> ${currentOutput}`;
+                }, 100);
+            });
+        }
+    }
+
+    // initial load
+    setTimeout(() => {
+        const firstBtn = document.querySelector(".tree-btn");
+        if(firstBtn) firstBtn.click();
+    }, 200);
+
+    // --------------------------------------------------------------
+    // MAGICAL PARTICLES (purple/cyan tech dust)
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("c-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.2 + 0.7;
+            this.vx = (Math.random() - 0.5) * 0.25;
+            this.vy = (Math.random() - 0.5) * 0.2 + 0.05;
+            this.alpha = Math.random() * 0.5 + 0.1;
+            this.color = `rgba(150, 100, 220, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width + 20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height + 20;
+            if(this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = "#a17eff";
+            ctx.fill();
+        }
+    }
+    function initParticles(count = 130) {
+        particles = [];
+        for(let i = 0; i < count; i++) particles.push(new Particle());
+    }
+    function animateParticles() {
+        if(!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    window.addEventListener("resize", () => {
+        resizeCanvas();
+        initParticles(130);
+    });
+    resizeCanvas();
+    initParticles(140);
+    animateParticles();
+</script>
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+</html>

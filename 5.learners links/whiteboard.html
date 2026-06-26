@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teaching purpose</title>
+  <link rel="icon" type="image/png" href="WhatsApp_Image_2025-06-24_at_11.13.46_PM-removebg-preview.png">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #f0f0f0;
+      font-family: Arial;
+    }
+    #toolbar {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: #fff;
+      padding: 8px;
+      border: 1px solid #ccc;
+      z-index: 10;
+    }
+    canvas {
+      display: block;
+    }
+    #toolbar button, #toolbar select, #toolbar input {
+      margin: 4px;
+      padding: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toolbar">
+    <button onclick="setTool('pen')">✏️ Pen</button>
+    <button onclick="setTool('eraser')">🧽 Eraser</button>
+    <button onclick="setTool('text')">🔤 Text</button>
+
+    <select id="colorPicker" onchange="color=this.value;">
+      <option value="black">Black</option>
+      <option value="white">white</option>
+      <option value="purple">Purple</option>
+      <option value="blue">Blue</option>
+      <option value="cyan">cyan</option>
+      <option value="green">Green</option>
+       <option value="lime">Lime</option>
+       <option value="yellow">Yellow</option>
+        <option value="orange">Orange</option>
+      <option value="red">Red</option>
+    </select>
+
+    <input type="number" id="fontSize" value="20" min="10" max="60"> px
+
+    <!-- ✅ New Background Color Picker -->
+    <select id="bgColorPicker" onchange="changeBackground(this.value)">
+      <option value="white">White BG</option>
+      <option value="black">Black BG</option>
+      <option value="lightgray">Gray BG</option>
+      <option value="lightblue">Blue BG</option>
+      <option value="lightyellow">Yellow BG</option>
+      <option value="green">Green BG</option>
+      <option value="purple">Purple BG</option>
+      <option value="blue">Blue BG</option>
+      <option value="cyan">cyan BG</option>
+      <option value="green">Green BG</option>
+       <option value="lime">Lime BG</option>
+       <option value="yellow">Yellow BG</option>
+       <option value="orange">Orange BG</option>
+      <option value="red">Red BG</option>
+    </select>
+
+    <button onclick="clearCanvas()">🗑️ Clear</button>
+  </div>
+
+  <canvas id="board"></canvas>
+
+  <script>
+    const canvas = document.getElementById('board');
+    const ctx = canvas.getContext('2d');
+
+    let tool = 'pen';
+    let color = 'black';
+    let size = 2;
+    let fontSize = 20;
+    let drawing = false;
+    let startX, startY;
+    let texts = [];
+    let selectedText = null;
+    let bgColor = 'white';
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      fillBackground();
+      redrawTexts();
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function fillBackground() {
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function changeBackground(newColor) {
+      bgColor = newColor;
+      fillBackground();
+      redrawTexts();
+    }
+
+    function setTool(t) { tool = t; }
+
+    function clearCanvas() {
+      fillBackground();
+      texts = [];
+    }
+
+    function redrawTexts() {
+      for (let t of texts) {
+        ctx.font = `${t.size}px Arial`;
+        ctx.fillStyle = t.color;
+        ctx.fillText(t.text, t.x, t.y);
+      }
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      startX = e.offsetX;
+      startY = e.offsetY;
+      fontSize = document.getElementById('fontSize').value;
+
+      if (tool === 'pen' || tool === 'eraser') {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+      }
+
+      if (tool === 'text') {
+        selectedText = null;
+        for (let t of texts) {
+          const width = ctx.measureText(t.text).width;
+          const height = parseInt(t.size);
+          if (startX >= t.x && startX <= t.x + width && startY <= t.y && startY >= t.y - height) {
+            selectedText = t;
+            break;
+          }
+        }
+      }
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (drawing && (tool === 'pen' || tool === 'eraser')) {
+        ctx.strokeStyle = (tool === 'eraser') ? bgColor : color;
+        ctx.lineWidth = size;
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+      }
+
+      if (selectedText && tool === 'text') {
+        selectedText.x = e.offsetX;
+        selectedText.y = e.offsetY;
+        fillBackground();
+        redrawTexts();
+      }
+    });
+
+    canvas.addEventListener('mouseup', (e) => {
+      if (drawing) {
+        drawing = false;
+      }
+
+      if (tool === 'text' && !selectedText) {
+        let userText = prompt('Enter text:');
+        if (userText) {
+          texts.push({ text: userText, x: startX, y: startY, color: color, size: fontSize });
+          fillBackground();
+          redrawTexts();
+        }
+      }
+      selectedText = null;
+    });
+
+    canvas.addEventListener('dblclick', (e) => {
+      const x = e.offsetX;
+      const y = e.offsetY;
+      for (let t of texts) {
+        const width = ctx.measureText(t.text).width;
+        const height = parseInt(t.size);
+        if (x >= t.x && x <= t.x + width && y <= t.y && y >= t.y - height) {
+          let newText = prompt('Edit text:', t.text);
+          if (newText) {
+            t.text = newText;
+            fillBackground();
+            redrawTexts();
+          }
+        }
+      }
+    });
+
+    canvas.addEventListener('mouseout', () => { drawing = false; });
+  </script>
+
+</body>
+</html>

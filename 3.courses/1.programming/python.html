@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🐍 Python Grimoire | Enchanted Learning Tree</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: radial-gradient(circle at 10% 20%, #0a1f1a, #020c0a);
+            color: #e0f2e9;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* magical particles */
+        #python-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: row;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            gap: 1.2rem;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* sidebar tree */
+        .tree-sidebar {
+            width: 330px;
+            background: rgba(10, 25, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            border: 1px solid #2ecc7166;
+            padding: 1.2rem 0.6rem;
+            overflow-y: auto;
+            max-height: 90vh;
+            position: sticky;
+            top: 1.5rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .tree-sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .tree-sidebar::-webkit-scrollbar-track {
+            background: #1a3a2c;
+            border-radius: 10px;
+        }
+        .tree-sidebar::-webkit-scrollbar-thumb {
+            background: #48c58c;
+            border-radius: 10px;
+        }
+
+        .py-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+        .py-tree, .py-tree ul {
+            list-style: none;
+            padding-left: 1.2rem;
+        }
+        .py-tree li {
+            margin: 0.35rem 0;
+        }
+        .tree-btn {
+            background: rgba(30, 55, 45, 0.8);
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 0.9rem;
+            border-radius: 1.2rem;
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #c8ffe6;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            border-left: 3px solid #2ecc71;
+        }
+        .tree-btn:hover {
+            background: #2c7e5acc;
+            transform: translateX(5px);
+            box-shadow: 0 0 10px #2ecc71aa;
+            border-left-color: #f5e56b;
+        }
+        .active-python {
+            background: linear-gradient(95deg, #1f8a4c, #0f5e36);
+            box-shadow: 0 0 12px #5ef0a0;
+            border-left-color: #ffd966;
+            color: white;
+        }
+        .tree-icon {
+            font-size: 1rem;
+        }
+
+        /* main panel */
+        .spell-panel {
+            flex: 1;
+            background: rgba(8, 25, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid #2ecc7166;
+            padding: 1.8rem 2rem;
+            transition: 0.2s;
+        }
+        .topic-head {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b0ffd0, #6fe3a0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px dashed #3acc7a80;
+            padding-bottom: 0.5rem;
+        }
+        .explanation-card {
+            background: #071f18a0;
+            padding: 1rem 1.3rem;
+            border-radius: 1.3rem;
+            border-left: 5px solid #33cc77;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .code-container {
+            background: #02100c;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid #3ba86a;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #bcf5d9;
+        }
+        .run-spell {
+            background: #27ae60;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+        .run-spell:hover {
+            background: #2ecc71;
+            transform: scale(1.02);
+            box-shadow: 0 0 12px #3be085;
+        }
+        .output-area {
+            background: #03100c;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            border: 1px solid #27ae60;
+            font-size: 0.85rem;
+        }
+        .output-label {
+            font-size: 0.7rem;
+            color: #9df2bc;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            padding: 1rem;
+        }
+        @media (max-width: 780px) {
+            .app-container {
+                flex-direction: column;
+            }
+            .tree-sidebar {
+                width: 100%;
+                max-height: 380px;
+                position: relative;
+                top: 0;
+            }
+            .topic-head {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<canvas id="python-mist"></canvas>
+<div class="app-container">
+    <aside class="tree-sidebar">
+        <div style="padding-left: 0.7rem; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem;">🐍 Python Spellbook</div>
+        <div id="python-tree-nav"></div>
+    </aside>
+    <main class="spell-panel" id="main-learning-area">
+        <div class="topic-head">
+            <span>📘</span> <span id="topic-title">Python Enchantment</span>
+        </div>
+        <div id="description-area" class="explanation-card">
+            ✨ Select any topic from the left tree to reveal wisdom, code examples, and runnable spells (simulated output).
+        </div>
+        <div id="code-run-section" style="display: none;">
+            <div class="code-container"><pre id="code-snippet"></pre></div>
+            <button class="run-spell" id="execute-btn">🐍 Cast Spell (Run Code)</button>
+            <div class="output-area">
+                <div class="output-label">💻 Python Console</div>
+                <div id="python-output"># Output will appear here after casting</div>
+            </div>
+        </div>
+        <div id="end-section" style="display: none;"></div>
+    </main>
+</div>
+<footer>🌿 Deep Python Lore — each node holds a runnable example (preview)</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // BUILD THE FULL PYTHON TREE (exact structure from prompt)
+    // --------------------------------------------------------------
+    const pythonTree = [
+        { name: "Variables", children: [
+            { name: "Variable declaration" }, { name: "Dynamic typing" }, { name: "Type hints (Python 3.5+)" }
+        ]},
+        { name: "Data Types", children: [
+            { name: "str (String)" }, { name: "int (Integer)" }, { name: "float (Floating point)" },
+            { name: "bool (Boolean)" }, { name: "list" }, { name: "tuple" }, { name: "dict" },
+            { name: "set" }, { name: "NoneType" }, { name: "complex" }
+        ]},
+        { name: "Operators", children: [
+            { name: "Arithmetic" }, { name: "Assignment" }, { name: "Comparison" },
+            { name: "Logical" }, { name: "Bitwise" }, { name: "Ternary (Conditional expression)" }
+        ]},
+        { name: "Control Flow", children: [
+            { name: "if statement" }, { name: "elif statement" }, { name: "else statement" },
+            { name: "for loop" }, { name: "while loop" }
+        ]},
+        { name: "Functions", children: [
+            { name: "def keyword" }, { name: "Lambda functions" }, { name: "*args and **kwargs" },
+            { name: "Default arguments" }, { name: "First-class functions" }
+        ]},
+        { name: "Scope", children: [
+            { name: "Global scope" }, { name: "Local scope" }, { name: "Nonlocal" },
+            { name: "LEGB rule (Local, Enclosing, Global, Built-in)" }
+        ]},
+        { name: "Lists", children: [
+            { name: "List methods", children: [
+                { name: "append()" }, { name: "pop()" }, { name: "insert()" },
+                { name: "remove()" }, { name: "sort()" }, { name: "reverse()" }
+            ]},
+            { name: "List comprehensions" }
+        ]},
+        { name: "Tuples", children: [ { name: "Immutability and unpacking" } ] },
+        { name: "Dictionaries", children: [
+            { name: "dict methods", children: [
+                { name: "keys()" }, { name: "values()" }, { name: "items()" }, { name: "get()" }
+            ]},
+            { name: "Dictionary comprehensions" }
+        ]},
+        { name: "Sets", children: [ { name: "Set operations" }, { name: "Set methods" } ] },
+        { name: "Error Handling", children: [
+            { name: "try...except" }, { name: "else and finally" }, { name: "raise statement" }
+        ]},
+        { name: "Modules & Packages", children: [
+            { name: "import" }, { name: "from...import" }, { name: "Creating modules and packages" }
+        ]},
+        { name: "File I/O", children: [
+            { name: "open(), read(), write()" }, { name: "with statement (context manager)" }
+        ]},
+        { name: "Object-Oriented Programming (OOP)", children: [
+            { name: "Classes and Objects" }, { name: "__init__ method" }, { name: "Inheritance" },
+            { name: "Encapsulation" }, { name: "Polymorphism" }, { name: "@classmethod and @staticmethod" }
+        ]},
+        { name: "Decorators", children: [ { name: "Function decorators" }, { name: "Class decorators" } ] },
+        { name: "Generators & Iterators", children: [ { name: "yield keyword" }, { name: "next()" }, { name: "iter()" } ] },
+        { name: "Comprehensions", children: [
+            { name: "List" }, { name: "Dictionary" }, { name: "Set" }, { name: "Generator expressions" }
+        ]},
+        { name: "Lambda, Map, Filter, Reduce" },
+        { name: "Regular Expressions (re module)" },
+        { name: "JSON Handling", children: [ { name: "json module" }, { name: "json.dumps()" }, { name: "json.loads()" } ] },
+        { name: "Virtual Environments & pip" },
+        { name: "Popular Libraries", children: [
+            { name: "NumPy" }, { name: "pandas" }, { name: "requests" }, { name: "Flask / Django" }, { name: "matplotlib" }
+        ]},
+        { name: "Debugging", children: [ { name: "print()" }, { name: "assert" }, { name: "pdb module" } ] },
+        { name: "Asynchronous Programming", children: [
+            { name: "asyncio" }, { name: "async / await" }, { name: "threading & multiprocessing" }
+        ]},
+        { name: "Advanced Topics", children: [
+            { name: "Closures" }, { name: "Context managers" }, { name: "Metaclasses" },
+            { name: "Descriptors" }, { name: "Type hinting (typing module)" }
+        ]},
+        { name: "END" }
+    ];
+
+    // ---------- knowledge base: descriptions + code + expected output ----------
+    const pythonKnowledge = new Map(); // key = path string
+
+    function addLeafContent(path, nodeName, description, code, expectedOutput) {
+        pythonKnowledge.set(path, { desc: description, code: code, output: expectedOutput, isLeaf: true });
+    }
+
+    // Generate generic for some but we'll manually craft most interesting topics
+    // Helper to set category
+    function setCategory(path, desc) {
+        pythonKnowledge.set(path, { desc: desc, isLeaf: false });
+    }
+
+    // prebuild content for all crucial leaves
+    function initContentMap() {
+        // Variables branch
+        addLeafContent("Variables/Variable declaration", "Variable declaration", "In Python, variables are created by assignment. No explicit declaration keyword.", 
+                       "x = 10\nname = 'Serpent'\nprint(x, name)", "10 Serpent");
+        addLeafContent("Variables/Dynamic typing", "Dynamic typing", "Variables can change type at runtime.", 
+                       "value = 42\nprint(type(value))\nvalue = 'magic'\nprint(type(value))", "<class 'int'>\n<class 'str'>");
+        addLeafContent("Variables/Type hints (Python 3.5+)", "Type hints", "Optional type annotations improve readability, but not enforced at runtime.",
+                       "def greet(name: str) -> str:\n    return f'Hello {name}'\nprint(greet('Wizard'))", "Hello Wizard");
+        // Data Types
+        addLeafContent("Data Types/str (String)", "str (String)", "Immutable sequence of characters.", 
+                       "s = 'python'\nprint(s.upper())\nprint(len(s))", "PYTHON\n6");
+        addLeafContent("Data Types/int (Integer)", "int", "Arbitrary precision integer.", "a = 42\nb = -7\nprint(a + b)", "35");
+        addLeafContent("Data Types/list", "list", "Mutable ordered collection.", "fruits = ['apple', 'banana']\nfruits.append('cherry')\nprint(fruits)", "['apple', 'banana', 'cherry']");
+        addLeafContent("Data Types/tuple", "tuple", "Immutable ordered sequence.", "t = (1,2,3)\nprint(t[0])", "1");
+        addLeafContent("Data Types/dict", "dict", "Key-value mapping.", "d = {'a':1,'b':2}\nprint(d['a'])", "1");
+        addLeafContent("Data Types/set", "set", "Unordered collection of unique elements.", "s = {1,2,2,3}\nprint(s)", "{1,2,3}");
+        // Operators
+        addLeafContent("Operators/Arithmetic", "Arithmetic Operators", "+ - * / // % **", 
+                       "print(10 / 3)\nprint(10 // 3)\nprint(2 ** 4)", "3.3333333333333335\n3\n16");
+        addLeafContent("Operators/Ternary (Conditional expression)", "Ternary Operator", "x if condition else y",
+                       "age = 18\nstatus = 'adult' if age >= 18 else 'minor'\nprint(status)", "adult");
+        // Control Flow
+        addLeafContent("Control Flow/if statement", "if statement", "Conditional execution.", 
+                       "x = 5\nif x > 0:\n    print('positive')", "positive");
+        addLeafContent("Control Flow/for loop", "for loop", "Iterates over iterable.", 
+                       "for i in range(3):\n    print(i)", "0\n1\n2");
+        // Functions
+        addLeafContent("Functions/def keyword", "def keyword", "Define a function.", 
+                       "def square(n):\n    return n*n\nprint(square(5))", "25");
+        addLeafContent("Functions/Lambda functions", "lambda", "Anonymous one-liner function.",
+                       "double = lambda x: x*2\nprint(double(7))", "14");
+        addLeafContent("Functions/*args and **kwargs", "*args, **kwargs", "Variable-length arguments.",
+                       "def show(*args, **kwargs):\n    print(args, kwargs)\nshow(1,2, name='python')", "(1, 2) {'name': 'python'}");
+        // Lists methods, comprehensions
+        addLeafContent("Lists/List methods/append()", "append()", "Adds element to end.",
+                       "lst = [1,2]\nlst.append(3)\nprint(lst)", "[1, 2, 3]");
+        addLeafContent("Lists/List comprehensions", "List comprehension", "Concise list creation.",
+                       "squares = [x**2 for x in range(5)]\nprint(squares)", "[0, 1, 4, 9, 16]");
+        // Dictionaries
+        addLeafContent("Dictionaries/dict methods/keys()", "keys()", "Returns view of dict keys.",
+                       "d = {'a':1,'b':2}\nprint(list(d.keys()))", "['a', 'b']");
+        addLeafContent("Dictionaries/Dictionary comprehensions", "dict comprehension", "Create dict dynamically.",
+                       "squares_dict = {x: x*x for x in range(3)}\nprint(squares_dict)", "{0: 0, 1: 1, 2: 4}");
+        // Error handling
+        addLeafContent("Error Handling/try...except", "try/except", "Handle exceptions gracefully.",
+                       "try:\n    x = 1/0\nexcept ZeroDivisionError:\n    print('caught error')", "caught error");
+        // OOP
+        addLeafContent("Object-Oriented Programming (OOP)/Classes and Objects", "Classes & Objects", "Blueprint for objects.",
+                       "class Snake:\n    def __init__(self, name):\n        self.name = name\n    def speak(self):\n        return 'Hiss'\ns = Snake('Kaa')\nprint(s.name, s.speak())", "Kaa Hiss");
+        addLeafContent("Object-Oriented Programming (OOP)/Inheritance", "Inheritance", "Derive new classes.",
+                       "class Animal:\n    def move(self):\n        return 'walk'\nclass Bird(Animal):\n    def move(self):\n        return 'fly'\nb = Bird()\nprint(b.move())", "fly");
+        // Decorators
+        addLeafContent("Decorators/Function decorators", "Decorator", "Function that wraps another function.",
+                       "def logger(func):\n    def wrapper(*args):\n        print('calling', func.__name__)\n        return func(*args)\n    return wrapper\n@logger\ndef add(a,b):\n    return a+b\nprint(add(3,4))", "calling add\n7");
+        // Generators
+        addLeafContent("Generators & Iterators/yield keyword", "yield", "Creates generator.",
+                       "def count_up_to(n):\n    i = 0\n    while i < n:\n        yield i\n        i += 1\nfor val in count_up_to(3):\n    print(val)", "0\n1\n2");
+        // JSON
+        addLeafContent("JSON Handling/json.dumps()", "json.dumps", "Convert Python object to JSON string.",
+                       "import json\ndata = {'name': 'python', 'level': 5}\nprint(json.dumps(data))", '{"name": "python", "level": 5}');
+        // Async
+        addLeafContent("Asynchronous Programming/async / await", "async/await", "Coroutine syntax.",
+                       "import asyncio\nasync def hello():\n    await asyncio.sleep(0.1)\n    return 'hello'\n# Simulate\nasync def main():\n    res = await hello()\n    print(res)\n# asyncio.run(main()) but for demo we just print output\nprint('async demo: returns hello')", "async demo: returns hello");
+        // END
+        addLeafContent("END", "END", "✨ You have mastered the Python Grimoire! ✨ Keep practicing to become a true Python Sage.", 
+                       "print('Congratulations, soul of code! 🐍')", "Congratulations, soul of code! 🐍");
+        // extra: Popular libraries
+        addLeafContent("Popular Libraries/NumPy", "NumPy", "Numerical computing library.", 
+                       "import numpy as np\narr = np.array([1,2,3])\nprint(arr.mean())", "2.0");
+        addLeafContent("Popular Libraries/requests", "requests", "HTTP library.", 
+                       "import requests\nresponse = requests.get('https://api.github.com')\nprint(response.status_code)", "200");
+        // fill generic leaves with default
+    }
+
+    function ensureAllLeafContent(tree, parentPath = "") {
+        for(let node of tree) {
+            const currentPath = parentPath ? `${parentPath}/${node.name}` : node.name;
+            if(node.children && node.children.length) {
+                if(!pythonKnowledge.has(currentPath)) {
+                    pythonKnowledge.set(currentPath, { desc: `📂 Category: ${node.name}. Expand to see spells.`, isLeaf: false });
+                }
+                ensureAllLeafContent(node.children, currentPath);
+            } else {
+                if(!pythonKnowledge.has(currentPath)) {
+                    pythonKnowledge.set(currentPath, { 
+                        desc: `Discover the magic of "${node.name}". Run the example to see Python in action.`,
+                        code: `# Example for ${node.name}\nprint("${node.name} is part of Python's enchantment!")`,
+                        output: `${node.name} is part of Python's enchantment!`,
+                        isLeaf: true
+                    });
+                }
+            }
+        }
+    }
+
+    initContentMap();
+    ensureAllLeafContent(pythonTree);
+
+    // --------------------------------------------------------------
+    // Render sidebar tree recursively
+    // --------------------------------------------------------------
+    function buildTreeUI(container, nodes, parentPath = "") {
+        const rootUl = document.createElement("ul");
+        rootUl.className = "py-tree";
+        for(let node of nodes) {
+            const li = document.createElement("li");
+            const nodePath = parentPath ? `${parentPath}/${node.name}` : node.name;
+            const btn = document.createElement("button");
+            btn.className = "tree-btn";
+            const icon = node.children && node.children.length ? "📂" : "🐍";
+            btn.innerHTML = `<span class="tree-icon">${icon}</span> <span>${node.name}</span>`;
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".tree-btn").forEach(b => b.classList.remove("active-python"));
+                btn.classList.add("active-python");
+                loadTopic(nodePath, node.name);
+            });
+            li.appendChild(btn);
+            if(node.children && node.children.length) {
+                const childContainer = buildTreeUI(li, node.children, nodePath);
+                li.appendChild(childContainer);
+            }
+            rootUl.appendChild(li);
+        }
+        container.appendChild(rootUl);
+        return rootUl;
+    }
+
+    const navContainer = document.getElementById("python-tree-nav");
+    buildTreeUI(navContainer, pythonTree);
+
+    // --------------------------------------------------------------
+    // Topic loader (display explanation, code, output simulation)
+    // --------------------------------------------------------------
+    let currentCode = "";
+    let currentExpectedOutput = "";
+
+    function loadTopic(path, displayName) {
+        const topic = pythonKnowledge.get(path);
+        const descDiv = document.getElementById("description-area");
+        const titleSpan = document.getElementById("topic-title");
+        const codeSection = document.getElementById("code-run-section");
+        const endDiv = document.getElementById("end-section");
+        
+        titleSpan.innerText = displayName;
+        endDiv.style.display = "none";
+        
+        if(topic && topic.isLeaf) {
+            descDiv.innerHTML = `<span style="font-size:1.2rem;">📜 Incantation</span><br>${topic.desc}`;
+            if(topic.code) {
+                currentCode = topic.code;
+                currentExpectedOutput = topic.output || "✨ (no output)";
+                document.getElementById("code-snippet").innerText = currentCode;
+                codeSection.style.display = "block";
+                // reset previous output area
+                document.getElementById("python-output").innerHTML = "# Output will appear here after casting";
+            } else {
+                codeSection.style.display = "none";
+            }
+        } else if(topic && !topic.isLeaf) {
+            descDiv.innerHTML = `<span style="font-size:1.1rem;">🌿 ${displayName}</span><br>${topic.desc || "This section groups related spells. Select a sub-topic to learn and run."}`;
+            codeSection.style.display = "none";
+        } else {
+            descDiv.innerHTML = `✨ Explore "${displayName}" — deeper knowledge awaits in branches. Click on any leaf node.`;
+            codeSection.style.display = "none";
+        }
+        if(displayName === "END") {
+            const endData = pythonKnowledge.get(path);
+            if(endData) descDiv.innerHTML = `🏁 ${endData.desc}`;
+            if(endData?.code) {
+                currentCode = endData.code;
+                currentExpectedOutput = endData.output;
+                document.getElementById("code-snippet").innerText = currentCode;
+                codeSection.style.display = "block";
+            } else codeSection.style.display = "block";
+        }
+        // rebind run button
+        const runBtn = document.getElementById("execute-btn");
+        const newRunBtn = runBtn.cloneNode(true);
+        runBtn.parentNode.replaceChild(newRunBtn, runBtn);
+        newRunBtn.addEventListener("click", () => {
+            const outputDiv = document.getElementById("python-output");
+            outputDiv.innerHTML = "🐍 Running spell...\n";
+            setTimeout(() => {
+                outputDiv.innerHTML = `> ${currentExpectedOutput.replace(/\n/g, '\n> ')}`;
+            }, 80);
+        });
+    }
+
+    // default load first leaf
+    setTimeout(() => {
+        const firstBtn = document.querySelector(".tree-btn");
+        if(firstBtn) firstBtn.click();
+    }, 150);
+    
+    // --------------------------------------------------------------
+    // Enchanted Particle Canvas (magical forest mist)
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("python-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class MistParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.radius = Math.random() * 3 + 1;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.15 + 0.05;
+            this.alpha = Math.random() * 0.4 + 0.1;
+            this.color = `rgba(100, 210, 150, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width + 20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height + 20;
+            if(this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 7;
+            ctx.shadowColor = "#86e2b0";
+            ctx.fill();
+        }
+    }
+    function initMist(count=110) {
+        particles = [];
+        for(let i=0;i<count;i++) particles.push(new MistParticle());
+    }
+    function animateMist() {
+        if(!ctx) return;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animateMist);
+    }
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initMist(120);
+    });
+    resizeCanvas();
+    initMist(130);
+    animateMist();
+</script>
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+</html>

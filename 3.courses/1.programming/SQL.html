@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🗄️ SQL Grimoire | Enchanted Database Scroll</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a1a2f, #020c1a);
+            font-family: 'Inter', sans-serif;
+            color: #e0f2fe;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #sql-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .app {
+            display: flex;
+            flex-direction: row;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            gap: 1.2rem;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        /* sidebar */
+        .sql-sidebar {
+            width: 340px;
+            background: rgba(10, 25, 45, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            border: 1px solid #3b82f6;
+            padding: 1.2rem 0.6rem;
+            overflow-y: auto;
+            max-height: 90vh;
+            position: sticky;
+            top: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .sql-sidebar::-webkit-scrollbar { width: 5px; }
+        .sql-sidebar::-webkit-scrollbar-track { background: #1e2a3a; border-radius: 10px; }
+        .sql-sidebar::-webkit-scrollbar-thumb { background: #60a5fa; border-radius: 10px; }
+
+        .sql-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+        .sql-tree, .sql-tree ul {
+            list-style: none;
+            padding-left: 1.2rem;
+        }
+        .sql-tree li {
+            margin: 0.3rem 0;
+        }
+        .tree-btn {
+            background: #1e3a5f;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.45rem 0.85rem;
+            border-radius: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #d9f0ff;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            border-left: 3px solid #3b82f6;
+        }
+        .tree-btn:hover {
+            background: #2c5a8c;
+            transform: translateX(5px);
+            box-shadow: 0 0 10px #60a5fa;
+            border-left-color: #ffd966;
+        }
+        .active-sql {
+            background: linear-gradient(95deg, #2563eb, #1e40af);
+            box-shadow: 0 0 12px #69aaff;
+            border-left-color: #ffdf80;
+        }
+        /* main panel */
+        .data-panel {
+            flex: 1;
+            background: rgba(8, 20, 35, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid #3b82f6;
+            padding: 1.8rem 2rem;
+        }
+        .topic-header {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b8e1ff, #7cb9ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px dashed #3b82f6;
+            padding-bottom: 0.5rem;
+        }
+        .sql-desc {
+            background: #071a2a;
+            padding: 1rem 1.3rem;
+            border-radius: 1.3rem;
+            border-left: 5px solid #3b82f6;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .code-block {
+            background: #0a111c;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid #3b82f6;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #c3e8ff;
+        }
+        .run-sql {
+            background: #2563eb;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            transition: 0.2s;
+        }
+        .run-sql:hover {
+            background: #3b82f6;
+            transform: scale(1.02);
+            box-shadow: 0 0 10px #93c5fd;
+        }
+        .output-area {
+            background: #030e1a;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            border: 1px solid #3b82f6;
+            font-size: 0.85rem;
+        }
+        .output-label {
+            font-size: 0.7rem;
+            color: #a5d8ff;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            padding: 1rem;
+        }
+        @media (max-width: 780px) {
+            .app { flex-direction: column; }
+            .sql-sidebar { width: 100%; max-height: 380px; position: relative; top: 0; }
+            .topic-header { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="sql-mist"></canvas>
+<div class="app">
+    <aside class="sql-sidebar">
+        <div style="padding-left: 0.7rem; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem;">🗄️ SQL Arcana</div>
+        <div id="sql-tree-nav"></div>
+    </aside>
+    <main class="data-panel" id="main-panel">
+        <div class="topic-header"><span>📜</span> <span id="topicTitle">SQL Grimoire</span></div>
+        <div id="descriptionBox" class="sql-desc">
+            ✨ Select any spell from the database tree. Each node contains explanation and runnable SQL incantation (simulated).
+        </div>
+        <div id="sqlCodeArea" style="display: none;">
+            <div class="code-block"><pre id="sqlCodePreview"></pre></div>
+            <button class="run-sql" id="executeSQL">⚡ Execute Query (Simulate)</button>
+            <div class="output-area">
+                <div class="output-label">📊 Result Set</div>
+                <div id="sqlOutput"># output will appear here...</div>
+            </div>
+        </div>
+        <div id="endNodeMsg" style="display: none;"></div>
+    </main>
+</div>
+<footer>✨ each SQL example is simulated — replicate the logic in your own database ✨</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // FULL SQL TREE (exactly from user structure)
+    // --------------------------------------------------------------
+    const sqlTree = [
+        { name: "Basics", children: [
+            { name: "What is SQL?" }, { name: "RDBMS vs DBMS" }, { name: "Popular RDBMS (MySQL, PostgreSQL, SQLite, SQL Server, Oracle)" },
+            { name: "SQL Syntax" }, { name: "Case Sensitivity" }
+        ]},
+        { name: "Data Types", children: [
+            { name: "Numeric (INT, FLOAT, DECIMAL)" }, { name: "Character/String (CHAR, VARCHAR, TEXT)" },
+            { name: "Date/Time (DATE, TIME, DATETIME, TIMESTAMP)" }, { name: "Boolean" }
+        ]},
+        { name: "SQL Statements", children: [
+            { name: "DDL (Data Definition Language)", children: [
+                { name: "CREATE" }, { name: "ALTER" }, { name: "DROP" }, { name: "TRUNCATE" }
+            ]},
+            { name: "DML (Data Manipulation Language)", children: [
+                { name: "SELECT" }, { name: "INSERT" }, { name: "UPDATE" }, { name: "DELETE" }
+            ]},
+            { name: "DCL (Data Control Language)", children: [
+                { name: "GRANT" }, { name: "REVOKE" }
+            ]},
+            { name: "TCL (Transaction Control Language)", children: [
+                { name: "COMMIT" }, { name: "ROLLBACK" }, { name: "SAVEPOINT" }
+            ]}
+        ]},
+        { name: "Constraints", children: [
+            { name: "NOT NULL" }, { name: "UNIQUE" }, { name: "PRIMARY KEY" }, { name: "FOREIGN KEY" }, { name: "CHECK" }, { name: "DEFAULT" }
+        ]},
+        { name: "Clauses", children: [
+            { name: "WHERE" }, { name: "ORDER BY" }, { name: "GROUP BY" }, { name: "HAVING" }, { name: "LIMIT / OFFSET" }
+        ]},
+        { name: "Operators", children: [
+            { name: "Arithmetic" }, { name: "Comparison (=, !=, <>, >, <)" }, { name: "Logical (AND, OR, NOT)" },
+            { name: "BETWEEN" }, { name: "IN" }, { name: "LIKE" }
+        ]},
+        { name: "Joins", children: [
+            { name: "INNER JOIN" }, { name: "LEFT JOIN" }, { name: "RIGHT JOIN" }, { name: "FULL OUTER JOIN" },
+            { name: "SELF JOIN" }, { name: "CROSS JOIN" }
+        ]},
+        { name: "Subqueries", children: [
+            { name: "Scalar subquery" }, { name: "Correlated subquery" }, { name: "Nested subqueries" }
+        ]},
+        { name: "Set Operations", children: [
+            { name: "UNION" }, { name: "UNION ALL" }, { name: "INTERSECT" }, { name: "EXCEPT / MINUS" }
+        ]},
+        { name: "Functions", children: [
+            { name: "Aggregate (COUNT, SUM, AVG, MAX, MIN)" }, { name: "String (CONCAT, LENGTH, SUBSTRING)" },
+            { name: "Date (NOW, DATE_ADD, DATEDIFF)" }, { name: "Conversion (CAST, CONVERT)" },
+            { name: "NULL handling (COALESCE, IFNULL)" }
+        ]},
+        { name: "Views", children: [ { name: "CREATE VIEW" }, { name: "UPDATE VIEW" }, { name: "DROP VIEW" } ] },
+        { name: "Indexes", children: [ { name: "CREATE INDEX" }, { name: "UNIQUE INDEX" }, { name: "DROP INDEX" } ] },
+        { name: "Transactions", children: [
+            { name: "Atomicity" }, { name: "Consistency" }, { name: "Isolation" }, { name: "Durability (ACID)" }, { name: "Isolation Levels" }
+        ]},
+        { name: "Stored Procedures & Functions", children: [
+            { name: "CREATE PROCEDURE" }, { name: "CREATE FUNCTION" }, { name: "Parameters (IN, OUT, INOUT)" }, { name: "RETURN" }
+        ]},
+        { name: "Triggers", children: [
+            { name: "BEFORE INSERT/UPDATE/DELETE" }, { name: "AFTER INSERT/UPDATE/DELETE" }, { name: "Trigger body and logic" }
+        ]},
+        { name: "User Management", children: [
+            { name: "CREATE USER" }, { name: "GRANT privileges" }, { name: "REVOKE privileges" }, { name: "Roles" }, { name: "DROP USER" }
+        ]},
+        { name: "Security", children: [
+            { name: "SQL Injection" }, { name: "Escaping input" }, { name: "Role-based access" }
+        ]},
+        { name: "END" }
+    ];
+
+    // --------------------------------------------------------------
+    // CONTENT MAP: descriptions, SQL code, simulated output
+    // --------------------------------------------------------------
+    const sqlContent = new Map();
+
+    function addLeaf(path, nodeName, description, sqlCode, output) {
+        sqlContent.set(path, { desc: description, code: sqlCode, output: output, isLeaf: true });
+    }
+    function setCategory(path, description) {
+        sqlContent.set(path, { desc: description, isLeaf: false });
+    }
+
+    // Helper: generic fallback
+    function genericSQL(nodeName) {
+        return {
+            desc: `📘 ${nodeName} — foundational SQL concept. Execute the sample to see typical behavior.`,
+            code: `-- ${nodeName} example\nSELECT 'Hello SQL' AS message;`,
+            output: "| message       |\n| Hello SQL     |"
+        };
+    }
+
+    // Build specific content for major nodes
+    function populateSQLContent() {
+        // Basics
+        addLeaf("Basics/What is SQL?", "What is SQL?", "SQL (Structured Query Language) is used to manage and query relational databases.", "SELECT 'SQL is powerful!' AS info;", "info\nSQL is powerful!");
+        addLeaf("Basics/RDBMS vs DBMS", "RDBMS vs DBMS", "RDBMS stores data in tables with relationships. DBMS is broader (e.g., file-based).", "SELECT 'RDBMS like MySQL, PostgreSQL' AS engine;", "engine\nRDBMS like MySQL, PostgreSQL");
+        addLeaf("Basics/Popular RDBMS (MySQL, PostgreSQL, SQLite, SQL Server, Oracle)", "Popular RDBMS", "Each has strengths: MySQL for web, PostgreSQL advanced features, SQLite lightweight.", "SELECT 'PostgreSQL' AS fav;", "fav\nPostgreSQL");
+        addLeaf("Basics/SQL Syntax", "SQL Syntax", "Statements end with semicolon, keywords are often uppercase by convention.", "SELECT 1 + 1 AS result;", "result\n2");
+        addLeaf("Basics/Case Sensitivity", "Case Sensitivity", "SQL keywords are case-insensitive, but table/column names may be case-sensitive depending on DB.", "SELECT 'Case? Not in keywords' AS test;", "test\nCase? Not in keywords");
+        
+        // Data Types
+        addLeaf("Data Types/Numeric (INT, FLOAT, DECIMAL)", "Numeric Types", "INT for whole numbers, DECIMAL for exact decimals, FLOAT for approximate.", "SELECT 42 AS integer, 3.14 AS float;", "integer | float\n42      | 3.14");
+        addLeaf("Data Types/Character/String (CHAR, VARCHAR, TEXT)", "String Types", "CHAR fixed length, VARCHAR variable, TEXT large.", "SELECT VARCHAR(20) 'SQL', TEXT 'longer' ;", "SQL | longer");
+        addLeaf("Data Types/Date/Time (DATE, TIME, DATETIME, TIMESTAMP)", "Date/Time", "DATE '2025-01-01', TIME '14:30:00', DATETIME includes both.", "SELECT DATE('2025-01-01') AS today;", "today\n2025-01-01");
+        addLeaf("Data Types/Boolean", "Boolean", "TRUE/FALSE, often stored as 0/1 or BOOLEAN type.", "SELECT TRUE AS is_magic;", "is_magic\n1");
+        
+        // DDL
+        addLeaf("SQL Statements/DDL (Data Definition Language)/CREATE", "CREATE", "Creates databases, tables, indexes.", "CREATE TABLE students (id INT, name VARCHAR(50));\n-- Table created", "Table 'students' created successfully.");
+        addLeaf("SQL Statements/DDL (Data Definition Language)/ALTER", "ALTER", "Modifies existing table structure.", "ALTER TABLE students ADD COLUMN age INT;", "Column 'age' added.");
+        addLeaf("SQL Statements/DDL (Data Definition Language)/DROP", "DROP", "Removes entire table or database.", "DROP TABLE students;", "Table students dropped.");
+        addLeaf("SQL Statements/DDL (Data Definition Language)/TRUNCATE", "TRUNCATE", "Removes all rows but keeps structure.", "TRUNCATE TABLE students;", "All rows deleted.");
+        
+        // DML
+        addLeaf("SQL Statements/DML (Data Manipulation Language)/SELECT", "SELECT", "Query data from tables.", "SELECT 'Enchanted' AS data;", "data\nEnchanted");
+        addLeaf("SQL Statements/DML (Data Manipulation Language)/INSERT", "INSERT", "Add rows to a table.", "INSERT INTO students (id, name) VALUES (1, 'Alice');", "1 row inserted.");
+        addLeaf("SQL Statements/DML (Data Manipulation Language)/UPDATE", "UPDATE", "Modify existing rows.", "UPDATE students SET name = 'Aria' WHERE id = 1;", "1 row updated.");
+        addLeaf("SQL Statements/DML (Data Manipulation Language)/DELETE", "DELETE", "Remove rows.", "DELETE FROM students WHERE id = 1;", "1 row deleted.");
+        
+        // Constraints
+        addLeaf("Constraints/NOT NULL", "NOT NULL", "Ensures column cannot have NULL.", "CREATE TABLE test (id INT NOT NULL);", "Constraint added.");
+        addLeaf("Constraints/PRIMARY KEY", "PRIMARY KEY", "Unique identifier for each row.", "ALTER TABLE students ADD PRIMARY KEY (id);", "Primary key created.");
+        addLeaf("Constraints/FOREIGN KEY", "FOREIGN KEY", "Links tables, referential integrity.", "CREATE TABLE orders (cust_id INT REFERENCES customers(id));", "Foreign key created.");
+        
+        // Clauses
+        addLeaf("Clauses/WHERE", "WHERE", "Filters rows based on condition.", "SELECT * FROM students WHERE age > 18;", "id | name | age\n(rows)");
+        addLeaf("Clauses/ORDER BY", "ORDER BY", "Sorts result set.", "SELECT name FROM students ORDER BY name ASC;", "name\nAlice\nBob");
+        addLeaf("Clauses/GROUP BY", "GROUP BY", "Groups rows for aggregation.", "SELECT department, COUNT(*) FROM employees GROUP BY department;", "dept | count\nIT    | 3");
+        addLeaf("Clauses/LIMIT / OFFSET", "LIMIT / OFFSET", "Pagination: LIMIT rows, OFFSET start.", "SELECT * FROM products LIMIT 5 OFFSET 10;", "rows 11-15 displayed");
+        
+        // Operators
+        addLeaf("Operators/BETWEEN", "BETWEEN", "Range filter inclusive.", "SELECT * FROM products WHERE price BETWEEN 10 AND 20;", "products with price 10-20");
+        addLeaf("Operators/LIKE", "LIKE", "Pattern matching with wildcards % and _.", "SELECT name FROM users WHERE name LIKE 'J%';", "John, Jane, etc.");
+        
+        // Joins
+        addLeaf("Joins/INNER JOIN", "INNER JOIN", "Returns rows matching in both tables.", "SELECT * FROM orders INNER JOIN customers ON orders.cust_id = customers.id;", "(joined rows)");
+        addLeaf("Joins/LEFT JOIN", "LEFT JOIN", "All rows from left table, matches from right.", "SELECT * FROM students LEFT JOIN scores ON students.id = scores.student_id;", "all students, scores if exist");
+        
+        // Subqueries
+        addLeaf("Subqueries/Scalar subquery", "Scalar Subquery", "Returns single value.", "SELECT name, (SELECT AVG(age) FROM students) AS avg_age FROM students;", "name | avg_age");
+        
+        // Set Operations
+        addLeaf("Set Operations/UNION", "UNION", "Combines results, removes duplicates.", "SELECT name FROM staff UNION SELECT name FROM contractors;", "unique names");
+        
+        // Functions
+        addLeaf("Functions/Aggregate (COUNT, SUM, AVG, MAX, MIN)", "Aggregate Functions", "Performs calculation on set.", "SELECT COUNT(*) AS total, AVG(salary) FROM employees;", "total | avg_salary");
+        addLeaf("Functions/String (CONCAT, LENGTH, SUBSTRING)", "String Functions", "Manipulate text.", "SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM users;", "full_name");
+        
+        // Views
+        addLeaf("Views/CREATE VIEW", "CREATE VIEW", "Virtual table based on query.", "CREATE VIEW active_users AS SELECT * FROM users WHERE status='active';", "View created.");
+        
+        // Transactions
+        addLeaf("Transactions/Atomicity", "Atomicity", "All or nothing execution.", "BEGIN; UPDATE accounts SET balance = balance - 100; COMMIT;", "Transaction committed.");
+        
+        // Stored Procedures
+        addLeaf("Stored Procedures & Functions/CREATE PROCEDURE", "CREATE PROCEDURE", "Stored routine in DB.", "CREATE PROCEDURE GetUser(IN uid INT) BEGIN SELECT * FROM users WHERE id=uid; END;", "Procedure created.");
+        
+        // Triggers
+        addLeaf("Triggers/BEFORE INSERT/UPDATE/DELETE", "BEFORE Trigger", "Fires before DML operation.", "CREATE TRIGGER before_insert BEFORE INSERT ON logs FOR EACH ROW SET NEW.created_at = NOW();", "Trigger defined.");
+        
+        // User Management
+        addLeaf("User Management/CREATE USER", "CREATE USER", "Creates new database user.", "CREATE USER 'db_mage'@'localhost' IDENTIFIED BY 'strong_pass';", "User created.");
+        addLeaf("User Management/GRANT privileges", "GRANT", "Assigns permissions.", "GRANT SELECT, INSERT ON mydb.* TO 'db_mage'@'localhost';", "Privileges granted.");
+        
+        // Security
+        addLeaf("Security/SQL Injection", "SQL Injection", "Code injection attack via unsanitized input.", "-- Vulnerable: ' OR '1'='1';\n-- Always use parameterized queries.", "Prevention: prepared statements.");
+        
+        // END
+        addLeaf("END", "END", "🏁 You've traversed the entire SQL Grimoire. Master queries, joins, transactions, and become a Database Archmage.", 
+                "SELECT 'Congratulations, SQL Sage!' AS final_message;", "final_message\nCongratulations, SQL Sage!");
+    }
+    
+    // Generic fill for missing leaves
+    function fillMissingLeaves(tree, parentPath = "") {
+        for(let node of tree) {
+            const currentPath = parentPath ? `${parentPath}/${node.name}` : node.name;
+            if(node.children && node.children.length) {
+                if(!sqlContent.has(currentPath)) setCategory(currentPath, `📂 Category: ${node.name} — click to explore subtopics.`);
+                fillMissingLeaves(node.children, currentPath);
+            } else {
+                if(!sqlContent.has(currentPath)) {
+                    const gen = genericSQL(node.name);
+                    addLeaf(currentPath, node.name, gen.desc, gen.code, gen.output);
+                }
+            }
+        }
+    }
+
+    populateSQLContent();
+    fillMissingLeaves(sqlTree);
+    
+    // --------------------------------------------------------------
+    // RENDER SIDEBAR TREE
+    // --------------------------------------------------------------
+    function renderTree(container, nodes, parentPath = "") {
+        const ul = document.createElement("ul");
+        ul.className = "sql-tree";
+        for(let node of nodes) {
+            const li = document.createElement("li");
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            const btn = document.createElement("button");
+            btn.className = "tree-btn";
+            const icon = (node.children && node.children.length) ? "📁" : "🔮";
+            btn.innerHTML = `<span>${icon}</span> <span>${node.name}</span>`;
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".tree-btn").forEach(b => b.classList.remove("active-sql"));
+                btn.classList.add("active-sql");
+                loadTopic(path, node.name);
+            });
+            li.appendChild(btn);
+            if(node.children && node.children.length) {
+                const childContainer = renderTree(li, node.children, path);
+                li.appendChild(childContainer);
+            }
+            ul.appendChild(li);
+        }
+        container.appendChild(ul);
+        return ul;
+    }
+    
+    const navContainer = document.getElementById("sql-tree-nav");
+    renderTree(navContainer, sqlTree);
+    
+    // --------------------------------------------------------------
+    // LOAD TOPIC & SIMULATED SQL RUN
+    // --------------------------------------------------------------
+    let currentSQLCode = "";
+    let currentSQLOutput = "";
+    
+    function loadTopic(path, displayName) {
+        const data = sqlContent.get(path);
+        const descDiv = document.getElementById("descriptionBox");
+        const titleSpan = document.getElementById("topicTitle");
+        const codeArea = document.getElementById("sqlCodeArea");
+        const endDiv = document.getElementById("endNodeMsg");
+        endDiv.style.display = "none";
+        codeArea.style.display = "none";
+        
+        titleSpan.innerText = displayName;
+        if(data && data.isLeaf) {
+            descDiv.innerHTML = `<span style="font-size:1.1rem;">🗄️ Spell detail</span><br>${data.desc}`;
+            if(data.code) {
+                currentSQLCode = data.code;
+                currentSQLOutput = data.output || "-- no output --";
+                document.getElementById("sqlCodePreview").innerText = currentSQLCode;
+                codeArea.style.display = "block";
+                document.getElementById("sqlOutput").innerHTML = "# output will appear after execution";
+            }
+        } else {
+            descDiv.innerHTML = data ? data.desc : `🌿 ${displayName} — expand children for SQL queries.`;
+            codeArea.style.display = "none";
+        }
+        if(displayName === "END") {
+            const endData = sqlContent.get(path);
+            if(endData?.code) {
+                currentSQLCode = endData.code;
+                currentSQLOutput = endData.output;
+                document.getElementById("sqlCodePreview").innerText = currentSQLCode;
+                codeArea.style.display = "block";
+            }
+        }
+        // refresh run button
+        const oldBtn = document.getElementById("executeSQL");
+        if(oldBtn) {
+            const newBtn = oldBtn.cloneNode(true);
+            oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+            newBtn.addEventListener("click", () => {
+                const outDiv = document.getElementById("sqlOutput");
+                outDiv.innerHTML = "⏳ Executing query...\n";
+                setTimeout(() => {
+                    outDiv.innerHTML = currentSQLOutput;
+                }, 80);
+            });
+        }
+    }
+    
+    // auto-click first node
+    setTimeout(() => {
+        const firstBtn = document.querySelector(".tree-btn");
+        if(firstBtn) firstBtn.click();
+    }, 200);
+    
+    // --------------------------------------------------------------
+    // MAGICAL PARTICLES (blue database mist)
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("sql-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class MistParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.5 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.15 + 0.05;
+            this.alpha = Math.random() * 0.4 + 0.1;
+            this.color = `rgba(100, 160, 230, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width + 20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height + 20;
+            if(this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = "#3b82f6";
+            ctx.fill();
+        }
+    }
+    function initParticles(count = 120) {
+        particles = [];
+        for(let i = 0; i < count; i++) particles.push(new MistParticle());
+    }
+    function animateParticles() {
+        if(!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    window.addEventListener("resize", () => {
+        resizeCanvas();
+        initParticles(120);
+    });
+    resizeCanvas();
+    initParticles(130);
+    animateParticles();
+</script>
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🔐 Ultimate Cryptography for Cyber Security | Full Reference</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0c1a, #03050c);
+            font-family: 'Inter', sans-serif;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        #crypto-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        /* header */
+        .hero {
+            text-align: center;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #a855f7;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #d8b4fe, #818cf8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        /* sidebar TOC */
+        .toc-sticky {
+            position: sticky;
+            top: 1rem;
+            background: #0f111ecc;
+            backdrop-filter: blur(8px);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            border: 1px solid #a855f7;
+        }
+        .toc-sticky a {
+            color: #c4b5fd;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 2rem;
+            transition: 0.1s;
+            background: #1e1b4b60;
+        }
+        .toc-sticky a:hover {
+            background: #7c3aed;
+            color: white;
+        }
+        .section {
+            background: rgba(12, 15, 35, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            border: 1px solid #a855f7aa;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e9d5ff, #a78bfa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 6px solid #c084fc;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .subsection {
+            margin: 1.5rem 0;
+        }
+        .subsection h3 {
+            color: #d8b4fe;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+        .card {
+            background: #0a0c20dd;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid #8b5cf680;
+        }
+        .card h4 {
+            color: #e9d5ff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .math-block {
+            background: #020617;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-family: monospace;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #a78bfa;
+        }
+        code {
+            background: #1e1b4b;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        hr {
+            border-color: #8b5cf680;
+            margin: 1rem 0;
+        }
+        .badge {
+            background: #4c1d9580;
+            border-radius: 2rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin: 0.2rem;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 2rem;
+        }
+        @media (max-width: 760px) {
+            .hero h1 { font-size: 1.8rem; }
+            .section-title { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="crypto-bg"></canvas>
+<div class="wrapper">
+    <div class="hero">
+        <h1>🔐 Ultimate Cryptography for Cyber Security</h1>
+        <p>mathematical foundations • symmetric & asymmetric crypto • hash functions • attacks • PKI • post‑quantum • real‑world protocols</p>
+    </div>
+    <div class="toc-sticky">
+        <a href="#intro">📖 Intro</a> <a href="#math">📐 Math</a> <a href="#classical">🏛️ Classical</a>
+        <a href="#symmetric">🔑 Symmetric</a> <a href="#modes">🔄 Modes</a> <a href="#asymmetric">🔓 Asymmetric</a>
+        <a href="#hash">📇 Hash</a> <a href="#attacks">⚔️ Attacks</a> <a href="#pki">📜 PKI</a>
+        <a href="#protocols">🌐 Protocols</a> <a href="#pqc">🚀 PQC</a> <a href="#best">🛡️ Best Practices</a>
+    </div>
+
+    <!-- Introduction -->
+    <div id="intro" class="section">
+        <div class="section-title">📖 Core Concepts</div>
+        <p>Cryptography is the science of secure communication, providing confidentiality, integrity, authentication, and non‑repudiation. In cyber security, it underpins SSL/TLS, disk encryption, digital signatures, password storage, and more.</p>
+        <div class="grid-2">
+            <div class="card"><h4>Confidentiality</h4>Encryption prevents unauthorized reading – symmetric (AES) or asymmetric (RSA).</div>
+            <div class="card"><h4>Integrity</h4>Hash functions and MACs detect tampering (SHA‑256, HMAC).</div>
+            <div class="card"><h4>Authentication</h4>Digital signatures and challenge‑response verify identity.</div>
+            <div class="card"><h4>Non‑repudiation</h4>Signatures provide proof of origin.</div>
+        </div>
+    </div>
+
+    <!-- Mathematical Foundations (full) -->
+    <div id="math" class="section">
+        <div class="section-title">📐 Mathematical Foundations (Full)</div>
+        <div class="subsection">
+            <h3>Modular Arithmetic, Groups, Fields</h3>
+            <p>All modern crypto operates in finite structures. \( \mathbb{Z}_n \) = integers modulo n. The multiplicative group \( \mathbb{Z}_n^* \) has order \( \varphi(n) \) (Euler’s totient). For prime \( p \), \( \mathbb{F}_p \) is a finite field.</p>
+            <div class="math-block">\[ \text{Euler's theorem: } a^{\varphi(n)} \equiv 1 \pmod{n} \quad \text{for } \gcd(a,n)=1 \]</div>
+            <p>The <strong>discrete logarithm problem</strong> (DLP) in \( \mathbb{F}_p^* \) is: given \( g, h = g^x \), find \( x \). Hard for large primes → basis of DH, DSA, ElGamal.</p>
+        </div>
+        <div class="subsection">
+            <h3>Prime Numbers, RSA & φ(n)</h3>
+            <p>RSA selects two large primes \( p, q \), modulus \( n = pq \), \( \varphi(n) = (p-1)(q-1) \). Encryption: \( c = m^e \bmod n \), decryption: \( m = c^d \bmod n \) with \( ed \equiv 1 \pmod{\varphi(n)} \). Security relies on integer factorization.</p>
+            <div class="math-block">\[ \text{If } \gcd(m,n)=1, \quad (m^e)^d \equiv m \pmod{n} \]</div>
+        </div>
+        <div class="subsection">
+            <h3>Elliptic Curves (ECC)</h3>
+            <p>Weierstrass form: \( y^2 = x^3 + ax + b \) over \( \mathbb{F}_p \). Group law: point addition \( P + Q \). The ECDLP: find \( k \) such that \( Q = kP \). ECC provides same security as RSA with much smaller keys (256-bit ECC ≈ 3072-bit RSA).</p>
+            <div class="math-block">\[ \text{Curve25519: } y^2 = x^3 + 486662x^2 + x \text{ over } \mathbb{F}_{2^{255}-19} \]</div>
+        </div>
+    </div>
+
+    <!-- Classical Ciphers (history & examples) -->
+    <div id="classical" class="section">
+        <div class="section-title">🏛️ Classical Ciphers & Cryptanalysis</div>
+        <div class="grid-2">
+            <div class="card"><h4>Caesar / Substitution</h4>Shift cipher (Caesar), frequency analysis breaks it. Vigenère (polyalphabetic) – Kasiski examination.</div>
+            <div class="card"><h4>Enigma & Rotor machines</h4>World War II encryption, broken by Allied cryptanalysis (Bombe). Highlights need for strong modern algorithms.</div>
+            <div class="card"><h4>One‑time pad (OTP)</h4>Information‑theoretically secure if key is truly random, same length as message, never reused. Impractical for large volumes.</div>
+        </div>
+    </div>
+
+    <!-- Symmetric Cryptography (advanced) -->
+    <div id="symmetric" class="section">
+        <div class="section-title">🔑 Symmetric Key Cryptography (Deep Dive)</div>
+        <div class="subsection">
+            <h3>Block Ciphers: AES (Rijndael)</h3>
+            <p>AES-128/192/256, 128-bit block. Rounds: 10, 12, 14. Operations: SubBytes (S‑box), ShiftRows, MixColumns, AddRoundKey. Resistant to linear and differential cryptanalysis.</p>
+            <p><strong>ChaCha20</strong> (stream cipher, ARX design) – used in TLS 1.3, faster than AES in software.</p>
+        </div>
+        <div class="subsection">
+            <h3>Stream Ciphers</h3>
+            <p>Generate keystream \( k_i = E_K(IV \| i) \) and XOR plaintext. RC4 (broken), Salsa20, ChaCha20. Requirements: unique IV per key, never reuse key/IV pair.</p>
+        </div>
+    </div>
+
+    <!-- Block Cipher Modes of Operation (full) -->
+    <div id="modes" class="section">
+        <div class="section-title">🔄 Block Cipher Modes of Operation</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>ECB (Electronic Codebook)</h4>
+                <p>\( C_i = E_K(P_i) \). Patterns leak → insecure.</p>
+                <h4>CBC (Cipher Block Chaining)</h4>
+                <p>\( C_i = E_K(P_i \oplus C_{i-1}) \). Requires IV, padding (PKCS#7). Susceptible to padding oracle attacks.</p>
+                <h4>CFB / OFB</h4>
+                <p>Feedback modes; can act as stream cipher.</p>
+            </div>
+            <div class="card">
+                <h4>CTR (Counter)</h4>
+                <p>\( C_i = P_i \oplus E_K(IV + i) \). Parallelizable, random access, no padding. <strong>Recommended</strong>.</p>
+                <h4>GCM (Galois/Counter)</h4>
+                <p>Authenticated encryption (AEAD): CTR encryption + GHASH authentication. Provides integrity, confidentiality, and authenticity. Used in TLS 1.3.</p>
+                <h4>XTS (XEX-based Tweaked Codebook)</h4>
+                <p>Disk encryption mode (AES-XTS). Each sector has tweak derived from its index.</p>
+            </div>
+        </div>
+        <div class="math-block">\[ \text{GCM: } C = \text{CTR}_K(IV, P),\quad T = \text{GHASH}_H(A, C) \]</div>
+    </div>
+
+    <!-- Asymmetric Cryptography (RSA, ECC, DH, ElGamal) -->
+    <div id="asymmetric" class="section">
+        <div class="section-title">🔓 Asymmetric Cryptography (Public Key)</div>
+        <div class="subsection">
+            <h3>RSA (Rivest‑Shamir‑Adleman)</h3>
+            <p>Key generation: \( n = pq \), \( e \) (65537 common), \( d = e^{-1} \bmod \varphi(n) \). Encryption: \( c = m^e \bmod n \), decryption: \( m = c^d \bmod n \). Padding required: OAEP (PKCS#1 v2.2).</p>
+            <p><strong>Attacks:</strong> low private exponent (Wiener), low plaintext (Coppersmith), side‑channel (timing).</p>
+        </div>
+        <div class="subsection">
+            <h3>Diffie‑Hellman (DH) & ECDH</h3>
+            <p>Key exchange: parties agree on prime \( p \) and generator \( g \). Each sends \( g^a \bmod p \). Shared secret \( g^{ab} \bmod p \). For elliptic curves: ECDH uses scalar multiplication \( a*Q_B = b*Q_A \).</p>
+        </div>
+        <div class="subsection">
+            <h3>Elliptic Curve Cryptography (ECC)</h3>
+            <p>Curves: NIST P-256, Curve25519 (X25519 for DH). ECDSA signatures, Ed25519 (EdDSA). Advantages: smaller keys, faster operations.</p>
+            <div class="math-block">\[ \text{Ed25519: twisted Edwards curve } -x^2 + y^2 = 1 - \frac{121665}{121666}x^2y^2 \]</div>
+        </div>
+        <div class="subsection">
+            <h3>ElGamal, DSA</h3>
+            <p>ElGamal encryption (semantically secure with proper randomness). DSA / ECDSA: signature standards.</p>
+        </div>
+    </div>
+
+    <!-- Cryptographic Hash Functions & HMAC -->
+    <div id="hash" class="section">
+        <div class="section-title">📇 Hash Functions & Message Authentication</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Properties</h4>
+                <ul>
+                    <li>Preimage resistance (one‑way)</li>
+                    <li>Second preimage resistance</li>
+                    <li>Collision resistance</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Algorithms</h4>
+                <p>MD5, SHA-1 (broken). SHA-256, SHA-3 (Keccak), BLAKE2, BLAKE3. SHA-3 uses sponge construction.</p>
+                <p>HMAC: \( \text{HMAC}(K,m) = H((K \oplus \text{opad}) \| H((K \oplus \text{ipad}) \| m)) \)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cryptographic Attacks (comprehensive list) -->
+    <div id="attacks" class="section">
+        <div class="section-title">⚔️ Cryptographic Attacks (Real‑World)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Brute Force & Birthday</h4>
+                <p>AES-128: \( 2^{128} \) keys – infeasible. Birthday attack finds hash collisions in \( \sqrt{2^n} \). SHA-256 collision resistance 128 bits security.</p>
+                <h4>Meet‑in‑the‑Middle</h4>
+                <p>Weakens 2DES to \( 2^{57} \) complexity. Triple DES remains secure.</p>
+                <h4>Side‑Channel Attacks</h4>
+                <p>Timing (constant‑time code required), power analysis, cache (Prime+Probe). Mitigation: blinding, masking, constant‑time implementations.</p>
+            </div>
+            <div class="card">
+                <h4>Padding Oracle (CBC mode)</h4>
+                <p>POODLE, Lucky13, etc. Fixed by using AEAD (GCM) or encrypt‑then‑MAC.</p>
+                <h4>Quantum Computing Threats</h4>
+                <p>Shor’s algorithm factors integers and solves discrete logs → breaks RSA, ECC, DH. Grover’s algorithm reduces symmetric security by half (AES-128 → \( 2^{64} \) brute force).</p>
+                <h4>Length Extension Attack</h4>
+                <p>Vulnerable to MD‑based hashes (SHA‑1, SHA‑2). Not for SHA‑3 or truncated hashes.</p>
+            </div>
+        </div>
+        <div class="subsection">
+            <h3>Mathematical Attacks on RSA</h3>
+            <p>Low encryption exponent (\( e=3 \)) with small plaintext → cube root attack. Coppersmith’s theorem, Wiener’s attack for small d. Use strong padding (OAEP).</p>
+        </div>
+    </div>
+
+    <!-- PKI, Certificates, Digital Signatures -->
+    <div id="pki" class="section">
+        <div class="section-title">📜 Public Key Infrastructure (PKI)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>X.509 Certificates</h4>
+                <p>Bind identity to public key, signed by Certificate Authority (CA). Fields: subject, issuer, validity, public key, extensions. Chain of trust from root CA.</p>
+                <p>Revocation: CRL (Certificate Revocation List), OCSP (Online Certificate Status Protocol), OCSP stapling.</p>
+            </div>
+            <div class="card">
+                <h4>Digital Signatures</h4>
+                <p>RSA‑PSS, ECDSA, Ed25519. Signing: \( \sigma = \text{Sign}_{priv}(H(m)) \). Verification ensures integrity and non‑repudiation.</p>
+                <p><strong>Forward Secrecy</strong> – ephemeral keys (ECDHE) protect past sessions even if long‑term key leaked.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real‑World Protocols: TLS, SSH, IPsec -->
+    <div id="protocols" class="section">
+        <div class="section-title">🌐 Real‑World Cryptographic Protocols</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>TLS 1.3 (Transport Layer Security)</h4>
+                <p>Handshake: authenticated key exchange (ECDHE), certificates, AEAD (AES‑GCM, ChaCha20‑Poly1305). Removed weak ciphers (CBC, RC4). 0‑RTT session resumption. Protects confidentiality and integrity of web traffic.</p>
+            </div>
+            <div class="card">
+                <h4>SSH (Secure Shell)</h4>
+                <p>Key exchange (DH or ECDH), user authentication (password, public key), encryption (AES-CTR), MAC. Tunnels remote access.</p>
+            </div>
+            <div class="card">
+                <h4>IPsec (Internet Protocol Security)</h4>
+                <p>ESP (Encapsulating Security Payload) encrypts packets, AH (Authentication Header) provides integrity. IKE for key exchange. Used in VPNs.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post‑Quantum Cryptography (NIST finalists) -->
+    <div id="pqc" class="section">
+        <div class="section-title">🚀 Post‑Quantum Cryptography (NIST standardized)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Lattice‑based</h4>
+                <p><strong>CRYSTALS‑Kyber</strong> (key encapsulation), <strong>CRYSTALS‑Dilithium</strong> (signatures). Security based on Module‑LWE / Module‑SIS problems.</p>
+                <div class="math-block">\[ \text{LWE: } (A, b = As + e) \text{ with small error } e \]</div>
+            </div>
+            <div class="card">
+                <h4>Code‑based, Hash‑based</h4>
+                <p><strong>Classic McEliece</strong> – Goppa codes (large keys). <strong>SPHINCS+</strong> – stateless hash‑based signatures, slow but well‑understood.</p>
+                <p>Hybrid mode: combine classical (RSA/ECC) + PQC to protect against “harvest now, decrypt later” attacks.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Best Practices & Implementation Security -->
+    <div id="best" class="section">
+        <div class="section-title">🛡️ Best Practices for Cryptographic Implementation</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Use High‑Level Libraries</h4>
+                <p>libsodium, OpenSSL (modern APIs), BoringSSL, AWS‑LC. Never roll your own crypto.</p>
+                <h4>Random Number Generation</h4>
+                <p>Use cryptographically secure PRNG (CSPRNG): /dev/urandom, RtlGenRandom, getrandom(). Entropy seeding is critical.</p>
+                <h4>Key Management</h4>
+                <p>Key rotation, secure storage (HSM, TPM), access control. Never hardcode keys.</p>
+            </div>
+            <div class="card">
+                <h4>Const‑Time & Side‑Channel Resistance</h4>
+                <p>Fix timing leaks (avoid branching on secrets, table lookups). Use constant‑time functions (e.g., libsodium crypto_verify).</p>
+                <h4>Authenticated Encryption Always</h4>
+                <p>Prefer AEAD (ChaCha20‑Poly1305, AES‑GCM) over unauthenticated modes.</p>
+                <h4>Hash Usage</h4>
+                <p>For password storage: use Argon2 (winner of PHC), bcrypt, PBKDF2 with high iteration. Do not store plaintext.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional resources & references -->
+    <div class="section">
+        <div class="section-title">📚 References & Further Reading</div>
+        <div class="grid-2">
+            <div class="card">
+                <h4>Books</h4>
+                <p>“Cryptography Engineering” (Ferguson, Schneier), “Serious Cryptography” (Aumasson), “Handbook of Applied Cryptography” (Menezes).</p>
+            </div>
+            <div class="card">
+                <h4>Online Resources</h4>
+                <p>NIST SP 800‑series, IACR ePrint, Crypto Stack Exchange, <a href="https://cryptopals.com/" style="color:#a78bfa;">CryptoPals</a>, <a href="https://www.cryptographyacademy.com/" style="color:#a78bfa;">Cryptography Academy</a>, <a href="https://csrc.nist.gov/projects/post-quantum-cryptography" style="color:#a78bfa;">NIST PQC</a>.</p>
+            </div>
+        </div>
+        <p style="margin-top:1rem;">⚠️ <strong>Disclaimer:</strong> This guide is for educational purposes. Always rely on peer‑reviewed libraries and standards for security systems.</p>
+    </div>
+
+    <footer>🔐 Ultimate Cryptography Reference – accurate, complete, and ready for cyber security professionals.</footer>
+</div>
+
+<script>
+    // Animated particle background
+    const canvas = document.getElementById("crypto-bg");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.2 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.15 + 0.05;
+            this.alpha = Math.random() * 0.4 + 0.1;
+            this.color = `rgba(139, 92, 246, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < -20) this.x = canvas.width + 20;
+            if (this.x > canvas.width + 20) this.x = -20;
+            if (this.y < -20) this.y = canvas.height + 20;
+            if (this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = "#a78bfa";
+            ctx.fill();
+        }
+    }
+    function initParticles(cnt = 150) {
+        particles = [];
+        for (let i = 0; i < cnt; i++) particles.push(new Particle());
+    }
+    function animate() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles(160);
+    });
+    resizeCanvas();
+    initParticles(160);
+    animate();
+</script>
+</body>
+</html>

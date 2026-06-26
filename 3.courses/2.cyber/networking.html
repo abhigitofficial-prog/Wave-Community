@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🛡️ NetSec Academy | Full Networking & Cybersecurity Course</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0f1a, #02050c);
+            font-family: 'Inter', sans-serif;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+        #cyber-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .main-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        /* header */
+        .hero {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: rgba(0,0,0,0.4);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid #2dd4bf66;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(135deg, #67e8f9, #c084fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        /* section styles */
+        .section {
+            background: rgba(12, 18, 30, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid #2dd4bf66;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: 0.2s;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c4b5fd, #5eead4);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 5px solid #2dd4bf;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .info-card {
+            background: #0a0e1c;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid #2dd4bf40;
+        }
+        .info-card h3 {
+            color: #89f7e5;
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            border: 1px solid #2dd4bf60;
+            padding: 0.6rem;
+            text-align: left;
+        }
+        th {
+            background: #1a2540;
+            color: #b9f2ff;
+        }
+        .code-block {
+            background: #03060e;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            border-left: 3px solid #2dd4bf;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .badge {
+            display: inline-block;
+            background: #1e7f6e30;
+            border: 1px solid #2dd4bf;
+            border-radius: 2rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.75rem;
+            margin: 0.2rem;
+        }
+        .subnet-calc {
+            background: #050a14;
+            border-radius: 1.2rem;
+            padding: 1rem;
+        }
+        .subnet-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .subnet-row input, .subnet-row select {
+            background: #0c1220;
+            border: 1px solid #2dd4bf;
+            border-radius: 1.5rem;
+            padding: 0.6rem 1rem;
+            color: white;
+            font-family: monospace;
+            flex: 1;
+        }
+        button {
+            background: #2c5e5a;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #2dd4bf;
+            transform: scale(1.02);
+            box-shadow: 0 0 12px #5eead4;
+        }
+        .result-box {
+            background: #00000060;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+        hr {
+            border-color: #2dd4bf40;
+            margin: 1rem 0;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 2rem;
+        }
+        @media (max-width: 760px) {
+            .section-title { font-size: 1.4rem; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="cyber-particles"></canvas>
+<div class="main-container">
+    <div class="hero">
+        <h1>🛡️ Network Security Grimoire</h1>
+        <p>complete reference: subnetting • OSI model • devices • protocols • cyber attacks • defense tools</p>
+    </div>
+
+    <!-- Subnetting Masterclass -->
+    <div class="section">
+        <div class="section-title">🌐 Subnetting Masterclass (IPv4)</div>
+        <div class="grid-2">
+            <div>
+                <p><strong>CIDR & VLSM</strong> — Subnetting divides networks, reduces broadcast domains, improves security. <br>
+                <span class="badge">/24 → 256 IPs (254 usable)</span> <span class="badge">/25 → 128 IPs (126 usable)</span>
+                <span class="badge">/26 → 64 IPs</span> <span class="badge">/30 → 4 IPs (2 usable, point-to-point links)</span>
+                </p>
+                <div class="code-block">
+                    💡 Private IPv4 ranges (RFC 1918):<br>
+                    10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16<br>
+                    Loopback: 127.0.0.0/8, APIPA: 169.254.0.0/16
+                </div>
+                <table>
+                    <tr><th>Prefix</th><th>Subnet Mask</th><th>Wildcard</th><th>Hosts</th></tr>
+                    <tr><td>/24</td><td>255.255.255.0</td><td>0.0.0.255</td><td>256</td></tr>
+                    <tr><td>/25</td><td>255.255.255.128</td><td>0.0.0.127</td><td>128</td></tr>
+                    <tr><td>/26</td><td>255.255.255.192</td><td>0.0.0.63</td><td>64</td></tr>
+                    <tr><td>/27</td><td>255.255.255.224</td><td>0.0.0.31</td><td>32</td></tr>
+                </table>
+            </div>
+            <div class="subnet-calc">
+                <h3>⚡ Subnet Calculator (IPv4)</h3>
+                <div class="subnet-row">
+                    <input type="text" id="ipCalc" placeholder="IP Address" value="192.168.10.55">
+                    <input type="text" id="maskCalc" placeholder="CIDR or mask" value="/26">
+                </div>
+                <button id="subnetBtn">Calculate</button>
+                <div id="subnetResult" class="result-box" style="margin-top: 1rem;">Result will appear here</div>
+                <p style="font-size:0.75rem; margin-top:0.5rem;">🔹 Network, broadcast, first/last host, usable IPs, wildcard mask.</p>
+            </div>
+        </div>
+        <div class="info-card" style="margin-top: 1rem;">
+            <h3>🧠 Binary Subnetting Trick</h3>
+            <p>Convert CIDR to binary: 11111111.11111111.11111111.11000000 = /26 (192). Network bits = 26, host bits = 6 → 2^6 = 64 IPs. <br>
+            <strong>Security:</strong> Proper subnetting isolates sensitive departments (finance, HR) and reduces attack surface.</p>
+        </div>
+    </div>
+
+    <!-- OSI Model Deep Dive -->
+    <div class="section">
+        <div class="section-title">📡 OSI Model: 7 Layers (Security Focus)</div>
+        <div class="grid-2">
+            <div>
+                <div id="osi-layers-container" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+            </div>
+            <div>
+                <div class="info-card">
+                    <h3>🔐 Layer-based Attacks</h3>
+                    <ul style="margin-left: 1.2rem;">
+                        <li><strong>L1 Physical:</strong> Cable tapping, rogue devices</li>
+                        <li><strong>L2 Data Link:</strong> ARP spoofing, MAC flooding, VLAN hopping</li>
+                        <li><strong>L3 Network:</strong> IP spoofing, ICMP redirect, route poisoning</li>
+                        <li><strong>L4 Transport:</strong> SYN flood, port scanning, session hijacking</li>
+                        <li><strong>L5 Session:</strong> Session replay, man-in-the-middle</li>
+                        <li><strong>L6 Presentation:</strong> SSL/TLS downgrade, ransomware (encryption abuse)</li>
+                        <li><strong>L7 Application:</strong> SQLi, XSS, DNS poisoning, HTTP attacks</li>
+                    </ul>
+                </div>
+                <div class="code-block">
+                    ✅ Defense-in-depth: firewall at L3/L4, IDS/IPS at L2-L7, application gateway, TLS everywhere.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Networking Devices & Security -->
+    <div class="section">
+        <div class="section-title">🔌 Networking Devices & Security Functions</div>
+        <div class="grid-2">
+            <div>
+                <table>
+                    <tr><th>Device</th><th>Layer</th><th>Security Role</th></tr>
+                    <tr><td>Router</td><td>L3</td><td>ACLs, NAT, VPN termination, route filtering</td></tr>
+                    <tr><td>Switch</td><td>L2</td><td>Port security, 802.1X, DHCP snooping, VLAN segregation</td></tr>
+                    <tr><td>Firewall</td><td>L3-L7</td><td>Stateful inspection, application filtering, IPS integration</td></tr>
+                    <tr><td>IDS/IPS</td><td>L2-L7</td><td>Signature/anomaly detection, packet inspection</td></tr>
+                    <tr><td>Proxy Server</td><td>L7</td><td>Anonymity, URL filtering, caching, malware scanning</td></tr>
+                    <tr><td>Load Balancer</td><td>L4/L7</td><td>SSL offloading, DDoS mitigation, WAF integration</td></tr>
+                    <tr><td>NAC (Network Access Control)</td><td>L2</td><td>Pre-admission posture checks, quarantine</td></tr>
+                </table>
+            </div>
+            <div>
+                <div class="info-card">
+                    <h3>🛡️ Hardening Recommendations</h3>
+                    <p>✔ Disable unused ports/services, enable logging, use SSH not Telnet, implement ACLs, segment VLANs, update firmware, enable BPDU guard on access ports.</p>
+                    <p>✔ <strong>Zero trust model:</strong> micro-segmentation, least privilege, continuous verification.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Protocols and Ports -->
+    <div class="section">
+        <div class="section-title">📜 Essential Protocols & Ports Cheatsheet</div>
+        <div class="grid-2">
+            <div>
+                <table>
+                    <tr><th>Protocol</th><th>Port</th><th>Type</th><th>Security Notes</th></tr>
+                    <tr><td>HTTP</td><td>80/tcp</td><td>Web</td><td>Plaintext, vulnerable to sniffing → upgrade to HTTPS</td></tr>
+                    <tr><td>HTTPS</td><td>443/tcp</td><td>Web secure</td><td>TLS/SSL, certificate validation essential</td></tr>
+                    <tr><td>SSH</td><td>22/tcp</td><td>Remote access</td><td>Secure alternative to Telnet, key auth recommended</td></tr>
+                    <tr><td>DNS</td><td>53/udp/tcp</td><td>Name resolution</td><td>DNS spoofing, use DNSSEC, restrict zone transfers</td></tr>
+                    <tr><td>DHCP</td><td>67/68/udp</td><td>IP assignment</td><td>Rogue DHCP risks → DHCP snooping</td></tr>
+                    <tr><td>ICMP</td><td>n/a</td><td>Network control</td><td>Ping flood, ICMP redirect attacks, filter selectively</td></tr>
+                    <tr><td>SNMP</td><td>161/udp</td><td>Management</td><td>Use SNMPv3 with encryption, change community strings</td></tr>
+                    <tr><td>RDP</td><td>3389/tcp</td><td>Remote desktop</td><td>Bruteforce target, use gateway and MFA</td></tr>
+                </table>
+            </div>
+            <div>
+                <div class="info-card">
+                    <h3>⚔️ Common Network Attacks</h3>
+                    <p>▪ <strong>ARP Spoofing:</strong> MITM on local network → use Dynamic ARP Inspection (DAI)</p>
+                    <p>▪ <strong>DNS Cache Poisoning:</strong> Redirects users to malicious sites → DNSSEC</p>
+                    <p>▪ <strong>DDoS:</strong> Volumetric (UDP flood), protocol (SYN flood), application (HTTP slowloris)</p>
+                    <p>▪ <strong>VLAN Hopping:</strong> Double tagging, switch spoofing → disable trunk on user ports</p>
+                    <p>▪ <strong>Port Scanning:</strong> Reconnaissance tool, block with firewall rate-limiting</p>
+                </div>
+            </div>
+        </div>
+        <div class="code-block">
+            # Example: Nmap scan for open ports (defensive awareness)<br>
+            nmap -sS -p- 192.168.1.1<br>
+            # detection: IDS sees SYN scans, log analysis, port knock alternatives
+        </div>
+    </div>
+
+    <!-- Defensive Tools & Analysis 
+    <div class="section"> ... -->
+    <div class="section">
+        <div class="section-title">🛠️ Defensive Tools & Analysis</div>
+        <div class="grid-2">
+            <div class="info-card">
+                <h3>🔎 Packet Analyzers & IDS/IPS</h3>
+                <p><strong>Wireshark/tcpdump:</strong> Capture traffic, filter (e.g., `tcp.port == 443`), detect anomalies.</p>
+                <p><strong>Snort/Suricata:</strong> Rule-based intrusion detection (e.g., alert for SQL injection patterns).</p>
+                <p><strong>Zeek (Bro):</strong> Network analysis framework, logs metadata, detects scans.</p>
+                <p><strong>Security Onion:</strong> Linux distro for NSM (full packet capture, alerting).</p>
+            </div>
+            <div class="info-card">
+                <h3>🧪 Lab & Hardening Tools</h3>
+                <p><strong>Netdiscover / arp-scan:</strong> Network mapping.</p>
+                <p><strong>OpenVAS / Nessus:</strong> Vulnerability scanning.</p>
+                <p><strong>Hping3:</strong> Custom packet crafting (testing firewall rules).</p>
+                <p><strong>Metasploit:</strong> For authorised penetration testing.</p>
+                <div class="code-block">
+                    # Prevent ARP poisoning with static ARP (temporary)<br>
+                    arp -s 192.168.1.1 aa:bb:cc:dd:ee:ff
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Extra: IPv6, Wireless Security, Cloud Networking -->
+    <div class="section">
+        <div class="section-title">🌍 Advanced: IPv6, Wireless & Cloud Security</div>
+        <div class="grid-2">
+            <div>
+                <h3>🔹 IPv6 Subnetting Basics</h3>
+                <p>IPv6 uses 128-bit addresses, standard prefix /64 for LAN. SLAAC (Stateless autoconfig). Security: privacy extensions (temporary addresses), ICMPv6 neighbor discovery spoofing → use RA guard, SEND (Secure Neighbor Discovery).</p>
+                <h3 style="margin-top: 1rem;">📡 Wireless Security</h3>
+                <p>WPA3 (SAE) replaces WPA2-PSK. Avoid WEP/WPA-TKIP. Use 802.1X (Enterprise) with RADIUS. Disable WPS, enable management frame protection (PMF).</p>
+            </div>
+            <div>
+                <h3>☁️ Cloud Networking (AWS/Azure)</h3>
+                <p>VPC, security groups (stateful firewall), NACLs (stateless), network ACLs, flow logs, DDoS protection (AWS Shield, Azure DDoS). Zero trust: micro-segmentation, service mesh (Istio).</p>
+                <div class="code-block">
+                    # Example: restrict SSH access to a jump host using VPC security group<br>
+                    aws ec2 authorize-security-group-ingress --group-id sg-xxx --protocol tcp --port 22 --cidr 203.0.113.0/24
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>⚡ Full reference: subnetting calculator, OSI layers, device hardening, protocols, attacks & tools. Keep networks secure!</footer>
+</div>
+
+<script>
+    // OSI Layers full data (detailed)
+    const osiData = [
+        { layer: "7. Application", description: "HTTP, FTP, SMTP, DNS — End-user services", attack: "SQLi, XSS, Phishing" },
+        { layer: "6. Presentation", description: "Encryption (TLS), compression, translation", attack: "SSL/TLS downgrade, format string" },
+        { layer: "5. Session", description: "Session management, authentication", attack: "Session hijacking, replay attacks" },
+        { layer: "4. Transport", description: "TCP/UDP, segmentation, error control", attack: "SYN flood, port scanning" },
+        { layer: "3. Network", description: "IPv4/IPv6 routing, ICMP, ARP", attack: "IP spoofing, ICMP redirect, route poisoning" },
+        { layer: "2. Data Link", description: "MAC addresses, switching, LLC", attack: "ARP spoofing, MAC flooding, VLAN hopping" },
+        { layer: "1. Physical", description: "Bits over medium (cable, radio)", attack: "Cable tapping, rogue device" }
+    ];
+
+    const osiContainer = document.getElementById("osi-layers-container");
+    if (osiContainer) {
+        osiData.forEach(item => {
+            const div = document.createElement("div");
+            div.style.background = "#0d1224";
+            div.style.borderRadius = "1rem";
+            div.style.padding = "0.6rem 1rem";
+            div.style.borderLeft = "4px solid #2dd4bf";
+            div.style.marginBottom = "0.5rem";
+            div.style.cursor = "pointer";
+            div.innerHTML = `<strong>${item.layer}</strong> — ${item.description}<br><span style="font-size:0.7rem; color:#a5f3e5;">🛡️ Attack example: ${item.attack}</span>`;
+            div.addEventListener("click", () => {
+                alert(`🔐 ${item.layer}\nRole: ${item.description}\nCommon Attacks: ${item.attack}`);
+            });
+            osiContainer.appendChild(div);
+        });
+    }
+
+    // Subnet Calculator Logic (enhanced)
+    function ipToLong(ip) {
+        const oct = ip.split('.');
+        if (oct.length !== 4) return null;
+        for (let o of oct) if (isNaN(parseInt(o)) || parseInt(o) < 0 || parseInt(o) > 255) return null;
+        return ((parseInt(oct[0]) << 24) >>> 0) + ((parseInt(oct[1]) << 16) >>> 0) + ((parseInt(oct[2]) << 8) >>> 0) + parseInt(oct[3]);
+    }
+    function longToIp(long) {
+        return ((long >>> 24) & 0xff) + "." + ((long >>> 16) & 0xff) + "." + ((long >>> 8) & 0xff) + "." + (long & 0xff);
+    }
+    function cidrFromMask(maskStr) {
+        let mask = ipToLong(maskStr);
+        if (mask === null) return null;
+        let cidr = 0;
+        for (let i = 31; i >= 0; i--) if ((mask >> i) & 1) cidr++; else break;
+        return cidr;
+    }
+    function parseMaskOrCidr(input) {
+        if (input.startsWith('/')) {
+            let c = parseInt(input.substring(1));
+            if (!isNaN(c) && c >= 0 && c <= 32) return c;
+        } else if (input.includes('.')) {
+            let c = cidrFromMask(input);
+            if (c !== null) return c;
+        } else {
+            let c = parseInt(input);
+            if (!isNaN(c) && c >= 0 && c <= 32) return c;
+        }
+        return null;
+    }
+
+    function computeSubnet(ipStr, maskOrCidr) {
+        let cidr = parseMaskOrCidr(maskOrCidr);
+        if (cidr === null) return null;
+        let ipLong = ipToLong(ipStr);
+        if (ipLong === null) return null;
+        let maskLong = 0xffffffff << (32 - cidr) >>> 0;
+        let network = ipLong & maskLong;
+        let broadcast = network | (~maskLong >>> 0);
+        let firstHost = network + 1;
+        let lastHost = broadcast - 1;
+        let totalIPs = broadcast - network + 1;
+        let usable = totalIPs - 2;
+        if (cidr === 31) { firstHost = network; lastHost = broadcast; usable = 2; }
+        if (cidr === 32) { firstHost = network; lastHost = network; usable = 1; totalIPs = 1; }
+        let wildcard = longToIp(~maskLong >>> 0);
+        return {
+            network: longToIp(network),
+            broadcast: longToIp(broadcast),
+            firstHost: (cidr <= 30) ? longToIp(firstHost) : (cidr===31 ? longToIp(firstHost) : "none"),
+            lastHost: (cidr <= 30) ? longToIp(lastHost) : (cidr===31 ? longToIp(lastHost) : "none"),
+            netmask: longToIp(maskLong),
+            cidr: cidr,
+            totalIPs: totalIPs,
+            usable: usable,
+            wildcard: wildcard
+        };
+    }
+
+    const ipField = document.getElementById("ipCalc");
+    const maskField = document.getElementById("maskCalc");
+    const resultDiv = document.getElementById("subnetResult");
+    const calcBtn = document.getElementById("subnetBtn");
+
+    function updateSubnet() {
+        let ip = ipField.value.trim();
+        let maskInput = maskField.value.trim();
+        if (!ip || !maskInput) {
+            resultDiv.innerHTML = "⚠️ Provide IP address and subnet mask (e.g., /26 or 255.255.255.192)";
+            return;
+        }
+        let res = computeSubnet(ip, maskInput);
+        if (!res) {
+            resultDiv.innerHTML = "❌ Invalid IPv4 or CIDR/mask format.";
+            return;
+        }
+        resultDiv.innerHTML = `
+            <strong>Network:</strong> ${res.network}<br>
+            <strong>Broadcast:</strong> ${res.broadcast}<br>
+            <strong>First usable host:</strong> ${res.firstHost}<br>
+            <strong>Last usable host:</strong> ${res.lastHost}<br>
+            <strong>Subnet Mask:</strong> ${res.netmask} (/${res.cidr})<br>
+            <strong>Wildcard Mask:</strong> ${res.wildcard}<br>
+            <strong>Total IPs:</strong> ${res.totalIPs} | <strong>Usable Hosts:</strong> ${res.usable}
+        `;
+    }
+    if (calcBtn) calcBtn.addEventListener("click", updateSubnet);
+    window.addEventListener("load", updateSubnet);
+
+    // animated particles
+    const canvas = document.getElementById("cyber-particles");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.5 + 1;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.2 + 0.05;
+            this.alpha = Math.random() * 0.5 + 0.1;
+            this.color = `rgba(45, 212, 191, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < -20) this.x = canvas.width + 20;
+            if (this.x > canvas.width + 20) this.x = -20;
+            if (this.y < -20) this.y = canvas.height + 20;
+            if (this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = "#2dd4bf";
+            ctx.fill();
+        }
+    }
+    function initParticles(n=150) {
+        particles = [];
+        for(let i=0;i<n;i++) particles.push(new Particle());
+    }
+    function animate() {
+        if(!ctx) return;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let p of particles) { p.update(); p.draw(); }
+        requestAnimationFrame(animate);
+    }
+    window.addEventListener('resize', () => { resizeCanvas(); initParticles(160); });
+    resizeCanvas();
+    initParticles(160);
+    animate();
+</script>
+</body>
+</html>

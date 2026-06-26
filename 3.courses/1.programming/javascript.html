@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>✨ Enchanted JS Academy ✨ | Master JavaScript Magic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, #0c0a1e, #020013);
+            color: #f1eaff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* enchanted particles canvas */
+        #magic-dust {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* main layout */
+        .app-wrapper {
+            display: flex;
+            flex-direction: row;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            gap: 1rem;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* sidebar — enchanted tree */
+        .grimoire-sidebar {
+            width: 320px;
+            background: rgba(10, 5, 25, 0.65);
+            backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(180, 130, 255, 0.4);
+            padding: 1.2rem 0.8rem;
+            overflow-y: auto;
+            max-height: 90vh;
+            position: sticky;
+            top: 1.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s;
+        }
+
+        .grimoire-sidebar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .tree-nav {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .tree-nav, .tree-nav ul {
+            list-style: none;
+            padding-left: 1.2rem;
+        }
+
+        .tree-nav li {
+            margin: 0.35rem 0;
+        }
+
+        .tree-node-btn {
+            background: rgba(35, 25, 65, 0.7);
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 0.8rem;
+            border-radius: 1.2rem;
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #e8d9ff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            backdrop-filter: blur(4px);
+            border-left: 3px solid #9b7bff;
+        }
+
+        .tree-node-btn:hover {
+            background: #6b4fbbcc;
+            transform: translateX(6px);
+            box-shadow: 0 0 12px #b77eff;
+            border-left-color: #ffcd94;
+        }
+
+        .active-topic {
+            background: linear-gradient(95deg, #865dff, #5a2dcf);
+            box-shadow: 0 0 12px #bb99ff;
+            border-left-color: #ffd966;
+            color: white;
+        }
+
+        .tree-icon {
+            font-size: 1.1rem;
+        }
+
+        /* main content area — spellbook */
+        .spellbook-main {
+            flex: 1;
+            background: rgba(12, 8, 28, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(200, 170, 255, 0.4);
+            padding: 1.8rem 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transition: 0.2s;
+        }
+
+        .topic-title {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffdf9e, #cfabff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px dashed #aa88ff60;
+            padding-bottom: 0.6rem;
+        }
+
+        .explanation {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            background: #00000030;
+            padding: 1rem 1.2rem;
+            border-radius: 1.5rem;
+            border-left: 5px solid #b77eff;
+        }
+
+        .code-block {
+            background: #0a0520;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid #5f43b0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #d6c5ff;
+        }
+
+        .run-btn {
+            background: #8f6eff;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0.5rem;
+            box-shadow: 0 2px 8px #6544cc;
+        }
+
+        .run-btn:hover {
+            background: #b37eff;
+            transform: scale(1.02);
+            box-shadow: 0 0 12px #d4a5ff;
+        }
+
+        .output-area {
+            background: #030018;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            border: 1px solid #6f4fcf;
+            color: #caffb9;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+        }
+
+        .output-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            color: #bda6ff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 800px) {
+            .app-wrapper {
+                flex-direction: column;
+            }
+            .grimoire-sidebar {
+                width: 100%;
+                max-height: 400px;
+                position: relative;
+                top: 0;
+            }
+            .spellbook-main {
+                padding: 1rem;
+            }
+            .topic-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<canvas id="magic-dust"></canvas>
+<div class="app-wrapper">
+    <aside class="grimoire-sidebar">
+        <div style="padding-left: 0.5rem; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem;">📖 JS Grimoire</div>
+        <div id="nav-tree-container"></div>
+    </aside>
+    <main class="spellbook-main" id="main-content">
+        <div class="topic-title">
+            <span>🔮</span> <span id="topic-name">JavaScript Enchantment</span>
+        </div>
+        <div id="explanation-area" class="explanation">
+            ✨ Select any topic from the enchanted tree to reveal spells, examples and runnable incantations.
+        </div>
+        <div id="code-area" style="display: none;">
+            <div class="code-block"><pre id="code-snippet"></pre></div>
+            <button class="run-btn" id="run-code-btn">⚡ Cast Spell (Run Code)</button>
+            <div class="output-area">
+                <div class="output-label">📜 CONSOLE OUTPUT</div>
+                <div id="console-output">// output will appear here ...</div>
+            </div>
+        </div>
+        <div id="end-message-area" style="display: none;"></div>
+    </main>
+</div>
+<footer>🌙 every node holds executable magic — click, learn, and run</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // 1. BUILD THE FULL TREE STRUCTURE (exactly matching the given spec)
+    // --------------------------------------------------------------
+    const jsTree = [
+        { name: "Variables", children: [{ name: "var" }, { name: "let" }, { name: "const" }] },
+        { name: "Data Types", children: [{ name: "String" }, { name: "Number" }, { name: "Boolean" }, { name: "Object" }, { name: "Array" }, { name: "Null" }, { name: "Undefined" }] },
+        { name: "Operators", children: [{ name: "Arithmetic" }, { name: "Assignment" }, { name: "Comparison" }, { name: "Logical" }, { name: "Unary" }, { name: "Ternary (Conditional)" }] },
+        { name: "Control Flow", children: [{ name: "if statement" }, { name: "else statement" }, { name: "else if statement" }, { name: "switch statement" }, { name: "for loop" }, { name: "while loop" }, { name: "do-while loop" }] },
+        { name: "Functions", children: [{ name: "Function declaration" }, { name: "Function expression" }, { name: "Arrow function" }, { name: "IIFE (Immediately Invoked Function Expression)" }] },
+        { name: "Scope", children: [{ name: "Global scope" }, { name: "Local scope" }, { name: "Block scope" }, { name: "Lexical scope" }] },
+        { name: "Arrays", children: [
+            { name: "Array methods", children: [{ name: "push()" }, { name: "pop()" }, { name: "shift()" }, { name: "unshift()" }, { name: "splice()" }, { name: "slice()" }, { name: "concat()" }] },
+            { name: "Array iteration", children: [{ name: "forEach()" }, { name: "map()" }, { name: "filter()" }, { name: "reduce()" }] }
+        ] },
+        { name: "Objects", children: [
+            { name: "Object properties", children: [{ name: "Dot notation" }, { name: "Bracket notation" }] },
+            { name: "Object methods", children: [{ name: "Object.keys()" }, { name: "Object.values()" }, { name: "Object.entries()" }] },
+            { name: "Object destructuring" }
+        ] },
+        { name: "Promises", children: [
+            { name: "Promise states", children: [{ name: "Pending" }, { name: "Fulfilled" }, { name: "Rejected" }] },
+            { name: "Promise methods", children: [{ name: "then()" }, { name: "catch()" }, { name: "finally()" }] },
+            { name: "Promise.all()" }
+        ] },
+        { name: "Asynchronous JavaScript", children: [{ name: "Callbacks" }, { name: "Promises" }, { name: "Async/Await" }] },
+        { name: "Error Handling", children: [{ name: "try...catch statement" }, { name: "throw statement" }] },
+        { name: "JSON (JavaScript Object Notation)" },
+        { name: "Modules", children: [{ name: "import" }, { name: "export" }] },
+        { name: "DOM Manipulation", children: [{ name: "Selecting elements" }, { name: "Modifying elements" }, { name: "Creating elements" }] },
+        { name: "Events", children: [{ name: "Event listeners" }, { name: "Event propagation" }, { name: "Event delegation" }] },
+        { name: "AJAX (Asynchronous JavaScript and XML)" },
+        { name: "Fetch API" },
+        { name: "ES6+ Features", children: [{ name: "Template literals" }, { name: "Destructuring assignment" }, { name: "Spread/rest operator" }, { name: "Arrow functions" }, { name: "Classes" }, { name: "let and const" }, { name: "Default parameters" }, { name: "Modules" }, { name: "Promises" }] },
+        { name: "Web APIs", children: [{ name: "Local Storage" }, { name: "Session Storage" }, { name: "Web Storage API" }] },
+        { name: "Libraries and Frameworks", children: [{ name: "React" }, { name: "Angular" }, { name: "Vue.js" }] },
+        { name: "Debugging", children: [{ name: "Console.log()" }, { name: "Breakpoints" }, { name: "DevTools" }] },
+        { name: "Others", children: [{ name: "Closures" }, { name: "Callbacks" }, { name: "Prototypes" }, { name: "this keyword" }, { name: "Hoisting" }, { name: "Strict mode" }] },
+        { name: "END" }
+    ];
+
+    // ----- helper to flatten path and generate content map -----
+    let contentMap = new Map(); // key = path (e.g., "Variables/var") or just leaf name for categories
+    
+    // generate rich explanations + runnable examples for every leaf node
+    function buildContentLibrary() {
+        // generic fallback
+        const genericExample = (topic) => `// Example for ${topic}\nconsole.log("Exploring ${topic} in JavaScript!");\nlet magic = "✨✨";\nconsole.log(magic);`;
+        
+        // specific content (hand-crafted for all major nodes)
+        const specifics = {
+            "var": { desc: "`var` is function-scoped, can be redeclared, hoisted with `undefined`. Legacy but still encountered.", code: "function demoVar() {\n  if(true) { var x = 10; }\n  console.log(x); // 10 (leaks block)\n}\ndemoVar();\nvar y = 5;\nvar y = 7; // allowed\nconsole.log(y);" },
+            "let": { desc: "`let` is block-scoped, cannot be redeclared in same scope, TDZ (Temporal Dead Zone). Preferred for mutable variables.", code: "let a = 10;\nif (true) {\n  let a = 20;\n  console.log(a); // 20\n}\nconsole.log(a); // 10\n// let a = 30; Error" },
+            "const": { desc: "`const` is block-scoped, must be initialized, cannot be reassigned. However, object properties can mutate.", code: "const PI = 3.14159;\n// PI = 3.14; // Error\nconst person = { name: 'Merlin' };\nperson.name = 'Morgana';\nconsole.log(person);" },
+            "String": { desc: "Text sequences, immutable. Methods like .length, .slice(), .replace().", code: "let spell = 'Abracadabra';\nconsole.log(spell.length);\nconsole.log(spell.slice(0,5));\nconsole.log(spell.toUpperCase());" },
+            "Number": { desc: "Integers & floats, special values NaN, Infinity.", code: "let num = 42;\nlet pi = 3.14;\nconsole.log(num + pi);\nconsole.log(0/0); // NaN" },
+            "Boolean": { desc: "true or false. Logical heart.", code: "let isMagic = true;\nif (isMagic) console.log('✨ magic flows');\nconsole.log(Boolean(0)); // false" },
+            "Object": { desc: "Key-value pairs, dynamic.", code: "let grimoire = { title: 'JS Ench', pages: 999 };\nconsole.log(grimoire.title);\ngrimoire.author = 'Wizard';\nconsole.log(grimoire);" },
+            "Array": { desc: "Ordered lists, zero-indexed.", code: "let elements = ['fire', 'water', 'earth'];\nconsole.log(elements[1]);\nelements.push('air');\nconsole.log(elements);" },
+            "Null": { desc: "Intentional absence of value, typeof returns 'object'.", code: "let empty = null;\nconsole.log(empty);\nconsole.log(typeof empty);" },
+            "Undefined": { desc: "Variable declared but not assigned.", code: "let ghost;\nconsole.log(ghost); // undefined" },
+            "Arrow function": { desc: "Concise syntax, lexical `this`.", code: "const add = (a,b) => a+b;\nconsole.log(add(5,3));\nconst greet = () => 'Hello Enchanted!';\nconsole.log(greet());" },
+            "IIFE": { desc: "Immediately Invoked Function Expression creates private scope.", code: "(function() { var secret = 42; console.log('IIFE runs once', secret); })();\n// secret not accessible" },
+            "map()": { desc: "Creates new array by transforming each element.", code: "const nums = [1,2,3];\nconst doubled = nums.map(n => n*2);\nconsole.log(doubled);" },
+            "filter()": { desc: "Returns array with elements that pass test.", code: "const ages = [12, 25, 18, 30];\nconst adults = ages.filter(age => age >= 18);\nconsole.log(adults);" },
+            "reduce()": { desc: "Accumulates values.", code: "const values = [5,10,15];\nconst sum = values.reduce((acc, curr) => acc + curr, 0);\nconsole.log(sum);" },
+            "Promise.all()": { desc: "Waits for all promises to resolve.", code: "const p1 = Promise.resolve(3);\nconst p2 = 42;\nconst p3 = new Promise((resolve) => setTimeout(resolve, 100, 'foo'));\nPromise.all([p1, p2, p3]).then(values => console.log(values));" },
+            "Async/Await": { desc: "Syntactic sugar for Promises.", code: "async function fetchData() {\n  let promise = new Promise(resolve => setTimeout(() => resolve('✨ resolved'), 500));\n  let result = await promise;\n  console.log(result);\n}\nfetchData();" },
+            "Fetch API": { desc: "Modern way to make HTTP requests.", code: "fetch('https://jsonplaceholder.typicode.com/todos/1')\n  .then(res => res.json())\n  .then(data => console.log(data))\n  .catch(err => console.error(err));" },
+            "Closures": { desc: "Function that remembers its outer variables.", code: "function outer(outerVar) {\n  return function inner(innerVar) {\n    console.log(outerVar, innerVar);\n  };\n}\nconst closureFn = outer('hello');\nclosureFn('world');" },
+            "this keyword": { desc: "Refers to execution context.", code: "const obj = { name: 'Spell', greet() { console.log(this.name); } };\nobj.greet();" },
+            "Hoisting": { desc: "Variable/function declarations moved to top.", code: "console.log(hoistedVar); // undefined\nvar hoistedVar = 'works';\nhoistedFunc();\nfunction hoistedFunc() { console.log('hoisted!'); }" },
+            "END": { desc: "🏁 You've reached the final node of the Enchanted JavaScript tree. Master these concepts, and you shall become a true JavaScript Archmage. Keep coding, keep enchanting! ✨", code: "console.log('Congratulations! You completed the JS Grimoire! 🧙‍♂️');" },
+            "Local Storage": { desc: "Persistent client-side storage (5-10MB).", code: "localStorage.setItem('wizard', 'Merlin');\nconsole.log(localStorage.getItem('wizard'));\nlocalStorage.removeItem('wizard');" },
+            "Session Storage": { desc: "Storage for session lifetime.", code: "sessionStorage.setItem('temp', 'magic');\nconsole.log(sessionStorage.getItem('temp'));" }
+        };
+        
+        // recursive function to fill map
+        function traverse(nodes, parentPath = "") {
+            for (let node of nodes) {
+                const currentPath = parentPath ? `${parentPath}/${node.name}` : node.name;
+                if (!node.children || node.children.length === 0) {
+                    let desc, code;
+                    if (specifics[node.name]) {
+                        desc = specifics[node.name].desc;
+                        code = specifics[node.name].code;
+                    } else {
+                        desc = `Explore the mystical realm of "${node.name}". This concept is fundamental in modern JavaScript. Practice with the example below.`;
+                        code = genericExample(node.name);
+                    }
+                    contentMap.set(currentPath, { desc, code, isLeaf: true });
+                } else {
+                    contentMap.set(currentPath, { desc: `📚 Category: ${node.name}. Click on any sub-topic to learn and run code.`, code: null, isLeaf: false });
+                    traverse(node.children, currentPath);
+                }
+            }
+        }
+        traverse(jsTree);
+    }
+    buildContentLibrary();
+    
+    // --------------------------------------------------------------
+    // 2. RENDER SIDEBAR TREE
+    // --------------------------------------------------------------
+    function renderTree(container, nodes, currentPath = "") {
+        const ul = document.createElement("ul");
+        ul.className = "tree-nav";
+        for (let node of nodes) {
+            const li = document.createElement("li");
+            const nodePath = currentPath ? `${currentPath}/${node.name}` : node.name;
+            const btn = document.createElement("button");
+            btn.className = "tree-node-btn";
+            const icon = node.children ? "📂" : "✨";
+            btn.innerHTML = `<span class="tree-icon">${icon}</span> <span>${node.name}</span>`;
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.tree-node-btn').forEach(btn => btn.classList.remove('active-topic'));
+                btn.classList.add('active-topic');
+                loadTopic(nodePath, node.name);
+            });
+            li.appendChild(btn);
+            if (node.children && node.children.length) {
+                const childContainer = renderTree(li, node.children, nodePath);
+                li.appendChild(childContainer);
+            }
+            ul.appendChild(li);
+        }
+        container.appendChild(ul);
+        return ul;
+    }
+    
+    const navContainer = document.getElementById("nav-tree-container");
+    renderTree(navContainer, jsTree);
+    
+    // --------------------------------------------------------------
+    // 3. LOAD TOPIC INTO MAIN VIEW with runnable code
+    // --------------------------------------------------------------
+    let currentCodeSnippet = "";
+    function loadTopic(path, displayName) {
+        const topicData = contentMap.get(path);
+        const explanationDiv = document.getElementById("explanation-area");
+        const topicTitleSpan = document.getElementById("topic-name");
+        const codeAreaDiv = document.getElementById("code-area");
+        const endArea = document.getElementById("end-message-area");
+        const codePre = document.getElementById("code-snippet");
+        
+        topicTitleSpan.innerText = displayName;
+        endArea.style.display = "none";
+        
+        if (topicData && topicData.isLeaf) {
+            explanationDiv.innerHTML = `<span style="font-size:1.2rem;">📜 Spellbook entry</span><br>${topicData.desc}`;
+            if (topicData.code) {
+                currentCodeSnippet = topicData.code;
+                codePre.innerText = currentCodeSnippet;
+                codeAreaDiv.style.display = "block";
+                // reset output
+                document.getElementById("console-output").innerHTML = "// output will appear here ...";
+            } else {
+                codeAreaDiv.style.display = "none";
+            }
+        } else if (topicData && !topicData.isLeaf) {
+            explanationDiv.innerHTML = `<span style="font-size:1.1rem;">🌿 ${displayName}</span><br>${topicData.desc} <br> ✦ Browse the branches below to unlock deeper knowledge. ✦`;
+            codeAreaDiv.style.display = "none";
+        } else {
+            explanationDiv.innerHTML = `✨ "${displayName}" — enchanted wisdom awaits. Click on any leaf node to run spells.`;
+            codeAreaDiv.style.display = "none";
+        }
+        
+        // handle END special
+        if (displayName === "END") {
+            const endData = contentMap.get(path);
+            if(endData) explanationDiv.innerHTML = `🏁 ${endData.desc}`;
+            if(endData?.code) {
+                currentCodeSnippet = endData.code;
+                codePre.innerText = currentCodeSnippet;
+                codeAreaDiv.style.display = "block";
+            } else codeAreaDiv.style.display = "block";
+        }
+        
+        // set run button behavior
+        const runBtn = document.getElementById("run-code-btn");
+        const oldRun = runBtn.cloneNode(true);
+        runBtn.parentNode.replaceChild(oldRun, runBtn);
+        oldRun.addEventListener("click", () => {
+            runCodeSnippet(currentCodeSnippet);
+        });
+    }
+    
+    // safe code runner capturing console logs
+    function runCodeSnippet(code) {
+        const outputDiv = document.getElementById("console-output");
+        outputDiv.innerHTML = "";
+        let logs = [];
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        console.log = (...args) => {
+            logs.push(args.map(arg => {
+                if (typeof arg === 'object') return JSON.stringify(arg, null, 2);
+                return String(arg);
+            }).join(" "));
+            originalLog(...args);
+        };
+        console.error = (...args) => {
+            logs.push("❌ " + args.map(String).join(" "));
+            originalError(...args);
+        };
+        console.warn = (...args) => {
+            logs.push("⚠️ " + args.map(String).join(" "));
+            originalWarn(...args);
+        };
+        
+        try {
+            const asyncFlag = code.includes('await') || code.includes('fetch') || code.includes('Promise');
+            const execFunction = new Function('console', code);
+            const result = execFunction(console);
+            if (result instanceof Promise) {
+                result.then(() => {}).catch(err => logs.push("🔥 Promise error: " + err.message));
+                setTimeout(() => {
+                    if (logs.length === 0) logs.push("⚡ Promise resolved (async output above may be delayed)");
+                    outputDiv.innerHTML = logs.map(l => `> ${l}`).join("\n");
+                    console.log = originalLog;
+                }, 200);
+            } else {
+                if (logs.length === 0 && result !== undefined) logs.push(String(result));
+                outputDiv.innerHTML = logs.map(l => `> ${l}`).join("\n");
+                console.log = originalLog;
+            }
+        } catch (err) {
+            logs.push(`💀 Spell backfire: ${err.message}`);
+            outputDiv.innerHTML = logs.map(l => `> ${l}`).join("\n");
+            console.log = originalLog;
+        } finally {
+            setTimeout(() => {
+                if (!outputDiv.innerHTML) outputDiv.innerHTML = "// (no output)";
+                console.log = originalLog;
+                console.error = originalError;
+                console.warn = originalWarn;
+            }, 50);
+        }
+    }
+    
+    // --------------------------------------------------------------
+    // 4. ENCHANTED PARTICLE BACKGROUND
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("magic-dust");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class MagicParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.radius = Math.random() * 2.5 + 0.8;
+            this.speedX = (Math.random() - 0.5) * 0.3;
+            this.speedY = (Math.random() - 0.5) * 0.2 + 0.1;
+            this.alpha = Math.random() * 0.5 + 0.2;
+            this.color = `hsla(${Math.random() * 40 + 260}, 70%, 65%, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < -10) this.x = canvas.width + 10;
+            if (this.x > canvas.width + 10) this.x = -10;
+            if (this.y < -10) this.y = canvas.height + 10;
+            if (this.y > canvas.height + 10) this.y = -10;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = `rgba(170, 110, 255, 0.5)`;
+            ctx.fill();
+        }
+    }
+    function initParticles(count=100) {
+        particles = [];
+        for(let i=0;i<count;i++) particles.push(new MagicParticle());
+    }
+    function animateParticles() {
+        if(!ctx) return;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles(110);
+    });
+    resizeCanvas();
+    initParticles(130);
+    animateParticles();
+    
+    // default load first topic
+    setTimeout(() => {
+        const firstBtn = document.querySelector('.tree-node-btn');
+        if (firstBtn) firstBtn.click();
+    }, 200);
+</script>
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+</html>

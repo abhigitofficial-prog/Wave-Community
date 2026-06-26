@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🔷 C# Grimoire | .NET Enchanted Scroll</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #1a1a2e, #0b081a);
+            font-family: 'Inter', sans-serif;
+            color: #e6e6ff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #csharp-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .app {
+            display: flex;
+            flex-direction: row;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            gap: 1.2rem;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        .csharp-sidebar {
+            width: 360px;
+            background: rgba(20, 15, 40, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            border: 1px solid #6b5bff;
+            padding: 1.2rem 0.6rem;
+            overflow-y: auto;
+            max-height: 90vh;
+            position: sticky;
+            top: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .csharp-sidebar::-webkit-scrollbar { width: 5px; }
+        .csharp-sidebar::-webkit-scrollbar-track { background: #221e3a; border-radius: 10px; }
+        .csharp-sidebar::-webkit-scrollbar-thumb { background: #8a7aff; border-radius: 10px; }
+
+        .csharp-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+        .csharp-tree, .csharp-tree ul {
+            list-style: none;
+            padding-left: 1.2rem;
+        }
+        .csharp-tree li {
+            margin: 0.3rem 0;
+        }
+        .tree-btn {
+            background: #2a2545;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.45rem 0.85rem;
+            border-radius: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #dfd9ff;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            border-left: 3px solid #8a7aff;
+        }
+        .tree-btn:hover {
+            background: #423a6e;
+            transform: translateX(5px);
+            box-shadow: 0 0 10px #a99eff;
+            border-left-color: #ffd966;
+        }
+        .active-cs {
+            background: linear-gradient(95deg, #5b4db8, #3a2e7a);
+            box-shadow: 0 0 12px #b3a6ff;
+            border-left-color: #ffe0a3;
+        }
+        .csharp-panel {
+            flex: 1;
+            background: rgba(10, 8, 22, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid #8a7aff;
+            padding: 1.8rem 2rem;
+        }
+        .topic-header {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e0dbff, #a99eff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px dashed #8a7aff;
+            padding-bottom: 0.5rem;
+        }
+        .csharp-desc {
+            background: #0a081a;
+            padding: 1rem 1.3rem;
+            border-radius: 1.3rem;
+            border-left: 5px solid #8a7aff;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .code-block {
+            background: #0c0a18;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid #8a7aff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #dee2ff;
+        }
+        .run-cs {
+            background: #5b4db8;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            transition: 0.2s;
+        }
+        .run-cs:hover {
+            background: #7e6ef0;
+            transform: scale(1.02);
+            box-shadow: 0 0 12px #b3a6ff;
+        }
+        .output-area {
+            background: #050410;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            border: 1px solid #8a7aff;
+            font-size: 0.85rem;
+        }
+        .output-label {
+            font-size: 0.7rem;
+            color: #cfc6ff;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            padding: 1rem;
+        }
+        @media (max-width: 780px) {
+            .app { flex-direction: column; }
+            .csharp-sidebar { width: 100%; max-height: 380px; position: relative; top: 0; }
+            .topic-header { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="csharp-mist"></canvas>
+<div class="app">
+    <aside class="csharp-sidebar">
+        <div style="padding-left: 0.7rem; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem;">🔷 C# Grimoire</div>
+        <div id="cs-tree-nav"></div>
+    </aside>
+    <main class="csharp-panel" id="main-panel">
+        <div class="topic-header"><span>⚡</span> <span id="topicTitle">C# Programming</span></div>
+        <div id="descriptionBox" class="csharp-desc">
+            ✨ Select any C# incantation from the tree. Each node includes explanation and runnable C# code (simulated output, .NET 6+ style).
+        </div>
+        <div id="csCodeArea" style="display: none;">
+            <div class="code-block"><pre id="csCodePreview"></pre></div>
+            <button class="run-cs" id="executeCSharp">🔷 Compile & Run (Simulate)</button>
+            <div class="output-area">
+                <div class="output-label">💻 .NET Output</div>
+                <div id="csOutput"># output will appear here...</div>
+            </div>
+        </div>
+        <div id="endNodeMsg" style="display: none;"></div>
+    </main>
+</div>
+<footer>💡 each example is simulated — compile with `dotnet run` or csc on your machine</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // FULL C# TREE (comprehensive structure)
+    // --------------------------------------------------------------
+    const csTree = [
+        { name: "Basics", children: [
+            { name: "What is C#?" }, { name: ".NET & CLR" }, { name: "Program Structure" },
+            { name: "Top-level statements (C# 9+)" }, { name: "Comments & Regions" }
+        ]},
+        { name: "Variables", children: [
+            { name: "Declaration & Initialization" }, { name: "var (implicit typing)" },
+            { name: "Constants (const)" }, { name: "Readonly fields" }
+        ]},
+        { name: "Data Types", children: [
+            { name: "Value Types", children: [
+                { name: "int, long, short, byte" }, { name: "float, double, decimal" },
+                { name: "char, bool" }, { name: "struct" }, { name: "enum" }
+            ]},
+            { name: "Reference Types", children: [
+                { name: "string" }, { name: "object" }, { name: "dynamic" },
+                { name: "class" }, { name: "interface" }, { name: "delegate" }
+            ]},
+            { name: "Nullable Types (T?)" }, { name: "Tuples" }
+        ]},
+        { name: "Operators", children: [
+            { name: "Arithmetic" }, { name: "Assignment" }, { name: "Comparison" },
+            { name: "Logical" }, { name: "Bitwise" }, { name: "Ternary (?:)" },
+            { name: "Null-coalescing (??)" }, { name: "Null-conditional (?.)" }
+        ]},
+        { name: "Control Flow", children: [
+            { name: "if, else if, else" }, { name: "switch statement" }, { name: "switch expression" },
+            { name: "for loop" }, { name: "foreach" }, { name: "while & do-while" },
+            { name: "break, continue, return" }
+        ]},
+        { name: "Methods", children: [
+            { name: "Method declaration" }, { name: "Parameters (ref, out, in)" },
+            { name: "Overloading" }, { name: "Local functions" }, { name: "Lambda expressions" }
+        ]},
+        { name: "Arrays & Collections", children: [
+            { name: "Single-dim arrays" }, { name: "Multi-dim & Jagged" },
+            { name: "Array class (Sort, Copy)" }, { name: "List<T>" }, { name: "Dictionary<TKey,TValue>" },
+            { name: "HashSet<T>" }, { name: "Queue & Stack" }, { name: "LINQ (Language Integrated Query)" }
+        ]},
+        { name: "Strings", children: [
+            { name: "String methods (Length, Substring, etc.)" }, { name: "StringBuilder" },
+            { name: "String interpolation ($)" }, { name: "Verbatim strings (@)" }
+        ]},
+        { name: "Object-Oriented Programming", children: [
+            { name: "Classes & Objects" }, { name: "Constructors & Finalizers" }, { name: "Properties & Fields" },
+            { name: "Inheritance" }, { name: "Polymorphism (virtual/override)" }, { name: "Encapsulation" },
+            { name: "Abstraction" }, { name: "Static members" }, { name: "Nested classes" }
+        ]},
+        { name: "Interfaces & Abstract Classes", children: [
+            { name: "Interface (explicit implementation)" }, { name: "Abstract class" }, { name: "Default interface methods (C# 8+)" }
+        ]},
+        { name: "Delegates & Events", children: [
+            { name: "Delegate declaration" }, { name: "Multicast delegates" }, { name: "Event keyword" },
+            { name: "Action & Func delegates" }
+        ]},
+        { name: "Generics", children: [
+            { name: "Generic classes" }, { name: "Generic methods" }, { name: "Constraints" }
+        ]},
+        { name: "Exception Handling", children: [
+            { name: "try-catch-finally" }, { name: "throw / rethrow" }, { name: "Custom exceptions" },
+            { name: "Using statements (IDisposable)" }
+        ]},
+        { name: "File I/O", children: [
+            { name: "File & FileInfo" }, { name: "StreamReader / StreamWriter" },
+            { name: "Directory / DirectoryInfo" }, { name: "Serialization (JSON/XML)" }
+        ]},
+        { name: "Asynchronous Programming", children: [
+            { name: "async / await" }, { name: "Task & Task<T>" }, { name: "Parallel LINQ (PLINQ)" },
+            { name: "CancellationToken" }
+        ]},
+        { name: "Attributes & Reflection", children: [
+            { name: "Built-in attributes" }, { name: "Custom attributes" }, { name: "Reflection basics" }
+        ]},
+        { name: "C# 10+ / Modern Features", children: [
+            { name: "Record types" }, { name: "Global using directives" }, { name: "File-scoped namespaces" },
+            { name: "Caller Argument Expressions" }, { name: "DateOnly / TimeOnly" }
+        ]},
+        { name: "Debugging & Diagnostics", children: [
+            { name: "Console.WriteLine & Debug.WriteLine" }, { name: "Debug.Assert" },
+            { name: "Conditional compilation" }, { name: "StackTrace" }
+        ]},
+        { name: "Others", children: [
+            { name: "Operator overloading" }, { name: "Extension methods" }, { name: "Pattern matching" },
+            { name: "Indexes and ranges (^, ..)" }, { name: "nameof operator" }
+        ]},
+        { name: "END" }
+    ];
+
+    // --------------------------------------------------------------
+    // CONTENT MAP: descriptions, code, simulated output
+    // --------------------------------------------------------------
+    const csContent = new Map();
+
+    function addLeaf(path, nodeName, description, code, output) {
+        csContent.set(path, { desc: description, code: code, output: output, isLeaf: true });
+    }
+    function setCategory(path, description) {
+        csContent.set(path, { desc: description, isLeaf: false });
+    }
+
+    // Generic fallback
+    function genericCsNode(nodeName) {
+        return {
+            desc: `📘 ${nodeName} — essential C# concept. Run the code to see typical behavior.`,
+            code: `// C# example for ${nodeName}
+Console.WriteLine("Exploring ${nodeName}");
+`,
+            output: `Exploring ${nodeName}`
+        };
+    }
+
+    // Pre-populate rich content
+    function buildCsContent() {
+        // Basics
+        addLeaf("Basics/What is C#?", "What is C#?", "C# is a modern, object-oriented language developed by Microsoft, part of .NET ecosystem.",
+                `Console.WriteLine("Hello from C#!");
+// Run with dotnet run`, "Hello from C#!");
+        addLeaf("Basics/Top-level statements (C# 9+)", "Top-level statements", "Simplify entry point, omit Main method.",
+                `using System;
+Console.WriteLine("Top-level magic");
+string name = "C#";
+Console.WriteLine($"Hello {name}");`, "Top-level magic\nHello C#");
+        // Variables
+        addLeaf("Variables/var (implicit typing)", "var", "Compiler infers type from initialization.",
+                `var number = 42;
+var text = "C#";
+Console.WriteLine($"{number} {text.GetType()}");
+`, "42 System.String");
+        // Data Types - Tuples
+        addLeaf("Data Types/Tuples", "Tuples", "Lightweight data structure to group multiple values.",
+                `var person = (Name: "Ada", Age: 30);
+Console.WriteLine($"{person.Name} is {person.Age}");
+`, "Ada is 30");
+        // Operators
+        addLeaf("Operators/Null-coalescing (??)", "Null-coalescing", "Returns left operand if not null, otherwise right.",
+                `string name = null;
+string result = name ?? "Default";
+Console.WriteLine(result);`, "Default");
+        // Control Flow - switch expression
+        addLeaf("Control Flow/switch expression", "switch expression", "Expression-bodied switch (C# 8+).",
+                `int day = 2;
+string dayName = day switch {
+    1 => "Monday",
+    2 => "Tuesday",
+    _ => "Unknown"
+};
+Console.WriteLine(dayName);`, "Tuesday");
+        // Methods - lambda
+        addLeaf("Methods/Lambda expressions", "Lambda", "Anonymous function using =>",
+                `Func<int,int,int> add = (a,b) => a + b;
+Console.WriteLine(add(5,3));`, "8");
+        // Arrays & Collections - LINQ
+        addLeaf("Arrays & Collections/LINQ (Language Integrated Query)", "LINQ", "Query syntax and method syntax.",
+                `int[] nums = { 1, 2, 3, 4 };
+var evens = nums.Where(n => n % 2 == 0);
+Console.WriteLine(string.Join(",", evens));`, "2,4");
+        addLeaf("Arrays & Collections/Dictionary<TKey,TValue>", "Dictionary", "Key-value collection.",
+                `var dict = new Dictionary<string,int>{ ["one"]=1, ["two"]=2 };
+Console.WriteLine(dict["two"]);`, "2");
+        // Strings
+        addLeaf("Strings/StringBuilder", "StringBuilder", "Efficient string concatenation.",
+                `var sb = new StringBuilder();
+sb.Append("C#");
+sb.Append(" Rocks");
+Console.WriteLine(sb.ToString());`, "C# Rocks");
+        // OOP
+        addLeaf("Object-Oriented Programming/Polymorphism (virtual/override)", "Polymorphism", "Runtime behavior via virtual/override.",
+                `class Animal { public virtual string Sound() => "Generic"; }
+class Cat : Animal { public override string Sound() => "Meow"; }
+Animal a = new Cat();
+Console.WriteLine(a.Sound());`, "Meow");
+        addLeaf("Object-Oriented Programming/Properties & Fields", "Properties", "Encapsulation with get/set.",
+                `class Person { public string Name { get; set; } }
+var p = new Person { Name = "Aria" };
+Console.WriteLine(p.Name);`, "Aria");
+        // Interfaces
+        addLeaf("Interfaces & Abstract Classes/Default interface methods (C# 8+)", "Default interface methods", "Provide default implementations.",
+                `interface ILogger { void Log(string msg) => Console.WriteLine(msg); }
+class Runner : ILogger { }
+new Runner().Log("Default works");`, "Default works");
+        // Delegates
+        addLeaf("Delegates & Events/Action & Func delegates", "Action/Func", "Built-in delegate types.",
+                `Action<string> print = s => Console.WriteLine(s);
+print("Delegate action");`, "Delegate action");
+        // Generics
+        addLeaf("Generics/Generic classes", "Generic class", "Type-safe container.",
+                `class Box<T> { public T Item { get; set; } }
+var box = new Box<int> { Item = 100 };
+Console.WriteLine(box.Item);`, "100");
+        // Exception
+        addLeaf("Exception Handling/try-catch-finally", "try-catch", "Handle runtime errors.",
+                `try {
+    int x = 5 / 0;
+} catch (DivideByZeroException) {
+    Console.WriteLine("Caught division by zero");
+} finally { Console.Write("Finally"); }`, "Caught division by zero\nFinally");
+        // Async
+        addLeaf("Asynchronous Programming/async / await", "async/await", "Non-blocking async operations.",
+                `async Task<string> GetDataAsync() { await Task.Delay(10); return "Async result"; }
+Console.WriteLine(await GetDataAsync());`, "Async result");
+        // C# 10+ Records
+        addLeaf("C# 10+ / Modern Features/Record types", "Record", "Immutable reference type with value equality.",
+                `record Person(string Name, int Age);
+var p1 = new Person("Max", 25);
+var p2 = new Person("Max", 25);
+Console.WriteLine(p1 == p2);`, "True");
+        // Pattern matching
+        addLeaf("Others/Pattern matching", "Pattern matching", "Type and property patterns.",
+                `object obj = 42;
+if (obj is int i && i > 10) Console.WriteLine("Big int");`, "Big int");
+        // END
+        addLeaf("END", "END", "🏁 You have mastered the C# Grimoire. Build modern .NET apps with confidence.",
+                `Console.WriteLine("You are a C# Archmage!");
+// Congratulations`, "You are a C# Archmage!");
+    }
+
+    function fillMissingLeaves(tree, parentPath = "") {
+        for(let node of tree) {
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            if(node.children && node.children.length) {
+                if(!csContent.has(path)) setCategory(path, `📂 Category: ${node.name} — expand to explore.`);
+                fillMissingLeaves(node.children, path);
+            } else {
+                if(!csContent.has(path)) {
+                    const gen = genericCsNode(node.name);
+                    addLeaf(path, node.name, gen.desc, gen.code, gen.output);
+                }
+            }
+        }
+    }
+
+    buildCsContent();
+    fillMissingLeaves(csTree);
+
+    // --------------------------------------------------------------
+    // RENDER SIDEBAR TREE
+    // --------------------------------------------------------------
+    function renderTree(container, nodes, parentPath = "") {
+        const ul = document.createElement("ul");
+        ul.className = "csharp-tree";
+        for(let node of nodes) {
+            const li = document.createElement("li");
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            const btn = document.createElement("button");
+            btn.className = "tree-btn";
+            const icon = (node.children && node.children.length) ? "📁" : "🔷";
+            btn.innerHTML = `<span>${icon}</span> <span>${node.name}</span>`;
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".tree-btn").forEach(b => b.classList.remove("active-cs"));
+                btn.classList.add("active-cs");
+                loadTopic(path, node.name);
+            });
+            li.appendChild(btn);
+            if(node.children && node.children.length) {
+                const childUl = renderTree(li, node.children, path);
+                li.appendChild(childUl);
+            }
+            ul.appendChild(li);
+        }
+        container.appendChild(ul);
+        return ul;
+    }
+
+    const navContainer = document.getElementById("cs-tree-nav");
+    renderTree(navContainer, csTree);
+
+    // --------------------------------------------------------------
+    // LOAD TOPIC AND SIMULATE C# RUN
+    // --------------------------------------------------------------
+    let currentCode = "";
+    let currentOutput = "";
+
+    function loadTopic(path, displayName) {
+        const data = csContent.get(path);
+        const descDiv = document.getElementById("descriptionBox");
+        const titleSpan = document.getElementById("topicTitle");
+        const codeArea = document.getElementById("csCodeArea");
+        const endDiv = document.getElementById("endNodeMsg");
+        endDiv.style.display = "none";
+        codeArea.style.display = "none";
+
+        titleSpan.innerText = displayName;
+        if(data && data.isLeaf) {
+            descDiv.innerHTML = `<span style="font-size:1.1rem;">🔷 Spell detail</span><br>${data.desc}`;
+            if(data.code) {
+                currentCode = data.code;
+                currentOutput = data.output || "(no output)";
+                document.getElementById("csCodePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+                document.getElementById("csOutput").innerHTML = "# output will appear after compilation";
+            } else {
+                codeArea.style.display = "none";
+            }
+        } else {
+            descDiv.innerHTML = data ? data.desc : `🌿 ${displayName} — choose a sub-topic to see runnable examples.`;
+            codeArea.style.display = "none";
+        }
+        if(displayName === "END") {
+            const endData = csContent.get(path);
+            if(endData?.code) {
+                currentCode = endData.code;
+                currentOutput = endData.output;
+                document.getElementById("csCodePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+            }
+        }
+        // Rebind run button
+        const oldBtn = document.getElementById("executeCSharp");
+        if(oldBtn) {
+            const newBtn = oldBtn.cloneNode(true);
+            oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+            newBtn.addEventListener("click", () => {
+                const outDiv = document.getElementById("csOutput");
+                outDiv.innerHTML = "🔷 Compiling with dotnet build...\n$ dotnet run\n";
+                setTimeout(() => {
+                    outDiv.innerHTML += `\n> ${currentOutput}`;
+                }, 120);
+            });
+        }
+    }
+
+    // initial click
+    setTimeout(() => {
+        const firstBtn = document.querySelector(".tree-btn");
+        if(firstBtn) firstBtn.click();
+    }, 200);
+
+    // --------------------------------------------------------------
+    // ENCHANTED PARTICLES (purple/blue magic)
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("csharp-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.5 + 0.7;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.2 + 0.05;
+            this.alpha = Math.random() * 0.5 + 0.1;
+            this.color = `rgba(110, 90, 240, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width + 20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height + 20;
+            if(this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = "#a99eff";
+            ctx.fill();
+        }
+    }
+    function initParticles(count = 130) {
+        particles = [];
+        for(let i = 0; i < count; i++) particles.push(new Particle());
+    }
+    function animateParticles() {
+        if(!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+    window.addEventListener("resize", () => {
+        resizeCanvas();
+        initParticles(130);
+    });
+    resizeCanvas();
+    initParticles(140);
+    animateParticles();
+</script>
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+</html>

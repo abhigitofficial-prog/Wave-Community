@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐚 Bash Grimoire | Enchanted Terminal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 20% 30%, #0e1a0e, #030703);
+            font-family: 'Inter', sans-serif;
+            color: #ccffcc;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #bash-mist {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .app {
+            display: flex;
+            flex-direction: row;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            gap: 1.2rem;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        /* sidebar */
+        .bash-sidebar {
+            width: 330px;
+            background: rgba(5, 20, 5, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 1.8rem;
+            border: 1px solid #4caf6e;
+            padding: 1.2rem 0.6rem;
+            overflow-y: auto;
+            max-height: 90vh;
+            position: sticky;
+            top: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+        .bash-sidebar::-webkit-scrollbar { width: 5px; }
+        .bash-sidebar::-webkit-scrollbar-track { background: #1e3a1e; border-radius: 10px; }
+        .bash-sidebar::-webkit-scrollbar-thumb { background: #7ec850; border-radius: 10px; }
+
+        .bash-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+        .bash-tree, .bash-tree ul {
+            list-style: none;
+            padding-left: 1.2rem;
+        }
+        .bash-tree li {
+            margin: 0.35rem 0;
+        }
+        .tree-btn {
+            background: #1e3a2a;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 0.9rem;
+            border-radius: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 0.8rem;
+            color: #e2ffd6;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            border-left: 3px solid #6fbf4c;
+        }
+        .tree-btn:hover {
+            background: #2f6a42;
+            transform: translateX(5px);
+            box-shadow: 0 0 10px #8eff6e;
+            border-left-color: #ffdf80;
+        }
+        .active-bash {
+            background: linear-gradient(95deg, #2e7d32, #1b5e20);
+            box-shadow: 0 0 12px #9eff80;
+            border-left-color: #ffd966;
+        }
+        /* main panel */
+        .terminal-panel {
+            flex: 1;
+            background: rgba(10, 20, 8, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid #5aac70;
+            padding: 1.8rem 2rem;
+        }
+        .topic-header {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ccffcc, #98fb98);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 12px;
+            border-bottom: 2px dashed #6fbf4c;
+            padding-bottom: 0.5rem;
+        }
+        .bash-description {
+            background: #071a0e;
+            padding: 1rem 1.3rem;
+            border-radius: 1.3rem;
+            border-left: 5px solid #8bc34a;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .code-block {
+            background: #0a1208;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            border: 1px solid #6fbf4c;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #d4ffc4;
+        }
+        .run-bash {
+            background: #2e7d32;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1rem;
+            transition: 0.2s;
+        }
+        .run-bash:hover {
+            background: #4caf50;
+            transform: scale(1.02);
+            box-shadow: 0 0 10px #a5d6a7;
+        }
+        .output-panel {
+            background: #030c06;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.2rem;
+            font-family: monospace;
+            border: 1px solid #4caf50;
+            font-size: 0.85rem;
+        }
+        .output-label {
+            font-size: 0.7rem;
+            color: #b9f6ca;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.7;
+            padding: 1rem;
+        }
+        @media (max-width: 780px) {
+            .app { flex-direction: column; }
+            .bash-sidebar { width: 100%; max-height: 380px; position: relative; top: 0; }
+            .topic-header { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+<canvas id="bash-mist"></canvas>
+<div class="app">
+    <aside class="bash-sidebar">
+        <div style="padding-left: 0.7rem; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem;">🐚 Bash Spellbook</div>
+        <div id="bash-tree-nav"></div>
+    </aside>
+    <main class="terminal-panel" id="main-content">
+        <div class="topic-header"><span>💻</span> <span id="topicName">Bash Scripting Grimoire</span></div>
+        <div id="descriptionArea" class="bash-description">
+            ✨ Click any node from the ancient terminal tree. Each spell includes explanation and runnable example (simulated output).
+        </div>
+        <div id="codeArea" style="display: none;">
+            <div class="code-block"><pre id="codePreview"></pre></div>
+            <button class="run-bash" id="executeBash">⚡ Cast Spell (Simulate)</button>
+            <div class="output-panel">
+                <div class="output-label">🐚 Bash Output</div>
+                <div id="bashOutput"># output will appear here...</div>
+            </div>
+        </div>
+        <div id="endMsg" style="display: none;"></div>
+    </main>
+</div>
+<footer>⚡ each node shows a runnable incantation — terminal magic awaits</footer>
+
+<script>
+    // --------------------------------------------------------------
+    // Complete Bash tree structure (exact as prompt)
+    // --------------------------------------------------------------
+    const bashTree = [
+        { name: "Basics", children: [
+            { name: "What is Bash?" }, { name: "Shell vs Bash" }, { name: "Running a Bash script" }, { name: "Shebang (#!)" }
+        ]},
+        { name: "Variables", children: [
+            { name: "Declaring variables" }, { name: "Reading variables" }, { name: "Environment variables" }, 
+            { name: "Special variables ($0, $1, $?, $$, etc.)" }
+        ]},
+        { name: "Data Types", children: [
+            { name: "Strings" }, { name: "Integers" }, { name: "Arrays" }
+        ]},
+        { name: "Operators", children: [
+            { name: "Arithmetic operators" }, { name: "Comparison operators" }, 
+            { name: "Logical operators" }, { name: "File test operators" }
+        ]},
+        { name: "Control Flow", children: [
+            { name: "if statement" }, { name: "else statement" }, { name: "elif statement" },
+            { name: "case statement" }, { name: "for loop" }, { name: "while loop" }, { name: "until loop" }
+        ]},
+        { name: "Functions", children: [
+            { name: "Defining functions" }, { name: "Calling functions" }, { name: "Passing arguments" }, { name: "Returning values" }
+        ]},
+        { name: "Input/Output", children: [
+            { name: "echo" }, { name: "read" }, { name: "printf" }, { name: "Redirection (>, >>, <)" },
+            { name: "Pipes (|)" }, { name: "Here documents (<<)" }
+        ]},
+        { name: "Arrays", children: [
+            { name: "Declaring arrays" }, { name: "Accessing elements" }, { name: "Looping through arrays" }, { name: "Array length" }
+        ]},
+        { name: "Strings", children: [
+            { name: "Concatenation" }, { name: "Substring extraction" }, { name: "Length of string" }, { name: "String comparison" }
+        ]},
+        { name: "File Handling", children: [
+            { name: "Reading files" }, { name: "Writing files" }, { name: "File tests" }, { name: "Using cat, grep, awk, sed" }
+        ]},
+        { name: "Error Handling", children: [
+            { name: "Exit status ($?)" }, { name: "set -e" }, { name: "set -u" }, { name: "Trap command" }
+        ]},
+        { name: "Command Substitution", children: [ { name: "$(...) and backticks `...`" } ] },
+        { name: "Process Management", children: [
+            { name: "Background processes (&)" }, { name: "Jobs and job control" }, { name: "kill and trap" }, { name: "wait" }
+        ]},
+        { name: "Script Arguments", children: [
+            { name: "$1, $2, ..." }, { name: "$#" }, { name: "$@" }, { name: "shift" }
+        ]},
+        { name: "Loops with Commands", children: [
+            { name: "for in $(ls)" }, { name: "while read line" }
+        ]},
+        { name: "Debugging", children: [
+            { name: "set -x" }, { name: "set -v" }, { name: "Using echo/logs" }
+        ]},
+        { name: "Useful Commands", children: [
+            { name: "grep" }, { name: "sed" }, { name: "awk" }, { name: "cut" }, { name: "sort" }, { name: "find" }
+        ]},
+        { name: "Automation Examples", children: [
+            { name: "Backup scripts" }, { name: "Cron jobs" }, { name: "Log rotation" }, { name: "System monitoring" }
+        ]},
+        { name: "Best Practices", children: [
+            { name: "Quoting variables" }, { name: "Using functions" }, { name: "Exit codes" }, { name: "Comments and readability" }
+        ]},
+        { name: "END" }
+    ];
+
+    // ----- Knowledge base: content map (path -> {desc, code, output}) -----
+    const bashContent = new Map();
+
+    function addLeaf(path, nodeName, desc, code, output) {
+        bashContent.set(path, { desc, code, output, isLeaf: true });
+    }
+    function setCategory(path, desc) {
+        bashContent.set(path, { desc, isLeaf: false });
+    }
+
+    // generate custom content for critical nodes and fallback for others
+    function buildContent() {
+        // Basics
+        addLeaf("Basics/What is Bash?", "What is Bash?", "Bash (Bourne Again SHell) is a Unix shell and command language. Default on most Linux distributions.", 
+                "echo 'Bash version: $BASH_VERSION'", "Bash version: 5.1.16(1)-release");
+        addLeaf("Basics/Shell vs Bash", "Shell vs Bash", "Bash is an enhanced version of the original Bourne shell (sh). It includes features like command history, job control, and arrays.",
+                "if [ -n \"$BASH_VERSION\" ]; then echo 'Bash detected'; else echo 'Not Bash'; fi", "Bash detected");
+        addLeaf("Basics/Running a Bash script", "Running a script", "Make script executable: chmod +x script.sh, then run ./script.sh or bash script.sh.",
+                "echo 'Hello, Terminal Magician!'", "Hello, Terminal Magician!");
+        addLeaf("Basics/Shebang (#!)", "Shebang", "#! /bin/bash at top of script defines interpreter path.",
+                "#!/bin/bash\necho 'Shebang ensures correct interpreter'", "Shebang ensures correct interpreter");
+        // Variables
+        addLeaf("Variables/Declaring variables", "Declaring variables", "name=value (no spaces). Use var=hello", "greeting='Hello'\necho $greeting", "Hello");
+        addLeaf("Variables/Reading variables", "Reading variables", "read var gets input from user (simulated)", "echo 'Enter name:'; read name; echo \"Hello $name\"", "Enter name:\n[input] user\nHello user");
+        addLeaf("Variables/Environment variables", "Environment variables", "export VAR=value makes it available to child processes.", "export MY_VAR='global'\nenv | grep MY_VAR", "MY_VAR=global");
+        addLeaf("Variables/Special variables ($0, $1, $?, $$, etc.)", "Special vars", "$0 = script name, $1 first arg, $? exit status, $$ PID.",
+                "echo 'Script: $0, PID: $$'", "Script: /bin/bash, PID: 12345");
+        // Data Types
+        addLeaf("Data Types/Strings", "Strings", "Sequences of characters. Use quotes.", "str='Bash magic'\necho ${#str} $str", "10 Bash magic");
+        addLeaf("Data Types/Integers", "Integers", "declare -i num=5; integer arithmetic.", "num=10\n((num+=5))\necho $num", "15");
+        addLeaf("Data Types/Arrays", "Arrays", "Indexed array: arr=(a b c)", "fruits=('apple' 'banana')\nfruits+=('cherry')\necho ${fruits[1]}", "banana");
+        // Operators
+        addLeaf("Operators/Arithmetic operators", "Arithmetic", "+, -, *, /, %, **", "echo $((10+5*2))", "20");
+        addLeaf("Operators/Comparison operators", "Comparison", "eq, ne, lt, le, gt, ge (for integers)", "a=5; b=3; if [ $a -gt $b ]; then echo 'greater'; fi", "greater");
+        addLeaf("Operators/Logical operators", "Logical", "&&, ||, !", "if [ -d /tmp ] && [ -w /tmp ]; then echo 'ok'; fi", "ok");
+        addLeaf("Operators/File test operators", "File tests", "-f file, -d dir, -x executable, etc.", "if [ -f /etc/passwd ]; then echo 'exists'; fi", "exists");
+        // Control flow
+        addLeaf("Control Flow/if statement", "if statement", "if condition; then ... fi", "x=10; if [ $x -gt 5 ]; then echo 'yes'; fi", "yes");
+        addLeaf("Control Flow/for loop", "for loop", "for var in list; do ... done", "for i in 1 2 3; do echo -n \"$i \"; done", "1 2 3");
+        addLeaf("Control Flow/while loop", "while loop", "while condition; do ... done", "count=2; while [ $count -gt 0 ]; do echo -n \"$count \"; ((count--)); done", "2 1");
+        addLeaf("Control Flow/case statement", "case", "pattern matching", "case $1 in start) echo 'starting';; *) echo 'other';; esac", "other");
+        addLeaf("Control Flow/until loop", "until loop", "runs until condition true", "n=3; until [ $n -eq 0 ]; do echo -n \"$n \"; ((n--)); done", "3 2 1");
+        // Functions
+        addLeaf("Functions/Defining functions", "Define function", "function name() { commands; }", "greet() { echo 'Hello $1'; }; greet 'Bash'", "Hello Bash");
+        addLeaf("Functions/Passing arguments", "Arguments", "function sees $1, $2", "sum() { echo $(($1+$2)); }; sum 5 7", "12");
+        addLeaf("Functions/Returning values", "Return values", "return exits with status. Use echo for output", "is_even() { return $(($1 % 2 == 0)); }; is_even 4 && echo 'even'", "even");
+        // Arrays
+        addLeaf("Arrays/Declaring arrays", "Declare array", "arr=(value1 value2)", "colors=('red' 'green')\necho ${colors[0]}", "red");
+        addLeaf("Arrays/Accessing elements", "Access", "${arr[index]}", "arr=(a b c); echo ${arr[2]}", "c");
+        addLeaf("Arrays/Array length", "Length", "${#arr[@]}", "arr=(a b); echo ${#arr[@]}", "2");
+        // Strings
+        addLeaf("Strings/Concatenation", "Concatenation", "Just append: str=\"Hello \"\"World\"", "a='Bash'; b=' magic'; echo \"$a$b\"", "Bash magic");
+        addLeaf("Strings/Substring extraction", "Substring", "${var:start:length}", "str='terminal'; echo ${str:2:3}", "rmin");
+        addLeaf("Strings/Length of string", "String length", "${#string}", "s='hello'; echo ${#s}", "5");
+        // File Handling
+        addLeaf("File Handling/Reading files", "Read file line by line", "while IFS= read -r line; do ... done < file", "echo -e 'line1\nline2' > tmp.txt; while read line; do echo $line; done < tmp.txt", "line1\nline2");
+        addLeaf("File Handling/File tests", "File tests", "-f, -d, -r, -w", "touch testf; [ -f testf ] && echo 'file exists'", "file exists");
+        // Error handling
+        addLeaf("Error Handling/Exit status ($?)", "Exit status", "$? holds last command exit code (0 success)", "true; echo $?; false; echo $?", "0\n1");
+        addLeaf("Error Handling/set -e", "set -e", "Exit on any command failure", "set -e; false; echo 'printed only if set -e off'", "[no output - script stops]");
+        addLeaf("Error Handling/Trap command", "trap", "Catch signals and clean up", "trap 'echo interrupted' INT; kill -INT $$", "interrupted");
+        // Command substitution
+        addLeaf("Command Substitution/$(...) and backticks `...`", "Command substitution", "Capture output of a command", "files=$(ls | head -1); echo \"First: $files\"", "First: ... (some file)");
+        // Process management
+        addLeaf("Process Management/Background processes (&)", "Background jobs", "Add & to run in background", "sleep 2 & echo 'background running'", "background running");
+        // Script arguments
+        addLeaf("Script Arguments/$1, $2, ...", "Positional params", "$1 first arg", "echo 'First arg: $1'", "First arg: hello");
+        addLeaf("Script Arguments/$#", "Argument count", "$# number of arguments", "echo $#", "2");
+        addLeaf("Script Arguments/shift", "shift command", "shift removes first argument", "set -- a b c; shift; echo $1", "b");
+        // Loops with commands
+        addLeaf("Loops with Commands/for in $(ls)", "for with command", "for file in $(ls); do echo $file; done", "for f in $(echo 'a b c'); do echo $f; done", "a\nb\nc");
+        // Debugging
+        addLeaf("Debugging/set -x", "set -x", "Print commands and arguments as they execute", "set -x; x=5; echo $x; set +x", "+ x=5\n+ echo 5\n5\n+ set +x");
+        // Useful commands
+        addLeaf("Useful Commands/grep", "grep", "Search text using patterns", "echo 'hello world' | grep 'world'", "hello world");
+        addLeaf("Useful Commands/sed", "sed", "Stream editor for substitution", "echo 'Bash is great' | sed 's/great/awesome/'", "Bash is awesome");
+        addLeaf("Useful Commands/awk", "awk", "Text processing language", "echo 'one two' | awk '{print $2}'", "two");
+        addLeaf("Useful Commands/find", "find", "Search files by name", "find . -maxdepth 1 -name '*.txt'", "(list of .txt)");
+        // Automation
+        addLeaf("Automation Examples/Cron jobs", "Cron jobs", "Schedule scripts with crontab", "echo '* * * * * /home/user/script.sh'", "crontab entry added");
+        // Best practices
+        addLeaf("Best Practices/Quoting variables", "Quoting", 'Always quote variables: "$var" avoids word splitting', "file='my photo.jpg'; ls \"$file\"", "ls: cannot access 'my photo.jpg' (mock)");
+        addLeaf("Best Practices/Exit codes", "Exit codes", "Use exit 0 on success, non-zero on error", "exit 0", "[success]");
+        // END
+        addLeaf("END", "END", "🏁 You have reached the end of the Bash Grimoire! Master these spells to become a shell wizard.", 
+                "echo 'Congratulations, you completed the Bash arcana!'", "Congratulations, you completed the Bash arcana!");
+    }
+
+    // Fallback for any leaf not explicitly added
+    function genericLeaf(nodeName) {
+        return {
+            desc: `📜 ${nodeName} — Essential concept in Bash scripting. Click to run simulation.`,
+            code: `# Example for ${nodeName}\necho "Exploring ${nodeName} in Bash"`,
+            output: `Exploring ${nodeName} in Bash`
+        };
+    }
+
+    function fillMissingLeaves(tree, parentPath = "") {
+        for(let node of tree) {
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            if(node.children && node.children.length) {
+                if(!bashContent.has(path)) setCategory(path, `Category: ${node.name}`);
+                fillMissingLeaves(node.children, path);
+            } else {
+                if(!bashContent.has(path)) {
+                    const gen = genericLeaf(node.name);
+                    addLeaf(path, node.name, gen.desc, gen.code, gen.output);
+                }
+            }
+        }
+    }
+
+    buildContent();
+    fillMissingLeaves(bashTree);
+
+    // --------------------------------------------------------------
+    // Render sidebar recursively
+    // --------------------------------------------------------------
+    function renderTree(container, nodes, parentPath = "") {
+        const ul = document.createElement("ul");
+        ul.className = "bash-tree";
+        for(let node of nodes) {
+            const li = document.createElement("li");
+            const path = parentPath ? `${parentPath}/${node.name}` : node.name;
+            const btn = document.createElement("button");
+            btn.className = "tree-btn";
+            const icon = (node.children && node.children.length) ? "📁" : "🐚";
+            btn.innerHTML = `<span>${icon}</span> <span>${node.name}</span>`;
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                document.querySelectorAll(".tree-btn").forEach(b => b.classList.remove("active-bash"));
+                btn.classList.add("active-bash");
+                loadTopic(path, node.name);
+            });
+            li.appendChild(btn);
+            if(node.children && node.children.length) {
+                const childUl = renderTree(li, node.children, path);
+                li.appendChild(childUl);
+            }
+            ul.appendChild(li);
+        }
+        container.appendChild(ul);
+        return ul;
+    }
+
+    const navContainer = document.getElementById("bash-tree-nav");
+    renderTree(navContainer, bashTree);
+
+    // --------------------------------------------------------------
+    // Load and display topic, simulate bash run
+    // --------------------------------------------------------------
+    let currentCode = "";
+    let currentOutput = "";
+
+    function loadTopic(path, displayName) {
+        const data = bashContent.get(path);
+        const descDiv = document.getElementById("descriptionArea");
+        const titleSpan = document.getElementById("topicName");
+        const codeArea = document.getElementById("codeArea");
+        const endDiv = document.getElementById("endMsg");
+        endDiv.style.display = "none";
+        codeArea.style.display = "none";
+
+        titleSpan.innerText = displayName;
+        if(data && data.isLeaf) {
+            descDiv.innerHTML = `<span style="font-size:1.1rem;">⚡ Entry</span><br>${data.desc}`;
+            if(data.code) {
+                currentCode = data.code;
+                currentOutput = data.output || "# (no output)";
+                document.getElementById("codePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+                document.getElementById("bashOutput").innerHTML = "# output will appear here...";
+            } else codeArea.style.display = "none";
+        } else {
+            descDiv.innerHTML = data ? `${data.desc}` : `🌿 ${displayName} — pick a sub-topic from the tree for incantations.`;
+            codeArea.style.display = "none";
+        }
+        if(displayName === "END") {
+            const endData = bashContent.get(path);
+            if(endData?.code) {
+                currentCode = endData.code;
+                currentOutput = endData.output;
+                document.getElementById("codePreview").innerText = currentCode;
+                codeArea.style.display = "block";
+            }
+        }
+        // Re-attach run button
+        const oldBtn = document.getElementById("executeBash");
+        if(oldBtn) {
+            const newBtn = oldBtn.cloneNode(true);
+            oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+            newBtn.addEventListener("click", () => {
+                const outDiv = document.getElementById("bashOutput");
+                outDiv.innerHTML = "🐚 Running script...\n";
+                setTimeout(() => {
+                    outDiv.innerHTML = `> ${currentOutput.replace(/\n/g, '\n> ')}`;
+                }, 80);
+            });
+        }
+    }
+
+    // initial click on first node
+    setTimeout(() => {
+        const firstBtn = document.querySelector(".tree-btn");
+        if(firstBtn) firstBtn.click();
+    }, 200);
+
+    // --------------------------------------------------------------
+    // Magical particles (greenish terminal dust)
+    // --------------------------------------------------------------
+    const canvas = document.getElementById("bash-mist");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class Dust {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.5 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.2 + 0.05;
+            this.alpha = Math.random() * 0.5 + 0.1;
+            this.color = `rgba(100, 220, 100, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if(this.x < -20) this.x = canvas.width + 20;
+            if(this.x > canvas.width+20) this.x = -20;
+            if(this.y < -20) this.y = canvas.height+20;
+            if(this.y > canvas.height+20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 7;
+            ctx.shadowColor = "#b8ffa0";
+            ctx.fill();
+        }
+    }
+    function initDust(count=120) {
+        particles = [];
+        for(let i=0;i<count;i++) particles.push(new Dust());
+    }
+    function animateDust() {
+        if(!ctx) return;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let p of particles) { p.update(); p.draw(); }
+        requestAnimationFrame(animateDust);
+    }
+    window.addEventListener('resize', () => { resizeCanvas(); initDust(120); });
+    resizeCanvas();
+    initDust(130);
+    animateDust();
+</script>
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+
+</html>

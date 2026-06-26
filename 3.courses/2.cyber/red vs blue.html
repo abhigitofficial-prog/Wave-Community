@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>⚔️ Red Team · Blue Team | Complete Cybersecurity Roles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: radial-gradient(circle at 10% 20%, #0a0c1a, #02040c);
+      font-family: 'Inter', sans-serif;
+      color: #f0f3fa;
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+    }
+    /* animated background canvas */
+    #cyber-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+    .main-container {
+      position: relative;
+      z-index: 2;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    /* header */
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1.8rem;
+      border: 1px solid #ff5e7e55;
+    }
+    .hero h1 {
+      font-size: 2.6rem;
+      background: linear-gradient(135deg, #ff7e9e, #3b82f6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      margin-top: 0.6rem;
+      opacity: 0.85;
+    }
+    .team-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .stat-badge {
+      background: #1e1b4e80;
+      padding: 0.3rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      backdrop-filter: blur(4px);
+    }
+    /* layout */
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 2rem;
+    }
+    .team-card {
+      background: rgba(12, 15, 30, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: 0.2s;
+    }
+    .team-red {
+      border-top: 6px solid #ff5e7e;
+      box-shadow: 0 8px 20px rgba(255, 60, 100, 0.2);
+    }
+    .team-blue {
+      border-top: 6px solid #3b82f6;
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+    }
+    .team-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.3rem;
+      font-size: 1.7rem;
+      font-weight: 700;
+    }
+    .team-red .team-header { color: #ff889f; }
+    .team-blue .team-header { color: #7aa9ff; }
+    .roles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+    .roles-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .roles-list::-webkit-scrollbar-track {
+      background: #1e1b3a;
+      border-radius: 10px;
+    }
+    .roles-list::-webkit-scrollbar-thumb {
+      background: #ff5e7e;
+      border-radius: 10px;
+    }
+    .role-item {
+      background: #0a0c1ecc;
+      border-radius: 1.2rem;
+      padding: 0.8rem 1rem;
+      transition: all 0.15s;
+      border-left: 4px solid rgba(255, 255, 255, 0.3);
+    }
+    .team-red .role-item {
+      border-left-color: #ff5e7e;
+    }
+    .team-blue .role-item {
+      border-left-color: #3b82f6;
+    }
+    .role-item:hover {
+      transform: translateX(6px);
+      background: #1a1c36;
+    }
+    .role-title {
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .role-title span:first-child {
+      font-size: 1.05rem;
+    }
+    .role-desc {
+      font-size: 0.75rem;
+      color: #cbd5f0;
+      margin-top: 0.3rem;
+      line-height: 1.4;
+      opacity: 0.85;
+    }
+    .badge-count {
+      font-size: 0.7rem;
+      background: #2d2a55;
+      border-radius: 2rem;
+      padding: 0.1rem 0.6rem;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+    @media (max-width: 780px) {
+      body { padding: 1rem; }
+      .hero h1 { font-size: 1.8rem; }
+      .teams-grid { grid-template-columns: 1fr; }
+      .roles-list { max-height: 60vh; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="cyber-canvas"></canvas>
+<div class="main-container">
+  <div class="hero">
+    <h1>🔴 Red Team · 🔵 Blue Team</h1>
+    <p>Complete offensive & defensive cybersecurity roles — adversary simulation, protection, detection, response</p>
+    <div class="team-stats">
+      <div class="stat-badge">🔥 Red Team: <span id="redCount">0</span> roles</div>
+      <div class="stat-badge">🛡️ Blue Team: <span id="blueCount">0</span> roles</div>
+      <div class="stat-badge">⚡ Total: 53 specialist positions</div>
+    </div>
+  </div>
+
+  <div class="teams-grid">
+    <!-- Red Team Column -->
+    <div class="team-card team-red">
+      <div class="team-header">
+        <span>🔴</span> <span>Red Team · Offensive Security</span>
+      </div>
+      <div id="redTeamList" class="roles-list"></div>
+    </div>
+
+    <!-- Blue Team Column -->
+    <div class="team-card team-blue">
+      <div class="team-header">
+        <span>🔵</span> <span>Blue Team · Defensive Security</span>
+      </div>
+      <div id="blueTeamList" class="roles-list"></div>
+    </div>
+  </div>
+  <footer>🔐 Comprehensive reference — red team roles focus on ethical attacks, blue team roles on defense & resilience</footer>
+</div>
+
+<script>
+  // ------------------------------------------------------------------
+  // RED TEAM ROLES (exactly from list, numbered 1-17)
+  // ------------------------------------------------------------------
+  const redTeamRoles = [
+    { title: "Penetration Tester", desc: "Simulates attacks to identify vulnerabilities in networks, apps, and systems." },
+    { title: "Ethical Hacker", desc: "Authorized hacking to uncover security gaps before malicious actors exploit them." },
+    { title: "Red Team Operator", desc: "Executes full-scope adversary simulations, evading detection to test defenses." },
+    { title: "Adversary Emulation Specialist", desc: "Models real-world threat actors using MITRE ATT&CK to emulate TTPs." },
+    { title: "Red Team Lead / Manager", desc: "Plans, coordinates, and oversees red team exercises and reports to leadership." },
+    { title: "Exploit Developer", desc: "Writes proof-of-concept exploits and weaponized code for authorized testing." },
+    { title: "Malware Developer (offensive, custom payloads)", desc: "Creates tailored malware (implants, droppers) to evade EDR/AV." },
+    { title: "C2 (Command & Control) Infrastructure Engineer", desc: "Builds and manages stealthy C2 channels (Cobalt Strike, Mythic, etc.)." },
+    { title: "Social Engineering Specialist", desc: "Designs phishing campaigns, vishing, and physical pretexting simulations." },
+    { title: "Physical Security Penetration Tester", desc: "Attempts unauthorized physical entry (badge cloning, tailgating)." },
+    { title: "Purple Team Lead (offensive collaboration)", desc: "Bridges red and blue, improves detection through joint exercises." },
+    { title: "Red Team Tool Developer", desc: "Creates automation, enumeration scripts, and evasion tools for red ops." },
+    { title: "Initial Access Broker (IAB) Simulator", desc: "Simulates initial foothold tradecraft (purchase-like simulation)." },
+    { title: "Offensive Security Researcher", desc: "Discovers 0-day vulnerabilities and novel attack techniques." },
+    { title: "Cloud Penetration Tester", desc: "Tests AWS, Azure, GCP environments (misconfigurations, privilege escalation)." },
+    { title: "ICS/OT Red Team Specialist", desc: "Emulates threats to industrial control systems (SCADA, PLCs)." },
+    { title: "Mobile Security Penetration Tester", desc: "Assesses security of iOS/Android apps and mobile device management." }
+  ];
+
+  // ------------------------------------------------------------------
+  // BLUE TEAM ROLES (exactly 36 roles from list)
+  // ------------------------------------------------------------------
+  const blueTeamRoles = [
+    { title: "Security Analyst", desc: "Monitors alerts, investigates anomalies, maintains security posture." },
+    { title: "Incident Responder", desc: "First responder to breaches, contains threats and coordinates eradication." },
+    { title: "Security Engineer", desc: "Builds and maintains defensive systems (firewalls, IDS, SIEM)." },
+    { title: "Security Architect", desc: "Designs enterprise security frameworks and zero-trust models." },
+    { title: "Malware Analyst", desc: "Reverse-engineers malicious code to understand behavior and create signatures." },
+    { title: "Security Administrator", desc: "Manages user access, patch compliance, and security tools." },
+    { title: "Network Security Engineer", desc: "Hardens network devices, implements segmentation and VPN security." },
+    { title: "SOC Analyst", desc: "Tier 1-3 monitoring, triage, and escalation in Security Operations Center." },
+    { title: "Security Awareness Trainer", desc: "Educates employees on phishing, safe behavior, and policies." },
+    { title: "Forensic Analyst", desc: "Collects and analyzes digital evidence post-incident (disk, memory)." },
+    { title: "Identity and Access Management (IAM) Specialist", desc: "Manages SSO, MFA, privileged access governance." },
+    { title: "Cloud Security Engineer", desc: "Implements cloud-native protections (CSPM, CWPP, IAM)." },
+    { title: "Wireless Security Engineer", desc: "Secures WiFi networks, detects rogue APs, enables WPA3." },
+    { title: "Incident Handler", desc: "Executes IR plans, coordinates communication, and leads containment." },
+    { title: "SIEM Engineer", desc: "Builds correlation rules, normalizes logs, and optimizes detection." },
+    { title: "Network Forensics Analyst", desc: "Analyzes PCAP, netflows, and proxy logs during investigations." },
+    { title: "Threat Hunter", desc: "Proactively searches for undetected adversaries using hypothesis-driven hunts." },
+    { title: "Security Education Specialist", desc: "Develops and delivers security training and phishing simulations." },
+    { title: "Cloud Security Architect", desc: "Designs secure cloud infrastructure and DevSecOps pipelines." },
+    { title: "Blue Team Operator", desc: "Executes defensive operations, monitoring, and incident response tactics." },
+    { title: "Security Awareness Manager", desc: "Manages organization-wide security culture and metrics." },
+    { title: "Detection Engineer", desc: "Writes detection logic (Sigma, YARA) and tunes alerts." },
+    { title: "SOC Manager", desc: "Oversees SOC team, SLAs, and escalations; improves processes." },
+    { title: "Incident Response Manager", desc: "Leads IR engagements, post-mortems, and tabletop exercises." },
+    { title: "Threat Intelligence Analyst", desc: "Produces actionable threat intel from OSINT, sharing communities." },
+    { title: "Endpoint Security Engineer", desc: "Deploys and manages EDR, AV, and hardening policies." },
+    { title: "Vulnerability Management Analyst", desc: "Scans, prioritizes, and tracks remediations of CVEs." },
+    { title: "Digital Forensics and Incident Response (DFIR) Consultant", desc: "Advanced incident triage, memory forensics, and reporting." },
+    { title: "Security Operations Center (SOC) Lead", desc: "Supervises shift operations, KPI tracking, and training." },
+    { title: "Log Management / SIEM Content Developer", desc: "Creates parsers, dashboards, and alerts for log sources." },
+    { title: "Cyber Threat Hunter (proactive)", desc: "Uses threat intelligence to uncover hidden persistence." },
+    { title: "Email Security Specialist", desc: "Configures DMARC, DKIM, SPF, sandboxes, and anti-phishing filters." },
+    { title: "Data Loss Prevention (DLP) Analyst", desc: "Monitors and prevents exfiltration of sensitive data." },
+    { title: "Insider Threat Analyst", desc: "Detects anomalous behavior from employees or compromised accounts." },
+    { title: "CIRT Engineer (Computer Incident Response Team)", desc: "Builds automation, response playbooks, and tooling." },
+    { title: "MDR (Managed Detection and Response) Analyst", desc: "Remote monitoring, threat hunting, and response for multiple clients." }
+  ];
+
+  // render roles into DOM
+  function renderList(containerId, roles) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    roles.forEach(role => {
+      const roleDiv = document.createElement('div');
+      roleDiv.className = 'role-item';
+      roleDiv.innerHTML = `
+        <div class="role-title">
+          <span>${escapeHtml(role.title)}</span>
+          <span class="badge-count">⚡</span>
+        </div>
+        <div class="role-desc">${escapeHtml(role.desc)}</div>
+      `;
+      container.appendChild(roleDiv);
+    });
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // update counters
+  document.getElementById('redCount').innerText = redTeamRoles.length;
+  document.getElementById('blueCount').innerText = blueTeamRoles.length;
+
+  renderList('redTeamList', redTeamRoles);
+  renderList('blueTeamList', blueTeamRoles);
+
+  // optional: dynamic background (particles)
+  const canvas = document.getElementById('cyber-canvas');
+  let ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  class CyberParticle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 2.5 + 0.8;
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.speedY = (Math.random() - 0.5) * 0.2 + 0.05;
+      this.color = `rgba(${Math.random() * 100 + 155}, ${Math.random() * 80 + 70}, 255, ${Math.random() * 0.4 + 0.1})`;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if (this.x < -20) this.x = canvas.width + 20;
+      if (this.x > canvas.width + 20) this.x = -20;
+      if (this.y < -20) this.y = canvas.height + 20;
+      if (this.y > canvas.height + 20) this.y = -20;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = "#9f7aff";
+      ctx.fill();
+    }
+  }
+
+  function initParticles(count = 130) {
+    particles = [];
+    for (let i = 0; i < count; i++) particles.push(new CyberParticle());
+  }
+
+  function animateParticles() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p of particles) {
+      p.update();
+      p.draw();
+    }
+    requestAnimationFrame(animateParticles);
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initParticles(140);
+  });
+  resizeCanvas();
+  initParticles(140);
+  animateParticles();
+
+  // add small scroller style for better UX
+  const style = document.createElement('style');
+  style.textContent = `
+    .roles-list::-webkit-scrollbar-thumb {
+      background: #ff7e9e;
+      border-radius: 10px;
+    }
+    .team-blue .roles-list::-webkit-scrollbar-thumb {
+      background: #5a9eff;
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+</body>
+</html>

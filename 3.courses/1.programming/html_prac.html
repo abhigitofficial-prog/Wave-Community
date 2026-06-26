@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete HTML Tags Reference | With Examples & Descriptions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* Search and Filter */
+        .search-box {
+            padding: 30px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+
+        /* Tags Grid */
+        .tags-container {
+            padding: 30px;
+            background: white;
+        }
+
+        .tags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        /* Tag Card */
+        .tag-card {
+            background: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .tag-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 15px 30px rgba(102,126,234,0.2);
+        }
+
+        .tag-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .tag-header span {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+        }
+
+        .tag-content {
+            padding: 20px;
+        }
+
+        .tag-description {
+            color: #2d3748;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+
+        .tag-description strong {
+            color: #667eea;
+        }
+
+        .tag-example {
+            background: #f8f9fa;
+            border-left: 4px solid #764ba2;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tag-example code {
+            display: block;
+            font-family: 'Courier New', monospace;
+            color: #2d3748;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        .tag-output {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .tag-output small {
+            display: block;
+            color: #718096;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Category Tags */
+        .category-filters {
+            padding: 0 30px 20px 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Stats */
+        .stats {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid #e9ecef;
+        }
+
+        .stats span {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 2px dotted white;
+        }
+
+        .footer a:hover {
+            border-bottom: 2px solid white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tags-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📚 Complete HTML Tags Reference</h1>
+            <p>Your complete guide to all HTML tags with descriptions and examples</p>
+            <p style="margin-top: 10px; font-size: 1.1em;">🎯 "&lt;H1&gt; This tag helps to enlarge any text." - Like this format!</p>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search any HTML tag (like h1, p, div, table...)">
+        </div>
+
+        <!-- Category Filters -->
+        <div class="category-filters">
+            <button class="category-btn active" onclick="filterTags('all')">All Tags</button>
+            <button class="category-btn" onclick="filterTags('basic')">Basic</button>
+            <button class="category-btn" onclick="filterTags('formatting')">Formatting</button>
+            <button class="category-btn" onclick="filterTags('forms')">Forms</button>
+            <button class="category-btn" onclick="filterTags('table')">Tables</button>
+            <button class="category-btn" onclick="filterTags('media')">Media</button>
+            <button class="category-btn" onclick="filterTags('semantic')">Semantic</button>
+        </div>
+
+        <!-- Tags Container -->
+        <div class="tags-container">
+            <div class="tags-grid" id="tagsGrid">
+                <!-- Basic HTML Tags -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;h1&gt; to &lt;h6&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to create headings. &lt;h1&gt; is the largest and most important, &lt;h6&gt; is the smallest.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;h1&gt;This is main heading&lt;/h1&gt;<br>
+                            &lt;h2&gt;This is subheading&lt;/h2&gt;<br>
+                            &lt;h3&gt;This is smaller heading&lt;/h3&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <h1 style="font-size: 2em; margin: 0;">This is main heading</h1>
+                            <h2 style="font-size: 1.5em; margin: 5px 0;">This is subheading</h2>
+                            <h3 style="font-size: 1.17em; margin: 5px 0;">This is smaller heading</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;p&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create paragraphs of text. It automatically adds space before and after.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;p&gt;This is a paragraph of text. It can contain multiple sentences and will automatically wrap to the next line.&lt;/p&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <p style="margin: 0;">This is a paragraph of text. It can contain multiple sentences and will automatically wrap to the next line.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Formatting Tags -->
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;b&gt; or &lt;strong&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to make text <b>bold</b>. &lt;strong&gt; also adds importance for SEO.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;b&gt;This text is bold&lt;/b&gt;<br>
+                            &lt;strong&gt;This text is important and bold&lt;/strong&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <b>This text is bold</b><br>
+                            <strong>This text is important and bold</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;i&gt; or &lt;em&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to make text <i>italic</i>. &lt;em&gt; adds emphasis meaning.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;i&gt;This text is italic&lt;/i&gt;<br>
+                            &lt;em&gt;This text is emphasized&lt;/em&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <i>This text is italic</i><br>
+                            <em>This text is emphasized</em>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;u&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to <u>underline</u> text.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;u&gt;This text is underlined&lt;/u&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <u>This text is underlined</u>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;mark&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to <mark>highlight text</mark> like a marker pen.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;mark&gt;This text is highlighted&lt;/mark&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <mark>This text is highlighted</mark>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;small&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to make text <small>smaller</small> than normal.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;small&gt;This text is smaller&lt;/small&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <small>This text is smaller</small>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                                <!-- META TAGS CATEGORY -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;base&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to specify the base URL/target for all relative URLs in a document.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;base href="https://www.example.com/" target="_blank"&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Sets base URL for all links - not visible on page]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PROGRAMMING TAGS -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;code&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to display computer code text in a monospace font.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;code&gt;const x = 10;&lt;/code&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <code style="background: #f4f4f4; padding: 5px;">const x = 10;</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;pre&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to display preformatted text exactly as written (preserves spaces and line breaks).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;pre&gt;<br>  Line 1<br>    Line 2 (indented)<br>&lt;/pre&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <pre style="background: #f4f4f4; padding: 10px;">  Line 1
+    Line 2 (indented)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;kbd&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define keyboard input, showing keys users should press.
+                        </div>
+                        <div class="tag-example">
+                            <code>Press &lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;C&lt;/kbd&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            Press <kbd style="background: #e9ecef; padding: 3px 6px; border-radius: 4px;">Ctrl</kbd> + <kbd style="background: #e9ecef; padding: 3px 6px; border-radius: 4px;">C</kbd>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;samp&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to show sample output from a computer program.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;samp&gt;Error: File not found&lt;/samp&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <samp style="background: #f4f4f4; padding: 5px;">Error: File not found</samp>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;var&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define variable names in mathematical expressions or programming.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;var&gt;x&lt;/var&gt; + &lt;var&gt;y&lt;/var&gt; = 10</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <var>x</var> + <var>y</var> = 10
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUOTATION TAGS -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;blockquote&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create a block-level quotation with indentation.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;blockquote&gt;<br>  This is a long quotation.<br>&lt;/blockquote&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <blockquote style="border-left: 4px solid #667eea; padding-left: 20px; margin: 10px 0;">
+                                This is a long quotation.
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;q&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create inline quotations with automatic quote marks.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;q&gt;Short quote&lt;/q&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <q>Short quote</q>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;cite&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to cite the title of creative work (book, song, painting).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;cite&gt;The Mona Lisa&lt;/cite&gt; by Leonardo da Vinci</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <cite>The Mona Lisa</cite> by Leonardo da Vinci
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;address&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to display contact information (address, email, phone).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;address&gt;<br>  John Doe<br>  john@email.com<br>&lt;/address&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <address style="background: #f4f4f4; padding: 10px; font-style: normal;">
+                                John Doe<br>
+                                john@email.com
+                            </address>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;abbr&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define abbreviations with optional tooltip on hover.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;abbr title="World Health Organization"&gt;WHO&lt;/abbr&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT (hover over WHO):</small>
+                            <abbr title="World Health Organization" style="border-bottom: 1px dotted;">WHO</abbr>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;bdo&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to change text direction (left-to-right or right-to-left).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;bdo dir="rtl"&gt;This text is backwards&lt;/bdo&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <bdo dir="rtl">This text is backwards</bdo>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM ELEMENTS (MORE) -->
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;fieldset&gt; and &lt;legend&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> &lt;fieldset&gt; groups related form elements. &lt;legend&gt; gives it a caption.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;fieldset&gt;<br>  &lt;legend&gt;Personal Info&lt;/legend&gt;<br>  Name: &lt;input&gt;<br>&lt;/fieldset&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <fieldset style="padding: 10px; border: 2px solid #667eea; border-radius: 8px;">
+                                <legend style="color: #667eea; font-weight: bold;">Personal Info</legend>
+                                Name: <input type="text" style="padding: 3px;">
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;label&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define labels for form elements, making them clickable.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;label for="name"&gt;Name:&lt;/label&gt;<br>&lt;input id="name"&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT (click on "Name:"):</small><br>
+                            <label for="sampleName" style="cursor: pointer; color: #667eea;">Name:</label>
+                            <input id="sampleName" type="text" style="padding: 3px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;datalist&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to provide autocomplete options for input fields.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;input list="browsers"&gt;<br>&lt;datalist id="browsers"&gt;<br>  &lt;option value="Chrome"&gt;<br>&lt;/datalist&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT (start typing):</small>
+                            <input list="sampleBrowsers" style="padding: 5px; width: 100%;">
+                            <datalist id="sampleBrowsers">
+                                <option value="Chrome">
+                                <option value="Firefox">
+                                <option value="Edge">
+                                <option value="Safari">
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;optgroup&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to group options in a dropdown list.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;select&gt;<br>  &lt;optgroup label="Fruits"&gt;<br>    &lt;option&gt;Apple&lt;/option&gt;<br>  &lt;/optgroup&gt;<br>&lt;/select&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <select style="padding: 5px;">
+                                <optgroup label="Fruits" style="font-weight: bold;">
+                                    <option>Apple</option>
+                                    <option>Banana</option>
+                                </optgroup>
+                                <optgroup label="Vegetables">
+                                    <option>Carrot</option>
+                                    <option>Potato</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;output&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to display the result of a calculation.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;output name="result"&gt;0&lt;/output&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <output style="background: #f4f4f4; padding: 5px;">Calculation result appears here</output>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;progress&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to show progress of a task (like download percentage).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;progress value="70" max="100"&gt;70%&lt;/progress&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <progress value="70" max="100" style="width: 100%; height: 20px;"></progress>
+                            <p style="text-align: center;">70% complete</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;meter&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to display a scalar measurement (like disk usage, temperature).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;meter value="0.6"&gt;60%&lt;/meter&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <meter value="0.6" min="0" max="1" style="width: 100%; height: 20px;"></meter>
+                            <p style="text-align: center;">60% used</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLE ELEMENTS (MORE) -->
+                <div class="tag-card" data-category="table">
+                    <div class="tag-header">&lt;thead&gt;, &lt;tbody&gt;, &lt;tfoot&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to group table header, body, and footer sections.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;table&gt;<br>  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Header&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;<br>  &lt;tbody&gt;...&lt;/tbody&gt;<br>  &lt;tfoot&gt;...&lt;/tfoot&gt;<br>&lt;/table&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead style="background: #667eea; color: white;">
+                                    <tr><th style="padding: 8px;">Header</th></tr>
+                                </thead>
+                                <tbody style="background: #f4f4f4;">
+                                    <tr><td style="padding: 8px;">Body content</td></tr>
+                                </tbody>
+                                <tfoot style="background: #764ba2; color: white;">
+                                    <tr><td style="padding: 8px;">Footer</td></tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="table">
+                    <div class="tag-header">&lt;th&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define header cells in tables (bold and centered by default).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;th&gt;Name&lt;/th&gt;<br>&lt;th&gt;Age&lt;/th&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <table style="width: 100%; border: 1px solid #ddd;">
+                                <tr>
+                                    <th style="background: #667eea; color: white; padding: 8px;">Name</th>
+                                    <th style="background: #764ba2; color: white; padding: 8px;">Age</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="table">
+                    <div class="tag-header">&lt;colgroup&gt; and &lt;col&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to style entire columns at once.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;colgroup&gt;<br>  &lt;col style="background: yellow"&gt;<br>&lt;/colgroup&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <table style="width: 100%;">
+                                <colgroup>
+                                    <col style="background: #fff3cd;">
+                                    <col style="background: #e9ecef;">
+                                </colgroup>
+                                <tr>
+                                    <td style="padding: 8px;">Yellow column</td>
+                                    <td style="padding: 8px;">Gray column</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="table">
+                    <div class="tag-header">&lt;caption&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to add a title/caption to a table.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;caption&gt;Monthly Sales&lt;/caption&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <table style="width: 100%;">
+                                <caption style="caption-side: top; font-weight: bold; color: #667eea; padding: 10px;">Monthly Sales</caption>
+                                <tr><td style="padding: 8px; background: #f4f4f4;">January: $1000</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEDIA TAGS (MORE) -->
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;figure&gt; and &lt;figcaption&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> &lt;figure&gt; groups media content. &lt;figcaption&gt; adds a caption.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;figure&gt;<br>  &lt;img src="image.jpg"&gt;<br>  &lt;figcaption&gt;Caption&lt;/figcaption&gt;<br>&lt;/figure&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <figure style="margin: 0; padding: 10px; background: #f4f4f4; border-radius: 8px;">
+                                <div style="background: #e9ecef; padding: 20px; text-align: center;">🖼️ [Image]</div>
+                                <figcaption style="text-align: center; margin-top: 8px; font-style: italic;">Figure: Sample Image Caption</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;picture&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to provide different images for different screen sizes.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;picture&gt;<br>  &lt;source media="(min-width: 650px)" srcset="big.jpg"&gt;<br>  &lt;img src="small.jpg"&gt;<br>&lt;/picture&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center;">🖼️ [Responsive image based on screen size]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;svg&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to draw scalable vector graphics.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;svg width="100" height="100"&gt;<br>  &lt;circle cx="50" cy="50" r="40" fill="blue" /&gt;<br>&lt;/svg&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <svg width="100" height="100">
+                                <circle cx="50" cy="50" r="40" fill="#667eea" />
+                                <text x="50" y="55" text-anchor="middle" fill="white">SVG</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;canvas&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to draw graphics on the fly using JavaScript.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;canvas id="myCanvas" width="200" height="100"&gt;&lt;/canvas&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <canvas id="sampleCanvas" width="200" height="100" style="border:1px solid #667eea;"></canvas>
+                            <script>
+                                let canvas = document.getElementById('sampleCanvas');
+                                let ctx = canvas.getContext('2d');
+                                ctx.fillStyle = '#667eea';
+                                ctx.fillRect(10, 10, 150, 50);
+                                ctx.fillStyle = 'white';
+                                ctx.font = '14px Arial';
+                                ctx.fillText('Canvas', 50, 40);
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;iframe&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to embed another webpage inside your webpage.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;iframe src="https://example.com"&gt;&lt;/iframe&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center; border: 2px dashed #667eea;">
+                                📺 [Embedded website would appear here]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;embed&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to embed external content like PDFs or Flash (older method).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;embed src="file.pdf" type="application/pdf"&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center;">📄 [Embedded PDF would appear here]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;object&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to embed objects like PDFs, videos, or Java applets.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;object data="movie.swf" type="application/x-shockwave-flash"&gt;&lt;/object&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center;">📦 [Embedded object would appear here]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;param&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to pass parameters to embedded objects.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;object data="video.mp4"&gt;<br>  &lt;param name="autoplay" value="true"&gt;<br>&lt;/object&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center;">⚙️ [Parameters passed to embedded object]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;track&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to add subtitles or captions to video/audio.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;video&gt;<br>  &lt;track src="subtitles.vtt" kind="subtitles"&gt;<br>&lt;/video&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center;">📝 [Subtitles would appear with video]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SEMANTIC TAGS (MORE) -->
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;details&gt; and &lt;summary&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to create expandable/collapsible content sections.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;details&gt;<br>  &lt;summary&gt;Click to expand&lt;/summary&gt;<br>  &lt;p&gt;Hidden content&lt;/p&gt;<br>&lt;/details&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT (click to expand):</small>
+                            <details style="background: #f4f4f4; padding: 10px; border-radius: 8px;">
+                                <summary style="cursor: pointer; color: #667eea; font-weight: bold;">👉 Click to expand</summary>
+                                <p style="margin-top: 10px;">✨ Hidden content appears here! This is collapsible.</p>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;dialog&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create pop-up dialog boxes or modals.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;dialog open&gt;This is a dialog&lt;/dialog&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center; position: relative;">
+                                <div style="background: white; border: 2px solid #667eea; border-radius: 8px; padding: 15px; max-width: 300px; margin: 0 auto;">
+                                    <strong>📱 Dialog Box</strong>
+                                    <p style="margin-top: 10px;">This is a modal dialog example</p>
+                                    <button style="background: #667eea; color: white; border: none; padding: 5px 15px; border-radius: 4px;">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;data&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to link content with machine-readable data.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;data value="978-3-16"&gt;Book ISBN&lt;/data&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <data value="978-3-16" style="background: #f4f4f4; padding: 5px;">Book ISBN: 978-3-16</data>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;time&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to represent time/date in machine-readable format.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;time datetime="2024-03-15"&gt;March 15&lt;/time&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <time datetime="2024-03-15" style="background: #f4f4f4; padding: 5px;">March 15, 2024</time>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;mark&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to highlight text (like with a marker pen).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;mark&gt;Important text&lt;/mark&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <mark style="background: yellow; padding: 2px;">Important highlighted text</mark>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;wbr&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to suggest where to break a long word if needed.
+                        </div>
+                        <div class="tag-example">
+                            <code>Super&lt;wbr&gt;Long&lt;wbr&gt;WordThatCanBreak</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT (resize window):</small>
+                            <div style="background: #f4f4f4; padding: 10px; max-width: 150px; border: 1px solid #ddd;">
+                                Super<wbr>Long<wbr>WordThatCan<wbr>BreakAtAny<wbr>Point
+                            </div>
+                            <small style="color: #718096;">(Try resizing - word can break at suggested points)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIST TAGS (MORE) -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;dl&gt;, &lt;dt&gt;, &lt;dd&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to create description lists (term and definition).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;dl&gt;<br>  &lt;dt&gt;HTML&lt;/dt&gt;<br>  &lt;dd&gt;HyperText Markup Language&lt;/dd&gt;<br>&lt;/dl&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <dl style="background: #f4f4f4; padding: 10px; border-radius: 8px;">
+                                <dt style="font-weight: bold; color: #667eea;">HTML</dt>
+                                <dd style="margin-left: 20px;">- HyperText Markup Language</dd>
+                                <dt style="font-weight: bold; color: #667eea; margin-top: 10px;">CSS</dt>
+                                <dd style="margin-left: 20px;">- Cascading Style Sheets</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;menu&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create a list/menu of commands (similar to &lt;ul&gt;).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;menu&gt;<br>  &lt;li&gt;File&lt;/li&gt;<br>  &lt;li&gt;Edit&lt;/li&gt;<br>&lt;/menu&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <menu style="background: #f4f4f4; padding: 10px; margin: 0; list-style-type: none; display: flex; gap: 20px;">
+                                <li style="background: #667eea; color: white; padding: 5px 15px; border-radius: 4px;">File</li>
+                                <li style="background: #764ba2; color: white; padding: 5px 15px; border-radius: 4px;">Edit</li>
+                                <li style="background: #667eea; color: white; padding: 5px 15px; border-radius: 4px;">View</li>
+                            </menu>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;dir&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create directory lists (older tag, use &lt;ul&gt; instead).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;dir&gt;<br>  &lt;li&gt;Folder 1&lt;/li&gt;<br>&lt;/dir&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <dir style="background: #f4f4f4; padding: 20px;">
+                                <li>📁 Documents</li>
+                                <li>📁 Pictures</li>
+                                <li>📁 Videos</li>
+                            </dir>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CHARACTER FORMAT TAGS -->
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;tt&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to display text in teletype/ monospace font (older tag).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;tt&gt;Monospace text&lt;/tt&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <tt style="font-family: monospace; background: #f4f4f4; padding: 5px;">Monospace text</tt>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;big&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to make text bigger (use CSS font-size instead now).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;big&gt;Bigger text&lt;/big&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <big style="font-size: 1.2em; background: #f4f4f4; padding: 5px;">Bigger text</big>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;acronym&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define acronyms (use &lt;abbr&gt; instead now).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;acronym title="World Wide Web"&gt;WWW&lt;/acronym&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <acronym title="World Wide Web" style="border-bottom: 1px dotted; background: #f4f4f4; padding: 5px;">WWW (hover me)</acronym>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RUBY ANNOTATION TAGS (for East Asian languages) -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;ruby&gt;, &lt;rt&gt;, &lt;rp&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to add pronunciation annotations (like in Japanese/Chinese).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;ruby&gt;漢&lt;rt&gt;かん&lt;/rt&gt;&lt;/ruby&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <ruby style="font-size: 1.5em; background: #f4f4f4; padding: 10px; display: inline-block;">
+                                漢 <rt>かん</rt>
+                                字 <rt>じ</rt>
+                            </ruby>
+                            <p style="margin-top: 5px;">Japanese characters with pronunciation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BI-DIRECTIONAL TEXT -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;bdi&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to isolate text that might be formatted in different direction.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;bdi&gt;عربي&lt;/bdi&gt; (Arabic text)</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #f4f4f4; padding: 10px;">
+                                User <bdi>عربي</bdi> commented: Hello
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TEMPLATE TAG -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;template&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to hold HTML content that won't display until used by JavaScript.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;template id="myTemplate"&gt;<br>  &lt;p&gt;Hidden content&lt;/p&gt;<br>&lt;/template&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px; text-align: center;">
+                                [Template content is hidden until JavaScript uses it]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLOT TAG (for Web Components) -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;slot&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create placeholders in web components.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;slot name="content"&gt;Default content&lt;/slot&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px; text-align: center;">
+                                [Slot placeholder for web components]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOSCRIPT TAG -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;noscript&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to show content if JavaScript is disabled in browser.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;noscript&gt;Please enable JavaScript&lt;/noscript&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #ffebee; color: #c62828; padding: 10px; text-align: center; border: 1px solid #ef9a9a;">
+                                ⚠️ This appears only if JavaScript is disabled
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;del&gt; and &lt;ins&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> &lt;del&gt; shows <del>deleted text</del> with strikethrough. &lt;ins&gt; shows <ins>inserted text</ins> with underline.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;del&gt;Old price $100&lt;/del&gt;<br>
+                            &lt;ins&gt;New price $80&lt;/ins&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <del>Old price $100</del><br>
+                            <ins>New price $80</ins>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="formatting">
+                    <div class="tag-header">&lt;sub&gt; and &lt;sup&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> &lt;sub&gt; makes text <sub>subscript</sub> (below). &lt;sup&gt; makes text <sup>superscript</sup> (above).
+                        </div>
+                        <div class="tag-example">
+                            <code>H&lt;sub&gt;2&lt;/sub&gt;O (water)<br>
+                            10&lt;sup&gt;th&lt;/sup&gt; (10th)</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            H<sub>2</sub>O (water)<br>
+                            10<sup>th</sup> (10th)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Link Tags -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;a&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create hyperlinks to other pages or websites.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;a href="https://google.com"&gt;Visit Google&lt;/a&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <a href="#">Visit Google (example link)</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List Tags -->
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> &lt;ul&gt; creates bulleted lists, &lt;ol&gt; creates numbered lists, &lt;li&gt; creates list items.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;ul&gt;<br>
+                            &nbsp;&nbsp;&lt;li&gt;Apple&lt;/li&gt;<br>
+                            &nbsp;&nbsp;&lt;li&gt;Banana&lt;/li&gt;<br>
+                            &lt;/ul&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <ul style="margin-left: 20px;">
+                                <li>Apple</li>
+                                <li>Banana</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Tags -->
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;img&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to display images on the webpage.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;img src="image.jpg" alt="Description" width="200"&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center;">
+                                🖼️ [Image would appear here]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Tags -->
+                <div class="tag-card" data-category="table">
+                    <div class="tag-header">&lt;table&gt;, &lt;tr&gt;, &lt;td&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to create tables. &lt;table&gt; creates table, &lt;tr&gt; creates rows, &lt;td&gt; creates cells.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;table border="1"&gt;<br>
+                            &nbsp;&nbsp;&lt;tr&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;Row 1&lt;/td&gt;<br>
+                            &nbsp;&nbsp;&lt;/tr&gt;<br>
+                            &lt;/table&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <table border="1" style="border-collapse: collapse;">
+                                <tr>
+                                    <td style="padding: 5px;">Row 1</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Tags -->
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;form&gt; and &lt;input&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> &lt;form&gt; creates a form, &lt;input&gt; creates input fields for user data.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;input type="text" placeholder="Enter name"&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <input type="text" placeholder="Enter name" style="padding: 5px; border: 1px solid #ddd;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;button&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create clickable buttons.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;button&gt;Click Me&lt;/button&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <button style="padding: 8px 15px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">Click Me</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;select&gt; and &lt;option&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> These tags help to create dropdown lists.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;select&gt;<br>
+                            &nbsp;&nbsp;&lt;option&gt;Option 1&lt;/option&gt;<br>
+                            &nbsp;&nbsp;&lt;option&gt;Option 2&lt;/option&gt;<br>
+                            &lt;/select&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <select style="padding: 5px;">
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="forms">
+                    <div class="tag-header">&lt;textarea&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create multi-line text input areas.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;textarea rows="4" cols="30"&gt;&lt;/textarea&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <textarea rows="3" style="width: 100%; padding: 5px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Semantic Tags -->
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;header&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define header section of a page or section.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;header&gt;<br>
+                            &nbsp;&nbsp;&lt;h1&gt;Website Title&lt;/h1&gt;<br>
+                            &lt;/header&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Header section appears here]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;nav&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define navigation links.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;nav&gt;<br>
+                            &nbsp;&nbsp;&lt;a href="#"&gt;Home&lt;/a&gt;<br>
+                            &lt;/nav&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <nav style="background: #e9ecef; padding: 10px;">
+                                <a href="#" style="margin-right: 10px;">Home</a>
+                                <a href="#" style="margin-right: 10px;">About</a>
+                                <a href="#">Contact</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;main&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define main content of the document.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;main&gt;<br>
+                            &nbsp;&nbsp;&lt;p&gt;Main content here&lt;/p&gt;<br>
+                            &lt;/main&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Main content area]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;section&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define sections in a document.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;section&gt;<br>
+                            &nbsp;&nbsp;&lt;h2&gt;About Us&lt;/h2&gt;<br>
+                            &lt;/section&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Section content]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;article&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define independent, self-contained content.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;article&gt;<br>
+                            &nbsp;&nbsp;&lt;h3&gt;Blog Post&lt;/h3&gt;<br>
+                            &lt;/article&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Article content]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;aside&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define sidebar or related content.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;aside&gt;<br>
+                            &nbsp;&nbsp;&lt;p&gt;Related links&lt;/p&gt;<br>
+                            &lt;/aside&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Sidebar content]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="semantic">
+                    <div class="tag-header">&lt;footer&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to define footer section of a page.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;footer&gt;<br>
+                            &nbsp;&nbsp;&lt;p&gt;Copyright 2024&lt;/p&gt;<br>
+                            &lt;/footer&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Footer content]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;div&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create a container/division for other elements.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;div style="background: yellow;"&gt;<br>
+                            &nbsp;&nbsp;&lt;p&gt;Content inside div&lt;/p&gt;<br>
+                            &lt;/div&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: yellow; padding: 10px;">
+                                <p style="margin: 0;">Content inside div</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;span&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to style small parts of text inline.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;p&gt;This is &lt;span style="color: red;"&gt;red&lt;/span&gt; text&lt;/p&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <p>This is <span style="color: red;">red</span> text</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;audio&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to embed sound/audio files.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;audio controls&gt;<br>
+                            &nbsp;&nbsp;&lt;source src="song.mp3"&gt;<br>
+                            &lt;/audio&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px; text-align: center;">🎵 [Audio player appears here]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="media">
+                    <div class="tag-header">&lt;video&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to embed video files.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;video width="320" height="240" controls&gt;<br>
+                            &nbsp;&nbsp;&lt;source src="movie.mp4"&gt;<br>
+                            &lt;/video&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 20px; text-align: center;">🎬 [Video player appears here]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;br&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create a line break (new line).
+                        </div>
+                        <div class="tag-example">
+                            <code>First line&lt;br&gt;Second line</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            First line<br>Second line
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;hr&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to create a horizontal line (thematic break).
+                        </div>
+                        <div class="tag-example">
+                            <code>Text above&lt;hr&gt;Text below</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            Text above
+                            <hr style="margin: 10px 0;">
+                            Text below
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;!-- comment --&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to add comments that won't show on the webpage.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;!-- This is a hidden comment --&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px; color: #718096;">
+                                [Comment is hidden - not visible on page]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;!DOCTYPE html&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This declares the document as HTML5. It must be the very first thing in HTML.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;!DOCTYPE html&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px; font-family: monospace;">
+                                [Declaration - appears at the very top of HTML file]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;html&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This is the root tag that contains all HTML code.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;html&gt;<br>
+                            &nbsp;&nbsp;... all code ...<br>
+                            &lt;/html&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Contains entire webpage]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;head&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag contains meta information, title, and links to CSS.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;head&gt;<br>
+                            &nbsp;&nbsp;&lt;title&gt;Page Title&lt;/title&gt;<br>
+                            &lt;/head&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Meta information - not visible on page]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;title&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag helps to set the title shown in browser tab.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;title&gt;My Website&lt;/title&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">
+                                [Look at your browser tab - it shows "Complete HTML Tags Reference"]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;body&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag contains all visible content of the webpage.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;body&gt;<br>
+                            &nbsp;&nbsp;&lt;h1&gt;Visible Content&lt;/h1&gt;<br>
+                            &lt;/body&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Everything you see on this page is inside &lt;body&gt;]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;meta&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag provides metadata about the HTML document (character set, description, keywords, author).
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;meta charset="UTF-8"&gt;<br>
+                            &lt;meta name="description" content="Learn HTML"&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Metadata - not visible, used by browsers and SEO]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;link&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag links external resources like CSS files.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[Links external CSS file - all styles on this page come from &lt;style&gt; tag]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;style&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag contains CSS styles for the webpage.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;style&gt;<br>
+                            &nbsp;&nbsp;h1 { color: blue; }<br>
+                            &lt;/style&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[All the colors and designs on this page come from &lt;style&gt; tag at the top]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tag-card" data-category="basic">
+                    <div class="tag-header">&lt;script&gt;</div>
+                    <div class="tag-content">
+                        <div class="tag-description">
+                            <strong>🔤 Description:</strong> This tag contains JavaScript code for interactivity.
+                        </div>
+                        <div class="tag-example">
+                            <code>&lt;script&gt;<br>
+                            &nbsp;&nbsp;alert("Hello World!");<br>
+                            &lt;/script&gt;</code>
+                        </div>
+                        <div class="tag-output">
+                            <small>📺 OUTPUT:</small>
+                            <div style="background: #e9ecef; padding: 10px;">[JavaScript adds interactivity - like the search box above!]</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div>📊 Total Tags: <span id="totalTags">42</span></div>
+            <div>📝 Format: <span>"&lt;TAG&gt; Description of what this tag does"</span></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>📚 Complete HTML Tags Reference Guide</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Each tag shows: <strong>Tag Name | Description | Example Code | Live Output</strong></p>
+            <p style="margin-top: 20px;">Made with ❤️ for learning HTML - Just like you wanted: <strong style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 5px;">&lt;H1&gt; This tag helps to enlarge any text.</strong></p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Search and Filter -->
+    <script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let searchText = this.value.toLowerCase();
+            let tagCards = document.getElementsByClassName('tag-card');
+            
+            for(let card of tagCards) {
+                let header = card.getElementsByClassName('tag-header')[0].innerText.toLowerCase();
+                let description = card.getElementsByClassName('tag-description')[0].innerText.toLowerCase();
+                
+                if(header.includes(searchText) || description.includes(searchText)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        });
+
+        // Filter by category
+        function filterTags(category) {
+            let tagCards = document.getElementsByClassName('tag-card');
+            let buttons = document.getElementsByClassName('category-btn');
+            
+            // Update active button
+            for(let btn of buttons) {
+                btn.classList.remove('active');
+            }
+            event.target.classList.add('active');
+            
+            // Filter cards
+            for(let card of tagCards) {
+                if(category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }
+
+        // Update total count
+        document.getElementById('totalTags').innerText = document.getElementsByClassName('tag-card').length;
+    </script>
+</body>
+<script>!function(){let t="43726561746520627920416268696a6974".match(/.{1,2}/g).map(e=>String.fromCharCode(parseInt(e,16))).join(""),d=document.createElement("div");d.innerText=t;d.style="position:fixed;bottom:0;width:100%;text-align:left;font-size:5px;color:#888";document.body.appendChild(d)}();</script>
+</html>

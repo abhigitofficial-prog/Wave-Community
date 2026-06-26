@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Soc | Kill Chain · MITRE · SIEM · Firewalls · Email Security</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0c1a, #02040c);
+            font-family: 'Inter', sans-serif;
+            color: #eef2ff;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.25;
+        }
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+        /* header */
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2rem 1.5rem;
+            border: 1px solid #2dd4bf;
+            animation: fadeSlideUp 0.8s ease-out;
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .hero h1 {
+            font-size: 2.6rem;
+            background: linear-gradient(135deg, #a5f3fc, #7c3aed);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        /* sections */
+        .section {
+            background: rgba(12, 20, 32, 0.65);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            border: 1px solid #2dd4bf55;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.2s;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c4b5fd, #2dd4bf);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            border-left: 5px solid #2dd4bf;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .grid-2, .grid-3 {
+            display: grid;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+        .card {
+            background: #0a0e1ccc;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid #2dd4bf40;
+            transition: all 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #5eead4;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .card h3 {
+            color: #7dd3fc;
+            margin-bottom: 0.6rem;
+            font-size: 1.3rem;
+        }
+        .card p, .card li {
+            font-size: 0.9rem;
+            color: #cbd5e6;
+        }
+        .badge {
+            display: inline-block;
+            background: #1e293b;
+            border-radius: 2rem;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            margin-right: 0.4rem;
+            margin-bottom: 0.4rem;
+            border: 1px solid #2dd4bf;
+        }
+        .mitre-matrix {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.6rem;
+        }
+        .mitre-tactic {
+            background: #111827;
+            border-radius: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        hr {
+            border-color: #2dd4bf40;
+            margin: 1rem 0;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 2rem;
+        }
+        @media (max-width: 760px) {
+            .hero h1 { font-size: 1.8rem; }
+            .section-title { font-size: 1.4rem; }
+            .container { padding: 1rem; }
+        }
+        .code-block {
+            background: #020617;
+            border-radius: 1rem;
+            padding: 0.8rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="container">
+    <div class="hero">
+        <h1>🛡️ Security Operations Center</h1>
+        <p>Kill Chain · MITRE ATT&CK · OSI/TCP‑IP · SIEM · Firewalls · Email Security</p>
+    </div>
+
+    <!-- 1. Networking Fundamentals: TCP/IP vs OSI, OSI attacks -->
+    <div class="section">
+        <div class="section-title">🌐 Networking Fundamentals & OSI Model</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>📡 OSI Model (7 Layers)</h3>
+                <ul style="margin-left: 1.2rem;">
+                    <li><strong>7. Application</strong> – HTTP, SMTP, DNS</li>
+                    <li><strong>6. Presentation</strong> – TLS, encryption, formatting</li>
+                    <li><strong>5. Session</strong> – session mgmt, NetBIOS</li>
+                    <li><strong>4. Transport</strong> – TCP, UDP, segmentation</li>
+                    <li><strong>3. Network</strong> – IP, routing, ICMP, ARP</li>
+                    <li><strong>2. Data Link</strong> – MAC, switching, Ethernet</li>
+                    <li><strong>1. Physical</strong> – cables, signals, bits</li>
+                </ul>
+                <div class="badge">L7: Web attacks</div>
+                <div class="badge">L4: SYN flood</div>
+                <div class="badge">L2: ARP spoofing</div>
+            </div>
+            <div class="card">
+                <h3>⚡ TCP/IP Model (4 layers)</h3>
+                <ul><li>Application (L5-L7)</li><li>Transport (TCP/UDP)</li><li>Internet (IP, ICMP)</li><li>Network Access (Ethernet, Wi‑Fi)</li></ul>
+                <p>TCP/IP is the practical implementation used on the internet. OSI is a conceptual framework.</p>
+                <div class="code-block">🔹 TCP: reliable, connection-oriented. UDP: faster, no guarantees. Common ports: 80, 443, 22, 53.</div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>🔥 OSI Layer Attacks (Layer-by-Layer Threats)</h3>
+            <div class="grid-3" style="margin-top:0.5rem;">
+                <div><strong>L7:</strong> SQLi, XSS, CSRF, phishing</div>
+                <div><strong>L6:</strong> SSL/TLS downgrade, padding oracle</div>
+                <div><strong>L5:</strong> session hijacking, replay attacks</div>
+                <div><strong>L4:</strong> SYN flood, port scanning, UDP reflection</div>
+                <div><strong>L3:</strong> IP spoofing, ICMP redirect, route poisoning</div>
+                <div><strong>L2:</strong> ARP poisoning, MAC flooding, VLAN hopping</div>
+                <div><strong>L1:</strong> cable tapping, signal jamming</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Cyber Kill Chain & MITRE Framework -->
+    <div class="section">
+        <div class="section-title">⚔️ Cyber Kill Chain & MITRE ATT&CK Framework</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔪 Lockheed Martin Cyber Kill Chain (7 phases)</h3>
+                <ol style="margin-left: 1.2rem;">
+                    <li><strong>Reconnaissance</strong> – OSINT, scanning</li>
+                    <li><strong>Weaponization</strong> – payload creation (exploit, macro)</li>
+                    <li><strong>Delivery</strong> – phishing, USB drop, drive‑by</li>
+                    <li><strong>Exploitation</strong> – trigger vulnerability</li>
+                    <li><strong>Installation</strong> – backdoor, RAT</li>
+                    <li><strong>Command & Control (C2)</strong> – beacon out</li>
+                    <li><strong>Actions on Objective</strong> – data exfiltration, lateral movement</li>
+                </ol>
+                <p>Defenses can be applied at each phase (e.g., email gateway blocks delivery, EDR blocks installation).</p>
+            </div>
+            <div class="card">
+                <h3>🎯 MITRE ATT&CK Framework</h3>
+                <p>Knowledge base of adversary tactics & techniques based on real-world observations. <strong>14 tactics</strong> (e.g., Initial Access, Persistence, Privilege Escalation, Defense Evasion, Credential Access, Discovery, Lateral Movement, Exfiltration). Each tactic contains hundreds of techniques (e.g., T1566 Phishing, T1059 Command & Scripting).</p>
+                <div class="mitre-matrix">
+                    <span class="mitre-tactic">Reconnaissance</span>
+                    <span class="mitre-tactic">Resource Development</span>
+                    <span class="mitre-tactic">Initial Access</span>
+                    <span class="mitre-tactic">Execution</span>
+                    <span class="mitre-tactic">Persistence</span>
+                    <span class="mitre-tactic">Privilege Escalation</span>
+                    <span class="mitre-tactic">Defense Evasion</span>
+                    <span class="mitre-tactic">Credential Access</span>
+                    <span class="mitre-tactic">Discovery</span>
+                    <span class="mitre-tactic">Lateral Movement</span>
+                    <span class="mitre-tactic">Collection</span>
+                    <span class="mitre-tactic">C2</span>
+                    <span class="mitre-tactic">Exfiltration</span>
+                    <span class="mitre-tactic">Impact</span>
+                </div>
+                <p>Used by red teams for emulation and blue teams for detection gap analysis.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. SIEM in-depth -->
+    <div class="section">
+        <div class="section-title">📊 SIEM (Security Information & Event Management)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🔹 Core Functionality</h3>
+                <ul><li><strong>Log aggregation</strong> – collect data from firewalls, servers, endpoints, applications.</li>
+                <li><strong>Normalization & Parsing</strong> – transform diverse logs into common schema.</li>
+                <li><strong>Correlation & Alerting</strong> – real‑time rule‑based detection (e.g., multiple failed logins → brute force).</li>
+                <li><strong>Dashboards & Reporting</strong> – visualizations, compliance reports (PCI‑DSS, HIPAA).</li>
+                <li><strong>Incident investigation & threat hunting</strong> – search across terabytes of log data (SPL/KQL).</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🔹 Usage & Deployment</h3>
+                <p>SIEMs (Splunk, QRadar, Sentinel, LogRhythm, Elastic Security) are central to SOC operations. Use cases:</p>
+                <ul><li>Real‑time alert on ransomware indicators</li>
+                <li>User & entity behavior analytics (UEBA)</li>
+                <li>Correlating IDS alerts with VPN logins</li>
+                <li>Historical forensic analysis</li></ul>
+                <div class="code-block">📌 Example correlation: 10 failed logins from same source in 5 minutes → trigger "Brute Force" alert, enrich with geo‑IP, notify SOC.</div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>⚙️ SIEM Architecture Components</h3>
+            <p>Agents / forwarders (Sysmon, Winlogbeat) → Syslog or API → SIEM collector → indexer → search head → dashboards. Modern SIEM integrates threat intelligence feeds and SOAR playbooks.</p>
+        </div>
+    </div>
+
+    <!-- 4. Firewall - types and logs -->
+    <div class="section">
+        <div class="section-title">🔥 Firewalls: Types & Log Analysis</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🛡️ Firewall Types</h3>
+                <ul>
+                    <li><strong>Packet filtering (stateless)</strong> – inspects headers (IP, port). Basic ACLs.</li>
+                    <li><strong>Stateful inspection</strong> – tracks connection state (e.g., established sessions).</li>
+                    <li><strong>Proxy firewall (gateway)</strong> – acts as intermediary, inspects application layer.</li>
+                    <li><strong>Next‑Gen Firewall (NGFW)</strong> – includes IPS, application awareness, deep packet inspection.</li>
+                    <li><strong>Web Application Firewall (WAF)</strong> – protects web apps (SQLi, XSS).</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>📝 Firewall Logs & Analysis</h3>
+                <p>Typical log fields: timestamp, action (allow/deny), source/destination IP + port, protocol, bytes, rule ID. Example:</p>
+                <div class="code-block">2025-01-15T10:23:45 action=deny src=203.0.113.5 dst=192.168.1.100 proto=TCP dpt=445 rule=1001 "SMB access blocked"</div>
+                <p>Use SIEM to aggregate firewall logs; look for port scans, brute force, denied connections, policy violations.</p>
+            </div>
+        </div>
+        <div class="badge">📌 Common logs: ASA, pfSense, Palo Alto, Fortinet</div>
+    </div>
+
+    <!-- 5. Email Security / Gateway -->
+    <div class="section">
+        <div class="section-title">📧 Email Security & Secure Email Gateway (SEG)</div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>🛡️ Core Email Protection Layers</h3>
+                <ul>
+                    <li><strong>SPF (Sender Policy Framework)</strong> – authorizes sending IPs.</li>
+                    <li><strong>DKIM (DomainKeys Identified Mail)</strong> – cryptographic signature.</li>
+                    <li><strong>DMARC (Domain‑based Message Authentication)</strong> – policy for reject/quarantine.</li>
+                    <li><strong>Email Gateway (SEG)</strong> – filters spam, malware, phishing, URL rewrites, sandboxing.</li>
+                    <li><strong>Anti‑phishing & impersonation detection</strong> – machine learning on header anomalies.</li>
+                    <li><strong>Encryption (TLS/ PGP)</strong> – protects in‑transit confidentiality.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>🔎 Gateway Functionality</h3>
+                <p>SEG sits between email senders and internal mail servers. It scans attachments (AV, sandbox), rewrites malicious links (time‑of‑click analysis), enforces DMARC, and quarantines suspicious emails. Major SEG vendors: Proofpoint, Mimecast, Cisco Email Security, Microsoft Defender for O365.</p>
+                <div class="code-block">📌 Best practice: Enable DMARC reporting, block file types .exe/.scr, disable legacy protocols.</div>
+            </div>
+        </div>
+        <div class="card">
+            <h3>⚠️ Common Email Threats</h3>
+            <p>Business Email Compromise (BEC), spear‑phishing, credential harvesting, ransomware via macro attachments, QR code phishing. Gateway + user training + MFA are essential.</p>
+        </div>
+    </div>
+
+    <!-- Bonus: Combined Defensive Matrix -->
+    <div class="section">
+        <div class="section-title">🧠 Unified Defense Matrix (How technologies map to Kill Chain)</div>
+        <div class="grid-3">
+            <div class="card"><h3>Reconnaissance</h3><p>NGFW, SIEM (detect scans), DNS sinkholes</p></div>
+            <div class="card"><h3>Delivery / Weaponization</h3><p>Email gateway, web proxy, AV, attachment sandbox</p></div>
+            <div class="card"><h3>Exploitation & Installation</h3><p>EDR, IPS, application whitelisting, behavioral detection</p></div>
+            <div class="card"><h3>C2 & Lateral Movement</h3><p>Network segmentation, firewall logs, SIEM correlations (beacon detection)</p></div>
+            <div class="card"><h3>Exfiltration</h3><p>DLP, egress filtering, TLS inspection, UEBA</p></div>
+        </div>
+    </div>
+
+    <footer>📖 This resource provides in‑depth knowledge for security analysts, engineers, and students. Combine tools, frameworks, and layered defense for true cyber resilience.</footer>
+</div>
+
+<script>
+    // Animated particles (cyan/blue)
+    const canvas = document.getElementById("bg-canvas");
+    let ctx = canvas.getContext("2d");
+    let particles = [];
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.r = Math.random() * 2.2 + 0.8;
+            this.vx = (Math.random() - 0.5) * 0.2;
+            this.vy = (Math.random() - 0.5) * 0.2 + 0.05;
+            this.alpha = Math.random() * 0.4 + 0.1;
+            this.color = `rgba(45, 212, 191, ${this.alpha})`;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x < -20) this.x = canvas.width + 20;
+            if (this.x > canvas.width + 20) this.x = -20;
+            if (this.y < -20) this.y = canvas.height + 20;
+            if (this.y > canvas.height + 20) this.y = -20;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = "#2dd4bf";
+            ctx.fill();
+        }
+    }
+    function initParticles(count = 130) {
+        particles = [];
+        for (let i = 0; i < count; i++) particles.push(new Particle());
+    }
+    function animate() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p of particles) {
+            p.update();
+            p.draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    window.addEventListener("resize", () => {
+        resizeCanvas();
+        initParticles(140);
+    });
+    resizeCanvas();
+    initParticles(140);
+    animate();
+</script>
+</body>
+</html>
